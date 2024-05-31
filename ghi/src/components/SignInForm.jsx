@@ -1,4 +1,3 @@
-// @ts-check
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
@@ -9,9 +8,6 @@ export default function SignInForm() {
     const [password, setPassword] = useState('')
     const { signin, user, error } = useAuthService()
 
-    /**
-     * @param {React.FormEvent<HTMLFormElement>} e
-     */
     async function handleFormSubmit(e) {
         e.preventDefault()
         await signin({ username, password })

@@ -2,16 +2,11 @@ import { useContext } from 'react'
 import { AuthContext } from '../components/AuthProvider'
 import { signin, signup, signout } from '../services/authService'
 
-/**
- * @typedef {import('../types').SignInRequest} SignInRequest
- * @typedef {import('../types').SignUpRequest} SignUpRequest
- */
-
 // This is a custom hook that lets us get access to
 // the info stored in the AuthContext
 export default function useAuthService() {
     const authContext = useContext(AuthContext)
-    // This is a sanity check just in case someoen
+    // This is a sanity check just in case someone
     // tries to use this hook outside of <AuthProvider>
     if (!authContext) {
         throw new Error('useAuthService has to be used within <AuthProvider>')
@@ -37,10 +32,6 @@ export default function useAuthService() {
         // out fetch code into the authService module
         // They handle setting the state based
         // on if signup/signin/signout was successful or not
-        //
-        /**
-         * @param {SignUpRequest} userData
-         */
         signup: async (userData) => {
             const newUser = await signup(userData)
             // If newUser is an error, set the Error and just return
@@ -53,9 +44,6 @@ export default function useAuthService() {
             setUser(newUser)
             setIsLoading(false)
         },
-        /**
-         * @param {SignInRequest} userData
-         */
         signin: async (userData) => {
             const user = await signin(userData)
             if (user instanceof Error) {

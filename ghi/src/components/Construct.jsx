@@ -1,10 +1,3 @@
-//@ts-check
-/**
- * @typedef {{module: number, week: number, day: number, min: number, hour: number}} LaunchInfo
- *
- * @param {{info: LaunchInfo | undefined }} props
- * @returns {React.ReactNode}
- */
 function Construct(props) {
     if (!props.info) {
         return <p>Loading...</p>

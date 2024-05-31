@@ -1,36 +1,10 @@
-// @ts-check
-import React, { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { authenticate } from '../services/authService'
 
-/**
- * @typedef {import('../types').UserDataResponse} UserDataResponse
- * @typedef {import('../types').AuthContextType} AuthContextType
- */
-
-/** Note: The TypeScript Language Server doesn't like this jsdoc for some
- * reason. As of 02-19-2024 this produces a type error
- * @type {React.Context<AuthContextType|null>}
- */
 export const AuthContext = createContext(null)
 
-/** AuthProvider
- * This uses a ReactContext to hold the user login information
- *
- * Wrap this around your entire application, and then you can use the `useAuthentication`
- * hook to grab the user info or a boolean saying if the user is logged in
- *
- * @param {React.PropsWithChildren} children
- * @return {React.ReactNode}
- *
- */
 export default function AuthProvider({ children }) {
-    /**
-     * @type {[UserDataResponse | undefined, React.Dispatch<React.SetStateAction<UserDataResponse | undefined>>]}
-     */
     const [user, setUser] = useState()
-    /**
-     * @type {[Error | undefined, React.Dispatch<React.SetStateAction<Error | undefined>>]}
-     */
     const [error, setError] = useState()
     const [isLoading, setIsLoading] = useState(true)
 

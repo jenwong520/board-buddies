@@ -1,10 +1,5 @@
-// @ts-check
 /** This helper function wraps itself around fetch
  *  And converts thrown errors into returned errors.
- *  @template T
- *  @param {string} url
- *  @param {RequestInit} options
- *  @return {Promise<T | Error>}
  */
 export async function tryFetch(url, options) {
     // Wrap everything in a try catch
@@ -17,9 +12,6 @@ export async function tryFetch(url, options) {
                 `Fetch Error - ${response.status} - ${response.statusText}`
             )
         }
-        /**
-         * @type {T}
-         */
         const data = await response.json()
         // If everything went well, we return the JSON parsed Data here
         return data
