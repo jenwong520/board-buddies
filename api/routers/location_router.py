@@ -1,8 +1,11 @@
 """
 Location Router
 """
-from fastapi import (APIRouter)
+from fastapi import (APIRouter,
+                     Depends
+                    )
 from models.locations import CreateLocations
+from queries.location_queries import LocationQueries
 
 router = APIRouter(tags=["Location"], prefix="/api/location")
 
@@ -16,8 +19,13 @@ async def get_location_details():
     pass
 
 @router.post("/create")
-async def create_location(location: CreateLocations):
+async def create_location(
+    location: CreateLocations,
+    repo: LocationQueries = Depends()
+    ):
+    repo.create_location(location)
     return location
+
 
 @router.delete("/id/delete")
 async def delete_location():

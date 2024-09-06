@@ -7,7 +7,7 @@ import psycopg
 from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
 from typing import Optional
-from models.locations import Locations
+from models.locations import CreateLocations
 from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -21,7 +21,7 @@ class LocationQueries:
     """
     Class containing queries for the locations table
     """
-    def create_location(self, name: str, city: str, state: str, store_type:str):
+    def create_location(self, location: CreateLocations):
         """
         Creates location in the database
 
@@ -29,33 +29,34 @@ class LocationQueries:
         """
         try:
             with pool.connection() as conn:
-                with conn.cursor(row_factory=class_row(Locations)) as cur:
+                with conn.cursor() as cur:
                     cur.execute(
                         """
-                        INSERT INTO location (
+                        INSERT INTO locations (
                         name,
                         city,
                         state,
-                        store_type,
+                        store_type
                         ) Values (
-                            %s, %s, %s, %s,
+                            %s, %s, %s, %s
                         )
                         RETURNING *;
                         """,
                         [
-                            name,
-                            city,
-                            state,
-                            store_type
+                            location.name,
+                            location.city,
+                            location.state,
+                            location.store_type
                         ]
                     )
                     location = cur.fetchone()
+                    print(location)
                     if not location:
                         raise UserDatabaseException(
-                            f"Could not Create location with name {name}"
+                            f"Fetch one error Could not Create location with name {location.name}"
                         )
         except psycopg.Error:
             raise UserDatabaseException(
-                f"Could not Create location with name {name}"
+                f"psycopg error: Could not Create location with name {location.name}"
             )
         return location
