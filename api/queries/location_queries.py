@@ -6,8 +6,8 @@ import os
 import psycopg
 from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
-from typing import Optional
-from models.locations import CreateLocations
+from typing import Optional, List, Union
+from models.locations import CreateLocations, LocationList
 from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -60,3 +60,24 @@ class LocationQueries:
                 f"psycopg error: Could not Create location with name {location.name}"
             )
         return location
+
+
+    def get_all(self) ->List[LocationList]:
+        """
+        Gets a list of the names of all the locations including the id
+        """
+        try:
+            with pool.connection() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute(
+                            """
+                            SELECT id, name
+                            FROM locations
+                            ORDER BY Name
+                            """
+                        )
+                        return [LocationList(id=item[0], name=item[1]) for item in cur]
+
+        except Exception as e:
+            print(e)
+            return {"message": "could not get all vacations"}

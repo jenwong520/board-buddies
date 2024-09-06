@@ -23,7 +23,7 @@ class CreateLocations(BaseModel):
     store_type: str
     # lat_lon: Optional[LatLon]
 
-class GetLocationId(BaseModel):
+class LocationList(BaseModel):
     """
     Gets location name and id
     """

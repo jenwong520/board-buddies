@@ -4,21 +4,22 @@ Location Router
 from fastapi import (APIRouter,
                      Depends
                     )
-from models.locations import CreateLocations
+from typing import List
+from models.locations import CreateLocations, LocationList
 from queries.location_queries import LocationQueries
 
 router = APIRouter(tags=["Location"], prefix="/api/location")
 
 
-@router.get("/")
-async def get_locations_list():
-    pass
+@router.get("/", response_model=List[LocationList])
+async def get_locations_list(repo: LocationQueries = Depends()):
+    return repo.get_all()
 
 @router.get("/id")
 async def get_location_details():
     pass
 
-@router.post("/create")
+@router.post("/", response_model=CreateLocations)
 async def create_location(
     location: CreateLocations,
     repo: LocationQueries = Depends()
@@ -27,10 +28,10 @@ async def create_location(
     return location
 
 
-@router.delete("/id/delete")
+@router.delete("/id")
 async def delete_location():
     pass
 
-@router.get("/id/update")
+@router.put("/id")
 async def update_location():
     pass
