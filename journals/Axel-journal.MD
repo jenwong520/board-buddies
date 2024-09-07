@@ -6,4 +6,6 @@ First thing id was get all the router templates for the api end points in to the
 
 ---9/6/2024---
 
-Continueing on making all the user end points useable 
+Continueing on making all the user end points useable
+
+Was able to make a post endpoint and a get all endpoint
