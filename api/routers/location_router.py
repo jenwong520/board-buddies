@@ -2,11 +2,17 @@
 Location Router
 """
 from fastapi import (APIRouter,
-                     Depends
+                    Depends,
+                    Response
                     )
-from typing import List
-from models.locations import CreateLocations, LocationList
+from typing import List, Union
+from models.locations import (LocationIn,
+                            LocationList,
+                            LocationDetails,
+                            LocationOut,
+                            Error)
 from queries.location_queries import LocationQueries
+
 
 router = APIRouter(tags=["Location"], prefix="/api/location")
 
@@ -15,23 +21,34 @@ router = APIRouter(tags=["Location"], prefix="/api/location")
 async def get_locations_list(repo: LocationQueries = Depends()):
     return repo.get_all()
 
-@router.get("/id")
-async def get_location_details():
-    pass
+@router.get("/{location_id}")
+async def get_location_details(
+    location_id: int,
+    repo: LocationQueries = Depends()
+):
+    return repo.details(location_id)
 
-@router.post("/", response_model=CreateLocations)
+@router.post("/", response_model=Union[LocationOut, Error])
 async def create_location(
-    location: CreateLocations,
+    location: LocationIn,
+    response: Response,
     repo: LocationQueries = Depends()
     ):
-    repo.create_location(location)
-    return location
+    return repo.create_location(location)
 
 
-@router.delete("/id")
-async def delete_location():
-    pass
+@router.delete("/{location_id}", response_model=bool)
+async def delete_location(
+    location_id : int,
+    repo: LocationQueries = Depends()
+)-> bool:
+    return repo.delete(location_id)
 
-@router.put("/id")
-async def update_location():
-    pass
+@router.put("/{location_id}", response_model=Union[LocationOut, Error])
+async def update_location(
+    location_id: int,
+    location: LocationIn,
+    repo: LocationQueries = Depends()
+):
+    print(repo)
+    return repo.update(location_id, location)

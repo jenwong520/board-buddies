@@ -4,6 +4,9 @@ Pydantic Models for Locations
 from pydantic import BaseModel
 from typing import Optional
 
+class Error(BaseModel):
+    message: str
+
 class LatLon(BaseModel):
     """
     Gets the latatued and longatude of a location bassed of the Google maps api
@@ -12,7 +15,7 @@ class LatLon(BaseModel):
     lat : float
     lon : float
 
-class CreateLocations(BaseModel):
+class LocationIn(BaseModel):
     """
     Represents the paramaters required to create a new location
     """
@@ -23,6 +26,19 @@ class CreateLocations(BaseModel):
     store_type: str
     # lat_lon: Optional[LatLon]
 
+class LocationOut(BaseModel):
+    """
+    Represents the paramaters required to create a new location
+    """
+
+    id : int
+    name: str
+    city: str
+    state: str
+    store_type: str
+    # lat_lon: Optional[LatLon]
+
+
 class LocationList(BaseModel):
     """
     Gets location name and id
@@ -30,3 +46,14 @@ class LocationList(BaseModel):
 
     id: int
     name: str
+
+class LocationDetails(BaseModel):
+    """
+    Gets all location details including the id
+    """
+
+    id: int
+    name: str
+    city: str
+    state: str
+    store_type: str
