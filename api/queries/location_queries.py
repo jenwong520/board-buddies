@@ -5,18 +5,19 @@ Database Queries for Location
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
-from psycopg.rows import class_row
-from typing import Optional, List, Union
-from models.locations import (LocationIn,
-                            LocationList,
-                            LocationOut)
+from typing import Optional, List
+from models.locations import (
+    LocationIn,
+    LocationList,
+    LocationOut
+)
 from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
 
-pool =  ConnectionPool(DATABASE_URL)
+pool = ConnectionPool(DATABASE_URL)
 
 
 class LocationQueries:
@@ -66,11 +67,6 @@ class LocationQueries:
                     )
                     id = result.fetchone()[0]
                     return self.location_conversion(id, location)
-
-                    if not location:
-                        raise UserDatabaseException(
-                            f"Fetch one error Could not Create location with name {location.name}"
-                        )
         except psycopg.Error:
             raise UserDatabaseException(
                 f"psycopg error: Could not Create location with name {location.name}"

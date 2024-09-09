@@ -1,16 +1,18 @@
 """
 Location Router
 """
-from fastapi import (APIRouter,
-                    Depends,
-                    Response
-                    )
+from fastapi import (
+    APIRouter,
+    Depends,
+    Response
+)
 from typing import List, Union
-from models.locations import (LocationIn,
-                            LocationList,
-                            LocationDetails,
-                            LocationOut,
-                            Error)
+from models.locations import (
+    LocationIn,
+    LocationList,
+    LocationOut,
+    Error
+)
 from queries.location_queries import LocationQueries
 
 

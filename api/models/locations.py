@@ -3,6 +3,7 @@ Pydantic Models for Locations
 """
 from pydantic import BaseModel
 
+
 class Error(BaseModel):
     """
     Gets an error message
