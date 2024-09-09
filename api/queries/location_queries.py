@@ -7,7 +7,9 @@ import psycopg
 from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
 from typing import Optional, List, Union
-from models.locations import LocationIn, LocationList, LocationDetails, LocationOut
+from models.locations import (LocationIn,
+                            LocationList,
+                            LocationOut)
 from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -88,7 +90,11 @@ class LocationQueries:
                             ORDER BY Name
                             """
                         )
-                        return [LocationList(id=item[0], name=item[1]) for item in cur]
+                        return [LocationList(
+                            id=item[0],
+                            name=item[1]
+                            )
+                            for item in cur]
 
         except Exception as e:
             print(e)

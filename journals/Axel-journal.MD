@@ -9,3 +9,9 @@ First thing id was get all the router templates for the api end points in to the
 Continueing on making all the user end points useable
 
 Was able to make a post endpoint and a get all endpoint
+
+---9/6/2024---
+
+Was able to finish all of the api end points for the locations
+Now moving on to making the front end
+
