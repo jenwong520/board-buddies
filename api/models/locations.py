@@ -56,9 +56,6 @@ class LocationList(BaseModel):
     name: str
 
 class LocationDetails(BaseModel):
-    """
-    Gets all location details including the id
-    """
 
 
     id: int
