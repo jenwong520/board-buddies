@@ -69,34 +69,35 @@ class LocationQueries:
                     return self.location_conversion(id, location)
         except psycopg.Error:
             raise UserDatabaseException(
-                f"psycopg error: Could not Create location with name {location.name}"
+                f"psycopg error: Could not create
+                location with name {location.name}"
             )
 
-    def get_all(self) ->List[LocationList]:
+    def get_all(self) -> List[LocationList]:
         """
         Gets a list of the names of all the locations including the id
         """
         try:
             with pool.connection() as conn:
-                    with conn.cursor() as cur:
-                        cur.execute(
-                            """
-                            SELECT id, name
-                            FROM locations
-                            ORDER BY Name
-                            """
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT id, name
+                        FROM locations
+                        ORDER BY Name
+                        """
+                    )
+                    return [LocationList(
+                        id=item[0],
+                        name=item[1]
                         )
-                        return [LocationList(
-                            id=item[0],
-                            name=item[1]
-                            )
-                            for item in cur]
+                        for item in cur]
 
         except Exception as e:
             print(e)
             return {"message": "could not get all vacations"}
 
-    def update(self, location_id: int, location:LocationIn) -> LocationOut:
+    def update(self, location_id: int, location: LocationIn) -> LocationOut:
         """
         Updates the location paramaters
         """
