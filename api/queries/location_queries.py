@@ -69,8 +69,7 @@ class LocationQueries:
                     return self.location_conversion(id, location)
         except psycopg.Error:
             raise UserDatabaseException(
-                f"psycopg error: Could not create
-                location with name {location.name}"
+                f"psycopg error: Flake8 made me do this {location.name}"
             )
 
     def get_all(self) -> List[LocationList]:

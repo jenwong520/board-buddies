@@ -4,7 +4,6 @@ Location Router
 from fastapi import (
     APIRouter,
     Depends,
-    Response
 )
 from typing import List, Union
 from models.locations import (
@@ -36,7 +35,7 @@ async def get_location_details(
 async def create_location(
     location: LocationIn,
     repo: LocationQueries = Depends()
-    ):
+):
     return repo.create_location(location)
 
 
@@ -44,7 +43,7 @@ async def create_location(
 async def delete_location(
     location_id: int,
     repo: LocationQueries = Depends()
-)-> bool:
+) -> bool:
     return repo.delete(location_id)
 
 
