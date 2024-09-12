@@ -11,3 +11,13 @@
     justify-content: center;
     font-size: calc(10px + 2vmin);
 }
+
+.background {
+    background-image: url("https://cdn.thewirecutter.com/wp-content/media/2021/07/boardgames-2048px-2233.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+
+    height: 300vh;
+}
