@@ -20,6 +20,7 @@ app.include_router(auth_router.router)
 app.include_router(players_router.router)
 app.include_router(location_router.router)
 
+
 @app.get("/api/launch-details")
 def launch_details():
     return {
