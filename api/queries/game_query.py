@@ -87,8 +87,8 @@ class GameRepository:
                     )
                     id = result.fetchone()[0]
                     return self.game_in_to_out(id, game)
-            except Exception:
-                return {"message": "error!"}
+        except Exception:
+            return {"message": "error!"}
 
     def get_one(self, game_id: int) -> Optional[GameOut]:
         try:
