@@ -12,12 +12,12 @@ router = APIRouter(tags=["Game"], prefix="/api/game")
 
 
 @router.get("/", response_model=Union[List[GameOut], Error])
-def get_all(repo: GameRepository = Depends()):
+async def get_all(repo: GameRepository = Depends()):
     return repo.get_all()
 
 
 @router.post("/", response_model=Union[GameOut, Error])
-def create_game(
+async def create_game(
     game: GameIn,
     repo: GameRepository = Depends(),
 ):
@@ -25,7 +25,7 @@ def create_game(
 
 
 @router.get("/{game_id}", response_model = Optional[GameOut])
-def get_one_game(
+async def get_one_game(
     game_id: int,
     response: Response,
     repo: GameRepository = Depends(),
@@ -37,21 +37,21 @@ def get_one_game(
 
 
 @router.put("/{game_id}", response_model=Union[GameOut, Error])
-def update_game(
+async def update_game(
     game_id: int,
     response: Response,
     game: GameIn,
     repo: GameRepository = Depends(),
 ) -> Union[Error, GameOut]:
     updated_game = repo.update(game_id, game)
-    print("***********", updated_game)
-    # if updated_game["message"]:
-    #     response.status_code = 404
+    if updated_game is None:
+        response.status_code = 404
+        return {"message": "Game not found"}
     return updated_game
 
 
 @router.delete("/{game_id}", response_model=bool)
-def delete_game(
+async def delete_game(
     game_id: int,
     repo: GameRepository = Depends(),
 ) -> bool:

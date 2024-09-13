@@ -7,7 +7,7 @@ from models.games import (
     Error,
 )
 from typing import Optional, List, Union
-from utils.exceptions import UserDatabaseException
+
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
@@ -15,11 +15,8 @@ pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 class GameRepository:
     def get_all(self) -> Union[Error, List[GameOut]]:
         try:
-            #connect the database
             with pool.connection() as conn:
-                # get a cursor
                 with conn.cursor() as db:
-                    # run our SELECT statement
                     db.execute(
                         """
                         SELECT id, name, game_image, min_players, max_players, game_duration, min_age, max_age, tags, description
@@ -49,11 +46,8 @@ class GameRepository:
 
     def create(self, game: GameIn) -> GameOut:
             try:
-                #connect the database
                 with pool.connection() as conn:
-                    # get a cursor
                     with conn.cursor() as db:
-                        # run our INSERT statement
                         result = db.execute(
                             """
                             INSERT INTO games
@@ -75,7 +69,6 @@ class GameRepository:
                                 ]
                         )
                         id = result.fetchone()[0]
-                        # Return new data
                         return self.game_in_to_out(id, game)
             except Exception:
                 return {"message": "error!"}
@@ -83,11 +76,8 @@ class GameRepository:
 
     def get_one(self, game_id: int) -> Optional[GameOut]:
         try:
-            #connect the database
             with pool.connection() as conn:
-                # get a cursor
                 with conn.cursor() as db:
-                    # run our SELECT statement
                     result = db.execute(
                         """
                         SELECT id
@@ -145,24 +135,18 @@ class GameRepository:
                             game_id
                         ]
                     )
-                    record = db.fetchone()
-                    if not record:
+                    if db.rowcount == 0:
                         return None
                     return self.game_in_to_out(game_id, game)
         except psycopg.Error as e:
             print(e)
-            raise UserDatabaseException(f"Could not update: {e}")
-
-            # return {"message": "Could not update game"}
+            return Error(message=f"Could not update: {e}")
 
 
     def delete(self, game_id: int) -> bool:
         try:
-            #connect the database
             with pool.connection() as conn:
-                # get a cursor
                 with conn.cursor() as db:
-                    # run our SELECT statement
                     db.execute(
                         """
                         DELETE FROM games
