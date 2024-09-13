@@ -24,7 +24,7 @@ async def create_game(
     return repo.create(game)
 
 
-@router.get("/{game_id}", response_model = Optional[GameOut])
+@router.get("/{game_id}", response_model=Optional[GameOut])
 async def get_one_game(
     game_id: int,
     response: Response,
