@@ -10,10 +10,10 @@ import mainLogo from "../img/Board-buddies-logo.png"
                     <NavLink className="navbar-brand">Board Buddies</NavLink>
                     <ul className="navbar-nav mb-2 mb-lg-2 flex-wrap">
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/under-construction">About</NavLink>
+                            <a className="nav-link" href="#about">About</a>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/under-construction">How it Works</NavLink>
+                            <a className="nav-link" href="#how">How it Works</a>
                         </li>
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/signin">Login</NavLink>
@@ -27,7 +27,7 @@ import mainLogo from "../img/Board-buddies-logo.png"
             <main>
                 <div className="background container-fluid">
                     <img src={mainLogo} alt="Logo" className="mse-1" />
-                    <div className="container-fluid">
+                    <div className="container-fluid" id="about">
                         <div className="card text-bg-dark mb-3">
                             <div className="row g-0">
                                 <div className="col-md-4">
@@ -49,7 +49,7 @@ import mainLogo from "../img/Board-buddies-logo.png"
                             </div>
                         </div>
                     </div>
-                    <div className="container-fluid">
+                    <div className="container-fluid" id="how">
                         <div className="card card text-bg-dark mb-3">
                             <div className="row g-0">
                                 <div className="col-md-8">
