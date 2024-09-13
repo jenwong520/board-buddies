@@ -1,4 +1,5 @@
 import os
+import psycopg
 from psycopg_pool import ConnectionPool
 from models.games import (
     GameIn,
@@ -6,7 +7,6 @@ from models.games import (
     Error,
 )
 from typing import Optional, List, Union
-
 from utils.exceptions import UserDatabaseException
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
@@ -118,7 +118,7 @@ class GameRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         UPDATE games
                         SET name = %s
@@ -145,13 +145,15 @@ class GameRepository:
                             game_id
                         ]
                     )
-                    record = result.fetchone()
-                    if record is None:
+                    record = db.fetchone()
+                    if not record:
                         return None
                     return self.game_in_to_out(game_id, game)
-        except Exception as e:
+        except psycopg.Error as e:
             print(e)
-            return {"message": "Could not update game"}
+            raise UserDatabaseException(f"Could not update: {e}")
+
+            # return {"message": "Could not update game"}
 
 
     def delete(self, game_id: int) -> bool:

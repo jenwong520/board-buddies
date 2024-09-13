@@ -42,11 +42,12 @@ def update_game(
     response: Response,
     game: GameIn,
     repo: GameRepository = Depends(),
-):
-    game = repo.update(game_id, game)
-    if game is None:
-        response.status_code = 404
-    return game
+) -> Union[Error, GameOut]:
+    updated_game = repo.update(game_id, game)
+    print("***********", updated_game)
+    # if updated_game["message"]:
+    #     response.status_code = 404
+    return updated_game
 
 
 @router.delete("/{game_id}", response_model=bool)
