@@ -3,15 +3,12 @@ Entry point for the FastAPI Application
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-<<<<<<< HEAD
 from routers import (
     auth_router,
     location_router,
+    players_router,
     meetup_router
 )
-=======
-from routers import auth_router, players_router, location_router
->>>>>>> ed9eec183c8589399f2a13a66c1b3a802743f67a
 import os
 
 app = FastAPI()
