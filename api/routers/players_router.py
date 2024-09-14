@@ -4,6 +4,7 @@ Player Router
 from fastapi import (
     APIRouter,
     Depends,
+    Response
 )
 from typing import List, Union
 from models.players import (
@@ -54,16 +55,15 @@ async def create_player(
 @router.put("/{player_id}", response_model=Union[PlayerOut, Error])
 async def update_player(
     player_id: int,
+    response: Response,
     player: PlayerIn,
     repo: PlayerQueries = Depends()
-):
-    """
-    Update a player's information
-    """
-    result = repo.update(player_id, player)
-    if result:
-        return result
-    return {"message": "Could not update player"}
+) -> Union[Error, PlayerOut]:
+    updated_player = repo.update(player_id, player)
+    if updated_player is None:
+        response.status_code = 404
+        return {"message": "Could not update player"}
+    return updated_player
 
 
 @router.delete("/{player_id}", response_model=bool)

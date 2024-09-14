@@ -5,11 +5,12 @@ Database Queries for Players
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
-from typing import Optional, List
+from typing import Optional, List, Union
 from models.players import (
     PlayerIn,
     PlayerList,
-    PlayerOut
+    PlayerOut,
+    Error
 )
 from utils.exceptions import UserDatabaseException
 
@@ -26,7 +27,7 @@ class PlayerQueries:
     Class containing queries for the players table
     """
 
-    def player_conversion(self, id: int, player: PlayerIn) -> PlayerOut:
+    def player_in_to_out(self, id: int, player: PlayerIn) -> PlayerOut:
         old_data = player.dict()
         return PlayerOut(id=id, **old_data)
 
@@ -41,10 +42,6 @@ class PlayerQueries:
         )
 
     def create_player(self, player: PlayerIn) -> PlayerOut:
-        """
-        Creates a player in the database
-        Raises an exception if the player insertion fails
-        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -56,7 +53,9 @@ class PlayerQueries:
                             city,
                             state,
                             tags
-                        ) VALUES (%s, %s, %s, %s, %s)
+                        ) VALUES (
+                            %s, %s, %s, %s, %s
+                        )
                         RETURNING id;
                         """,
                         [
@@ -71,16 +70,13 @@ class PlayerQueries:
                         ]
                     )
                     id = result.fetchone()[0]
-                    return self.player_conversion(id, player)
+                    return self.player_in_to_out(id, player)
         except psycopg.Error:
             raise UserDatabaseException(
                 f"Could not create player: {player.username}"
             )
 
     def get_all(self) -> List[PlayerList]:
-        """
-        Gets a list of all players' usernames and IDs
-        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -99,14 +95,14 @@ class PlayerQueries:
             print(e)
             return {"message": "could not retrieve players"}
 
-    def update(self, player_id: int, player: PlayerIn) -> PlayerOut:
+    def update(self, player_id: int, player: PlayerIn) -> Union[PlayerOut, Error]:
         """
         Updates a player's details in the database
         """
         try:
             with pool.connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute(
+                with conn.cursor() as db:
+                    db.execute(
                         """
                         UPDATE players
                         SET username = %s,
@@ -128,15 +124,14 @@ class PlayerQueries:
                             player_id
                         ]
                     )
-                    return self.player_conversion(player_id, player)
-        except Exception as e:
+                    if db.rowcount == 0:
+                        return None
+                    return self.player_in_to_out(player_id, player)
+        except psycopg.Error as e:
             print(e)
-            return {"message": "could not update player"}
+            return Error(message=f"Could not update: {e}")
 
     def delete(self, player_id: int) -> bool:
-        """
-        Deletes a player from the database
-        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -153,9 +148,6 @@ class PlayerQueries:
             return False
 
     def details(self, player_id: int) -> Optional[PlayerOut]:
-        """
-        Gets details of a specific player by ID
-        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:

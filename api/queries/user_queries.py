@@ -6,7 +6,11 @@ import psycopg
 from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
 from typing import Optional
-from models.users import UserWithPw
+from models.users import (
+    UserWithPw,
+    UserRequest,
+    UserResponse
+)
 from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -25,6 +29,20 @@ class UserQueries:
     def my_route(userQueries: UserQueries = Depends()):
         # Here you can call any of the functions to query the DB
     """
+
+    def user_in_to_out(self, id: int, user: UserRequest) -> UserResponse:
+        old_data = user.dict()
+        return UserResponse(id=id, **old_data)
+
+    def convert_to_record(self, record):
+        return UserRequest(
+            id=record[0],
+            username=record[1],
+            age=record[2],
+            city=record[3],
+            state=record[4],
+            tags=record[5]
+        )
 
     def get_by_username(self, username: str) -> Optional[UserWithPw]:
         """
@@ -92,22 +110,35 @@ class UserQueries:
                         """
                         INSERT INTO users (
                             username,
-                            password
+                            password,
+                            age,
+                            city,
+                            state,
+                            tags
                         ) VALUES (
-                            %s, %s
+                            %s, %s, %s, %s, %s, %s
                         )
                         RETURNING *;
                         """,
                         [
                             username,
                             hashed_password,
+                            user.age,
+                            user.city,
+                            user.state,
+                            # user.lat,
+                            # user.lon,
+                            # user.location_radius,
+                            user.tags
                         ],
                     )
-                    user = cur.fetchone()
-                    if not user:
-                        raise UserDatabaseException(
-                            f"Could not create user with username {username}"
-                        )
+                    user = cur.fetchone()[0]
+                    old_data = user.dict()
+                    return UserResponse(id=id, **old_data)
+        except psycopg.Error:
+            raise UserDatabaseException(
+                f"Could not create user: {username}"
+            )
         except psycopg.Error:
             raise UserDatabaseException(
                 f"Could not create user with username {username}"

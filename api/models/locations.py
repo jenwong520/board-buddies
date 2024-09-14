@@ -14,7 +14,7 @@ class Error(BaseModel):
 
 class LatLon(BaseModel):
     """
-    Gets the latatued and longatude of a location bassed of the Google maps api
+    Gets the latitude and longitude of a location bassed of the Google maps api
     """
 
     lat: float
