@@ -1,5 +1,5 @@
 """
-User Authentication API Router
+User and Player API Router
 """
 from fastapi import (
     Depends,
@@ -9,13 +9,17 @@ from fastapi import (
     status,
     APIRouter,
 )
-from queries.user_queries import (
-    UserQueries,
-)
-
+from typing import List, Union, Optional
+from queries.user_queries import UserQueries
 from utils.exceptions import UserDatabaseException
-from models.users import UserRequest, UserResponse
-
+from models.users import (
+    UserCreate,
+    UserOut,
+    UserList,
+    UserDetails,
+    UserWithPw,
+    Error
+)
 from utils.authentication import (
     try_get_jwt_user_data,
     hash_password,
@@ -25,16 +29,17 @@ from utils.authentication import (
 
 # Note we are using a prefix here,
 # This saves us typing in all the routes below
-router = APIRouter(tags=["Authentication"], prefix="/api/auth")
+router = APIRouter(tags=["Users"], prefix="/api/users")
 
+# ----- Authentication Endpoints -----
 
-@router.post("/signup")
+@router.post("/signup", response_model=UserOut)
 async def signup(
-    new_user: UserRequest,
+    new_user: UserCreate,
     request: Request,
     response: Response,
     queries: UserQueries = Depends(),
-) -> UserResponse:
+) -> UserOut:
     """
     Creates a new user when someone submits the signup form
     """
@@ -43,7 +48,13 @@ async def signup(
 
     # Create the user in the database
     try:
-        user = queries.create_user(new_user.username, hashed_password)
+        user = queries.create_user(
+            username=new_user.username,
+            email=new_user.email,
+            password=hashed_password,
+            user_type=new_user.user_type,
+            player_specific=new_user.player_specific
+        )
     except UserDatabaseException as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
@@ -51,9 +62,6 @@ async def signup(
     # Generate a JWT token
     token = generate_jwt(user)
 
-    # Convert the UserWithPW to a UserOut
-    user_out = UserResponse(**user.model_dump())
-
     # Secure cookies only if running on something besides localhost
     secure = True if request.headers.get("origin") == "localhost" else False
 
@@ -65,34 +73,41 @@ async def signup(
         samesite="lax",
         secure=secure,
     )
-    return user_out
+    return UserOut(**user.model_dump())
 
 
-@router.post("/signin")
+@router.post("/signin", response_model=UserOut)
 async def signin(
-    user_request: UserRequest,
+    user_request: UserCreate, # Assuming UserCreate is used for signin as well
     request: Request,
     response: Response,
     queries: UserQueries = Depends(),
-) -> UserResponse:
+) -> UserOut:
     """
     Signs the user in when they use the Sign In form
     """
 
     # Try to get the user from the database
     user = queries.get_by_username(user_request.username)
-    if not user:
+
+    if not user or not verify_password(user_request.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
         )
 
-    # Verify the user's password
-    if not verify_password(user_request.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-        )
+    # if not user:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_401_UNAUTHORIZED,
+    #         detail="Incorrect username or password",
+    #     )
+
+    # # Verify the user's password
+    # if not verify_password(user_request.password, user.password):
+    #     raise HTTPException(
+    #         status_code=status.HTTP_401_UNAUTHORIZED,
+    #         detail="Incorrect username or password",
+    #     )
 
     # Generate a JWT token
     token = generate_jwt(user)
@@ -108,15 +123,15 @@ async def signin(
         samesite="lax",
         secure=secure,
     )
+    return UserOut(**user.model_dump())
+    # # Convert the UserWithPW to a UserOut
+    # return UserOut(id=user.id, username=user.username, user_type=user.user_type, player_specific=user.player_specific)
 
-    # Convert the UserWithPW to a UserOut
-    return UserResponse(id=user.id, username=user.username)
 
-
-@router.get("/authenticate")
+@router.get("/authenticate", response_model=UserOut)
 async def authenticate(
-    user: UserResponse = Depends(try_get_jwt_user_data),
-) -> UserResponse:
+    user: UserWithPw = Depends(try_get_jwt_user_data),
+) -> UserDetails:
     """
     This function returns the user if the user is logged in.
 
@@ -132,7 +147,8 @@ async def authenticate(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in"
         )
-    return user
+    return UserOut(**user.model_dump())
+    # return user
 
 
 @router.delete("/signout")
@@ -154,4 +170,53 @@ async def signout(
     # There's no need to return anything in the response.
     # All that has to happen is the cookie header must come back
     # Which causes the browser to delete the cookie
-    return
+    return {"message": "Signed out successfully"}
+
+# ----- Player-Specific Endpoints -----
+
+@router.get("/players", response_model=List[UserList])
+async def get_players_list(repo: UserQueries = Depends()):
+    """
+    Get a list of all players (id, username, and user_type='player')
+    """
+    return repo.get_all_players()  # Assuming you have a method that filters users with user_type='player'
+
+
+@router.get("/players/{player_id}", response_model=Union[UserDetails, Error])
+async def get_player_details(
+    player_id: int,
+    repo: UserQueries = Depends()
+):
+    """
+    Get detailed information about a specific player.
+    """
+    player = repo.get_player_details(player_id)
+    if not player:
+        raise HTTPException(status_code=404, detail="Player not found")
+    return player
+
+
+@router.put("/players/{player_id}", response_model=Union[UserDetails, Error])
+async def update_player(
+    player_id: int,
+    player_data: UserCreate,  # Assuming similar structure for update
+    repo: UserQueries = Depends()
+):
+    """
+    Update a player's details.
+    """
+    updated_player = repo.update_player(player_id, player_data)
+    if not updated_player:
+        raise HTTPException(status_code=404, detail="Player not found or unable to update")
+    return updated_player
+
+
+@router.delete("/players/{player_id}", response_model=bool)
+async def delete_player(player_id: int, repo: UserQueries = Depends()):
+    """
+    Delete a player by ID.
+    """
+    success = repo.delete_player(player_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Player not found or unable to delete")
+    return True

@@ -5,49 +5,82 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-class UserRequest(BaseModel):
+class Error(BaseModel):
     """
-    Represents a the parameters needed to create a new user
+    Gets An Error Message
     """
+    message: str
 
+
+class LatLon(BaseModel):
+    """
+    Gets the latitude and longitude of a player's location
+    """
+    lat: float
+    lon: float
+
+
+class UserBase(BaseModel):
+    """
+    Base class for user attributes
+    """
     username: str
-    password: str
-    age: int
-    city: str
-    state: str
-    # lat: float
-    # lon: float
-    # location_radius: int
+    email: str
+
+
+class PlayerSpecific(BaseModel):
+    """
+    Additional attributes specific to players
+    """
+    age: Optional[int] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
     tags: Optional[str] = None
+    is_verified: Optional[bool] = None
+    is_gamehost: Optional[bool] = None
+    gamehost_id: Optional[int] = None
+    is_playtester: Optional[bool] = None
+    playtester_id: Optional[int] = None
     # is_developer = bool
     # developer_id = int
-    # is_verified = bool
-    # is_gamehost = bool
-    # is_playtester = bool
-    # playtester_id = int
+    lat_lon: Optional[LatLon] = None
+    location_radius: Optional[int] = None
+    # lat: float ??
+    # lon: float ??
+    # location_radius: int ??
 
 
-class UserResponse(BaseModel):
+class UserCreate(UserBase):
     """
-    Represents a user, with the password not included
+    Parameters required to create a new user
     """
+    password: str
+    user_type: str  # e.g., 'player', 'developer', etc.
+    player_specific: Optional[PlayerSpecific] = None
 
+class UserOut(UserBase):
+    """
+    Parameters returned after creating a new user
+    """
+    id: int
+    user_type: str  # e.g., 'player', 'developer', etc.
+    player_specific: Optional[PlayerSpecific] = None
+
+class UserList(BaseModel):
+    """
+    Basic user information for lists
+    """
     id: int
     username: str
-    age: int
-    city: str
-    state: str
-    # lat: float
-    # lon: float
-    # location_radius: int
-    tags: Optional[str] = None
-    # is_developer = bool
-    # developer_id = int
-    # is_verified = bool
-    # is_gamehost = bool
-    # is_playtester = bool
-    # playtester_id = int
+    user_type: str  # e.g., 'player', 'developer', etc.
 
+class UserDetails(UserBase):
+    """
+    Detailed user information
+    """
+    id: int
+    user_type: str  # e.g., 'player', 'developer', etc.
+    player_specific: Optional[PlayerSpecific] = None
 
 class UserWithPw(BaseModel):
     """
