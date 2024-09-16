@@ -6,6 +6,7 @@ import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import App from './App'
 import AuthProvider from './components/AuthProvider'
+import LocationForm from './components/location/LocationForm'
 
 import './index.css'
 
@@ -28,6 +29,10 @@ const router = createBrowserRouter(
                     path: 'signin',
                     element: <SignInForm />,
                 },
+                {
+                    path: 'location/create',
+                    element: <LocationForm />
+                }
             ],
         },
     ],
