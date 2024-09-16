@@ -120,6 +120,8 @@ class LocationQueries:
                             location_id
                         ]
                     )
+                    if cur.rowcount == 0:
+                        return None
                     return self.location_conversion(location_id, location)
         except Exception as e:
             print(e)

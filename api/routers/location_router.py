@@ -4,13 +4,14 @@ Location Router
 from fastapi import (
     APIRouter,
     Depends,
+    Response
 )
 from typing import List, Union
 from models.locations import (
     LocationIn,
     LocationList,
     LocationOut,
-    Error
+    Error,
 )
 from queries.location_queries import LocationQueries
 
@@ -50,8 +51,12 @@ async def delete_location(
 @router.put("/{location_id}", response_model=Union[LocationOut, Error])
 async def update_location(
     location_id: int,
+    response: Response,
     location: LocationIn,
     repo: LocationQueries = Depends()
 ):
-    print(repo)
-    return repo.update(location_id, location)
+    updated_game = repo.update(location_id, location)
+    if updated_game == None:
+        response.status_code = 404
+        return {"message": "location not found"}
+    return updated_game
