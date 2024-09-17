@@ -56,7 +56,7 @@ async def update_location(
     repo: LocationQueries = Depends()
 ):
     updated_game = repo.update(location_id, location)
-    if updated_game == None:
+    if updated_game is None:
         response.status_code = 404
         return {"message": "location not found"}
     return updated_game
