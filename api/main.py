@@ -7,8 +7,10 @@ from routers import (
     auth_router,
     location_router,
     players_router,
-    meetup_router
+    meetup_router,
+    game_router
 )
+
 import os
 
 app = FastAPI()
@@ -25,6 +27,7 @@ app.include_router(auth_router.router)
 app.include_router(players_router.router)
 app.include_router(location_router.router)
 app.include_router(meetup_router.router)
+app.include_router(game_router.router)
 
 
 @app.get("/api/launch-details")

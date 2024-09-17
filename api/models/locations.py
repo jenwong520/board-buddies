@@ -27,6 +27,7 @@ class LocationIn(BaseModel):
     """
 
     name: str
+    address: str
     city: str
     state: str
     store_type: str
@@ -40,6 +41,7 @@ class LocationOut(BaseModel):
 
     id: int
     name: str
+    address: str
     city: str
     state: str
     store_type: str
