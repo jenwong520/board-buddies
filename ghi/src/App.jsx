@@ -46,7 +46,7 @@ function App() {
             <header className="App-header">{/* <Nav /> */}</header>
             <Outlet />
             <ErrorNotification error={error} />
-            <Construct info={launchInfo} />
+            {/* <Construct info={launchInfo} /> */}
         </div>
     )
 }

@@ -48,6 +48,7 @@ const CreateLocation = () => {
         const data = {}
 
         data.name = name
+        data.address= address
         data.city = city
         data.state = state
         data.store_type = storeType
