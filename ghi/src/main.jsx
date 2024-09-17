@@ -7,6 +7,9 @@ import SignUpForm from './components/SignUpForm'
 import App from './App'
 import AuthProvider from './components/AuthProvider'
 
+// importing GameList
+import GameList from './components/Games/GameList'
+
 import './index.css'
 
 const BASE_URL = import.meta.env.BASE_URL
@@ -27,6 +30,10 @@ const router = createBrowserRouter(
                 {
                     path: 'signin',
                     element: <SignInForm />,
+                },
+                {
+                    path: 'game',
+                    element: <GameList />,
                 },
             ],
         },
