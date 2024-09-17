@@ -1,31 +1,28 @@
 import React, {useState,useEffect} from "react";
+import States from "../../assets/states"
 
 const CreateLocation = () => {
     const [getState, setGetState] = useState([])
     const getStates = async () => {
-        try {
-            const response = await fetch()
-            if (response.ok) {
-                const data = await response.json()
-                setGetState(data.states)
-                console.log(data)
-            } else {
-                console.error("Failed to fetch automobiles ", response.statusText)
-            }
-        } catch (error) {
-            console.error("error fetcing states", error)
-        }
+        const listStates = States()
+        setGetState(listStates.state)
     }
 
     useEffect(() => {
         getStates()
     }, [])
 
-    
+
     const [name, setName] = useState('')
     const handleNameChange = (event) => {
         const value = event.target.value
         setName(value)
+    }
+
+    const [address, setAddress] = useState('')
+    const handleAddressChange = (event) => {
+        const value = event.target.value
+        setAddress(value)
     }
 
     const [city, setCity] = useState('')
@@ -33,6 +30,7 @@ const CreateLocation = () => {
         const value = event.target.value
         setCity(value)
     }
+
     const [state, setState] = useState('')
     const handleStateChange = (event) => {
         const value = event.target.value
@@ -91,6 +89,15 @@ const CreateLocation = () => {
                             />
                         </div>
                         <div className="form-floating mb-3">
+                            <input onChange={handleAddressChange}
+                            placeholder="Address"
+                            type="text"
+                            name="address"
+                            id="address"
+                            className="form-control"
+                             />
+                        </div>
+                        <div className="form-floating mb-3">
                             <input onChange={handleCityChange}
                             placeholder="City"
                             type="text"
@@ -109,8 +116,8 @@ const CreateLocation = () => {
                             >
                                 <option value="">State</option>
                                 {getState.map((states) => (
-                                    <option key={states.state} value={states.abbreviation}>
-                                        {states.state}
+                                    <option key={states.name} value={states.abbreviation}>
+                                        {states.name}
                                     </option>
                                 ))}
                             </select>
