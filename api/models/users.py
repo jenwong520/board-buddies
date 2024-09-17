@@ -3,6 +3,13 @@ Pydantic Models for Users.
 """
 from pydantic import BaseModel
 from typing import Optional
+from enum import Enum
+
+
+class UserType(str, Enum):
+    player = 'player'
+    game_developer = 'game_developer'
+    admin = 'admin'
 
 
 class Error(BaseModel):
@@ -32,6 +39,8 @@ class PlayerSpecific(BaseModel):
     """
     Additional attributes specific to players
     """
+    id: int
+    user_id: int
     age: Optional[int] = None
     city: Optional[str] = None
     state: Optional[str] = None
@@ -43,7 +52,8 @@ class PlayerSpecific(BaseModel):
     playtester_id: Optional[int] = None
     # is_developer = bool
     # developer_id = int
-    lat_lon: Optional[LatLon] = None
+    lat: Optional[float]
+    lon: Optional[float]
     location_radius: Optional[int] = None
     # lat: float ??
     # lon: float ??
@@ -55,16 +65,18 @@ class UserCreate(UserBase):
     Parameters required to create a new user
     """
     password: str
-    user_type: str  # e.g., 'player', 'developer', etc.
-    player_specific: Optional[PlayerSpecific] = None
+    user_type: UserType  # e.g., 'player', 'developer', etc.
+    # player_specific: Optional[PlayerSpecific] = None
 
 class UserOut(UserBase):
     """
     Parameters returned after creating a new user
     """
     id: int
-    user_type: str  # e.g., 'player', 'developer', etc.
-    player_specific: Optional[PlayerSpecific] = None
+    username: str
+    email: str
+    user_type: UserType  # e.g., 'player', 'developer', etc.
+    # player_specific: Optional[PlayerSpecific] = None
 
 class UserList(BaseModel):
     """
@@ -72,7 +84,7 @@ class UserList(BaseModel):
     """
     id: int
     username: str
-    user_type: str  # e.g., 'player', 'developer', etc.
+    user_type: UserType  # e.g., 'player', 'developer', etc.
 
 class UserDetails(UserBase):
     """
@@ -89,4 +101,6 @@ class UserWithPw(BaseModel):
 
     id: int
     username: str
+    email: str
+    user_type: UserType
     password: str

@@ -10,6 +10,7 @@ from jose import JWTError, jwt
 from jose.constants import ALGORITHMS
 from typing import Annotated, Optional
 from models.jwt import JWTPayload, JWTUserData
+from models.users import UserOut
 
 from queries.user_queries import UserWithPw
 
@@ -36,7 +37,7 @@ async def decode_jwt(token: str) -> Optional[JWTPayload]:
 
 async def try_get_jwt_user_data(
     fast_api_token: Annotated[str | None, Cookie()] = None,
-) -> Optional[JWTUserData]:
+) -> Optional[UserOut]:
     """
     This function can be dependency injected into a route
 
@@ -102,7 +103,7 @@ def generate_jwt(user: UserWithPw) -> str:
     jwt_data = JWTPayload(
         exp=exp,
         sub=user.username,
-        user=JWTUserData(username=user.username, id=user.id),
+        user=UserOut(username=user.username, id=user.id, email=user.email, user_type=user.user_type),
     )
     encoded_jwt = jwt.encode(
         jwt_data.model_dump(), SIGNING_KEY, algorithm=ALGORITHMS.HS256

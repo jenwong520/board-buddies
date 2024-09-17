@@ -2,6 +2,7 @@
 Pydantic Models for the JWT Payload
 """
 from pydantic import BaseModel
+from models.users import UserOut
 
 
 class JWTUserData(BaseModel):
@@ -21,6 +22,6 @@ class JWTPayload(BaseModel):
     The payload of the JWT
     """
 
-    user: JWTUserData
+    user: UserOut
     sub: str
     exp: int

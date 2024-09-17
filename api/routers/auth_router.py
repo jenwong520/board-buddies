@@ -27,8 +27,6 @@ from utils.authentication import (
     verify_password,
 )
 
-# Note we are using a prefix here,
-# This saves us typing in all the routes below
 router = APIRouter(tags=["Users"], prefix="/api/users")
 
 # ----- Authentication Endpoints -----
@@ -45,22 +43,21 @@ async def signup(
     """
     # Hash the password the user sent us
     hashed_password = hash_password(new_user.password)
-
+    print(new_user)
     # Create the user in the database
     try:
-        user = queries.create_user(
+        user_data = queries.create_user(
             username=new_user.username,
             email=new_user.email,
             password=hashed_password,
-            user_type=new_user.user_type,
-            player_specific=new_user.player_specific
+            user_type=new_user.user_type
         )
     except UserDatabaseException as e:
         print(e)
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not create user")
 
     # Generate a JWT token
-    token = generate_jwt(user)
+    token = generate_jwt(user_data)
 
     # Secure cookies only if running on something besides localhost
     secure = True if request.headers.get("origin") == "localhost" else False
@@ -73,7 +70,7 @@ async def signup(
         samesite="lax",
         secure=secure,
     )
-    return UserOut(**user.model_dump())
+    return user_data
 
 
 @router.post("/signin", response_model=UserOut)
@@ -123,31 +120,27 @@ async def signin(
         samesite="lax",
         secure=secure,
     )
-    return UserOut(**user.model_dump())
-    # # Convert the UserWithPW to a UserOut
-    # return UserOut(id=user.id, username=user.username, user_type=user.user_type, player_specific=user.player_specific)
-
+    # Explicitly map the fields required by UserOut
+    return UserOut(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        user_type=user.user_type
+    )
 
 @router.get("/authenticate", response_model=UserOut)
 async def authenticate(
     user: UserWithPw = Depends(try_get_jwt_user_data),
-) -> UserDetails:
+) -> UserOut:
     """
     This function returns the user if the user is logged in.
-
-    The `try_get_jwt_user_data` function tries to get the user and validate
-    the JWT
-
-    If the user isn't logged in this returns a 404
-
-    This can be used in your frontend to determine if a user
-    is logged in or not
     """
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in"
         )
-    return UserOut(**user.model_dump())
+    print("BANANAS", user)
+    return user
     # return user
 
 
@@ -179,7 +172,7 @@ async def get_players_list(repo: UserQueries = Depends()):
     """
     Get a list of all players (id, username, and user_type='player')
     """
-    return repo.get_all_players()  # Assuming you have a method that filters users with user_type='player'
+    return repo.get_all_players(user_type="player")  # Filter users by user_type='player'
 
 
 @router.get("/players/{player_id}", response_model=Union[UserDetails, Error])
@@ -191,7 +184,7 @@ async def get_player_details(
     Get detailed information about a specific player.
     """
     player = repo.get_player_details(player_id)
-    if not player:
+    if not player or player.user_type != "player":
         raise HTTPException(status_code=404, detail="Player not found")
     return player
 
@@ -206,7 +199,7 @@ async def update_player(
     Update a player's details.
     """
     updated_player = repo.update_player(player_id, player_data)
-    if not updated_player:
+    if not updated_player or updated_player.user_type != "player":
         raise HTTPException(status_code=404, detail="Player not found or unable to update")
     return updated_player
 

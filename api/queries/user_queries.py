@@ -28,26 +28,18 @@ pool = ConnectionPool(DATABASE_URL)
 class UserQueries:
     """
     Class containing queries for the Users table
-
-    Can be dependency injected into a route like so
-
-    def my_route(userQueries: UserQueries = Depends()):
-        # Here you can call any of the functions to query the DB
     """
 
     def get_by_username(self, username: str) -> Optional[UserWithPw]:
         """
         Gets a user from the database by username
-
-        Returns None if the user isn't found
         """
         try:
             with pool.connection() as conn:
                 with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
                     cur.execute(
                         """
-                            SELECT
-                                *
+                            SELECT id, username, email, password, user_type
                             FROM users
                             WHERE username = %s
                             """,
@@ -64,19 +56,16 @@ class UserQueries:
     def get_by_id(self, id: int) -> Optional[UserWithPw]:
         """
         Gets a user from the database by user id
-
-        Returns None if the user isn't found
         """
         try:
             with pool.connection() as conn:
                 with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
                     cur.execute(
                         """
-                            SELECT
-                                *
-                            FROM users
-                            WHERE id = %s
-                            """,
+                        SELECT id, username, email, user_type
+                        FROM users
+                        WHERE id = %s
+                        """,
                         [id],
                     )
                     user = cur.fetchone()
@@ -85,25 +74,19 @@ class UserQueries:
         except psycopg.Error as e:
             print(e)
             raise UserDatabaseException(f"Error getting user with id {id}")
-
+        # print(user.dict())
         return user
 
-    def create_user(self, user_data: UserCreate) -> UserOut:
+    def create_user(self, username: str, email: str, password: str, user_type: str) -> UserOut:
         """
-        Creates a new user in the database
-
-        Args:
-        user_data: UserCreate - The user creation data including player-specific details
-
-        Returns:
-        UserOut - The created user object.
+        Creates a new user in the database and optionally player-specific details.
         """
         try:
             with pool.connection() as conn:
                 with conn.cursor(row_factory=class_row(UserOut)) as cur:
                     # Begin transaction
                     with conn.transaction():
-                        # Create the user first
+                        # Step 1: Insert into the users table
                         cur.execute(
                             """
                             INSERT INTO users (
@@ -114,67 +97,53 @@ class UserQueries:
                             ) VALUES (
                                 %s, %s, %s, %s
                             )
-                            RETURNING id;
+                            RETURNING *;
                             """,
-                            [
-                                user_data.username,
-                                user_data.email,
-                                user_data.password,
-                                user_data.user_type,
-                            ],
-                        )
-                        user_id = cur.fetchone()[0]
+                            (username, email, password, user_type))
 
-                        # If player-specific data is provided, update the player details
-                        if user_data.printspecific:
-                            cur.execute(
-                                """
-                                INSERT INTO player_details (
-                                    user_id,
-                                    age,
-                                    city,
-                                    state,
-                                    tags,
-                                    is_verified,
-                                    is_gamehost,
-                                    gamehost_id,
-                                    is_playtester,
-                                    playtester_id,
-                                    lat,
-                                    lon,
-                                    location_radius
-                                ) VALUES (
-                                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-                                );
-                                """,
-                                [
-                                    user_id,
-                                    user_data.player_specific.age,
-                                    user_data.player_specific.city,
-                                    user_data.player_specific.state,
-                                    user_data.player_specific.tags,
-                                    user_data.player_specific.is_verified,
-                                    user_data.player_specific.is_gamehost,
-                                    user_data.player_specific.gamehost_id,
-                                    user_data.player_specific.is_playtester,
-                                    user_data.player_specific.playtester_id,
-                                    user_data.player_specific.lat_lon.lat if user_data.player_specific.lat_lon else None,
-                                    user_data.player_specific.lat_lon.lon if user_data.player_specific.lat_lon else None,
-                                    user_data.player_specific.location_radius,
-                                ]
-                            )
+                        # user_id = cur.fetchone()[0] # Get the ID of the newly inserted user
 
-            return UserOut(
-                id=user_id,
-                username=user_data.username,
-                email=user_data.email,
-                user_type=user_data.user_type,
-                player_specific=user_data.player_specific
-            )
-        except psycopg.Error:
-            raise UserDatabaseException(
-                f"Could not create user with username {user_data.username}"
-            )
+                        # # Step 2: If the user is of type "player", insert into player_details
+                        # if player_specific:
+                        #     cur.execute(
+                        #         """
+                        #         INSERT INTO player_details (
+                        #                 user_id,
+                        #                 age,
+                        #                 city,
+                        #                 state,
+                        #                 tags,
+                        #                 is_verified,
+                        #                 is_gamehost,
+                        #                 gamehost_id,
+                        #                 is_playtester,
+                        #                 playtester_id,
+                        #                 lat,
+                        #                 lon,
+                        #                 location_radius
+                        #             ) VALUES (
+                        #                 %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                        #             );
+                        #         """,
+                        #         (user_id, player_specific.get('age'), player_specific.get('city'), player_specific.get('state'), player_specific.get('tags'),
+                        #         player_specific.get('is_verified'), player_specific.get('is_gamehost'), player_specific.get('gamehost_id'), player_specific.get('is_playtester'),
+                        #         player_specific.get('playtester_id'), player_specific.get('lat_lon', {}).get('lat'), player_specific.get('lat_lon', {}).get('lon'),
+                        #         player_specific.get('location_radius')))
+
+                        # Fetch the full user details
+                        # cur.execute(
+                        #     """
+                        #         SELECT id, username, email, user_type
+                        #         FROM users
+                        #         WHERE id = %s;
+                        #     """,
+                        #     (user_id,))
+
+                        user = cur.fetchone()
+                        return user
+
+        except psycopg.Error as e:
+            raise UserDatabaseException(f"Could not create user: {str(e)}")
 
 
     def get_all_users(self, user_type: Optional[str] = None) -> List[UserList]:
@@ -270,7 +239,7 @@ class UserQueries:
                     return user_details
         except psycopg.Error as e:
             print(e)
-            return Error(message=f"Could not update: {e}")
+            return Error(message=f"Could not update user: {e}")
 
     def delete_user(self, user_id: int) -> bool:
         """
