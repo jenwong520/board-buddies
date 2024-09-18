@@ -4,13 +4,19 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
-import Construct from './components/Construct'
+// import Construct from './components/Construct'
 import LandingPage from './components/Landing'
 import App from './App'
 import AuthProvider from './components/AuthProvider'
 
+// importing GameList and GameDetail
+import GameList from './components/Games/GameList'
+import GameDetail from './components/Games/GameDetail'
+
+import './index.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+
 
 const BASE_URL = import.meta.env.BASE_URL
 if (!BASE_URL) {
@@ -23,6 +29,10 @@ const router = createBrowserRouter(
             path: '/',
             element: <App />,
             children: [
+                                {
+                    path: '/',
+                    element:<LandingPage/>
+                },
                 {
                     path: 'signup',
                     element: <SignUpForm />,
@@ -32,13 +42,21 @@ const router = createBrowserRouter(
                     element: <SignInForm />,
                 },
                 {
-                    path: 'under-construction',
-                    element: <Construct />,
+                    path: 'game',
+                    element: <GameList />,
                 },
                 {
-                    path: 'landing',
-                    element:<LandingPage/>
-                }
+                    path: 'game/:id',
+                    element: <GameDetail />,
+                },
+                                {
+                    path: 'signout',
+                    element: <GameDetail />,
+                },
+                // {
+                //     path: 'under-construction',
+                //     element: <Construct />,
+                // },
             ],
         },
     ],
