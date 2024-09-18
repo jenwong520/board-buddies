@@ -8,6 +8,9 @@ import SignUpForm from './components/SignUpForm'
 import LandingPage from './components/Landing'
 import App from './App'
 import AuthProvider from './components/AuthProvider'
+import LocationForm from './components/location/LocationForm'
+import LocationList from './components/location/LocationList'
+import LocationDetail from './components/location/LocationDetail'
 
 // importing GameList and GameDetail
 import GameList from './components/Games/GameList'
@@ -40,6 +43,26 @@ const router = createBrowserRouter(
                 {
                     path: 'signin',
                     element: <SignInForm />,
+                },
+                {
+                    path: 'location',
+                    element: <LocationList />
+                },
+                {
+                    path: 'location/create',
+                    element: <LocationForm />
+                },
+                {
+                    path: 'location/:id',
+                    element: <LocationDetail />
+                },
+                {
+                    path: 'under-construction',
+                    element: <Construct />,
+                },
+                {
+                    path: '/',
+                    element:<LandingPage/>
                 },
                 {
                     path: 'game',
