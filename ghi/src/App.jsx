@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import ErrorNotification from './components/ErrorNotification'
+import LandingNav from './components/Landing'
 import Construct from './components/Construct'
 
 import './App.css'
@@ -43,7 +44,7 @@ function App() {
 
     return (
         <div className="App">
-            <header className="App-header">{/* <Nav /> */}</header>
+            {/* <header className="App-header"><LandingNav/></header> */}
             <Outlet />
             <ErrorNotification error={error} />
             {/* <Construct info={launchInfo} /> */}

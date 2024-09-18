@@ -9,7 +9,6 @@ from models.meetups import (
     MeetupIn,
     MeetupOut
 )
-from utils.exceptions import UserDatabaseException
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
@@ -71,7 +70,7 @@ class MeetupQueries:
 
         except Exception as e:
             print(e)
-            return{"message": "could not create meetup in database"}
+            return {"message": "could not create meetup in database"}
 
     def get_all(self) -> List[MeetupOut]:
         """
@@ -95,7 +94,7 @@ class MeetupQueries:
                         max_players=item[4],
                         completed=item[5]
                     )
-                    for item in cur]
+                        for item in cur]
 
         except Exception as e:
             print(e)
@@ -130,7 +129,7 @@ class MeetupQueries:
                     return self.meetup_in_out(meetup_id, meetup)
         except Exception as e:
             print(e)
-            return{"message": "Could not update meetup details"}
+            return {"message": "Could not update meetup details"}
 
     def delete(self, meetup_id: int) -> bool:
         try:

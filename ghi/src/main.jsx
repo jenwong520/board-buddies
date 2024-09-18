@@ -4,12 +4,16 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
+import Construct from './components/Construct'
+import LandingPage from './components/Landing'
 import App from './App'
 import AuthProvider from './components/AuthProvider'
 import LocationForm from './components/location/LocationForm'
 import LocationList from './components/location/LocationList'
+import LocationDetail from './components/location/LocationDetail'
 
-import './index.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 const BASE_URL = import.meta.env.BASE_URL
 if (!BASE_URL) {
@@ -38,6 +42,18 @@ const router = createBrowserRouter(
                     path: 'location/create',
                     element: <LocationForm />
                 },
+                {
+                    path: 'location/:id',
+                    element: <LocationDetail />
+                },
+                {
+                    path: 'under-construction',
+                    element: <Construct />,
+                },
+                {
+                    path: '/',
+                    element:<LandingPage/>
+                }
             ],
         },
     ],
