@@ -42,7 +42,7 @@ import mainLogo from "../img/Board-buddies-logo.png"
                                             Board Buddies is the number 1 board game matching service in the world.
                                         </p>
                                         <p className="card-text text-start">
-                                            We strive to bring you the best player expirence, comunity and events through our state of the are matching sevices.
+                                            We strive to bring you the best player expirience, community and events through our state of the art matching services.
                                         </p>
                                     </div>
                                 </div>
