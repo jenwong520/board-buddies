@@ -22,6 +22,7 @@ def create_uuid_for_new_user():
     user_id = str(uuid4())
     return user_id
 
+
 uid = create_uuid_for_new_user()
 
 
@@ -55,7 +56,10 @@ class UserQueries:
                     )
                     user = cur.fetchone()
                     if not user:
-                        logging.warning(f"User with username {username} not found.")
+                        logging.warning(
+                            f"User with username
+                            {username} not found."
+                            )
         except psycopg.Error as e:
             logging.error(f"Error fetching user by username: {e}")
             raise UserDatabaseException(f"Error getting user {username}")
@@ -83,7 +87,10 @@ class UserQueries:
                         return None
         except psycopg.Error as e:
             logging.error(f"Error fetching user by id: {e}")
-            raise UserDatabaseException(f"Error getting user with id {user_id}")
+            raise UserDatabaseException(
+                f"Error getting user with id
+                {user_id}"
+                )
 
         return user
 
@@ -115,5 +122,8 @@ class UserQueries:
                             f"Could not create user with username {username}"
                         )
         except psycopg.Error as e:
-            raise UserDatabaseException(f"Could not create user with username {username}: {e}")
+            raise UserDatabaseException(
+                f"Could not create user with username
+                {username}: {e}"
+                )
         return user

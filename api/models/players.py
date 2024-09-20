@@ -4,6 +4,7 @@ Pydantic Models for Players.
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 
+
 class Error(BaseModel):
     """
     Gets An Error Message

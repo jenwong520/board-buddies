@@ -29,6 +29,7 @@ def create_uuid_for_new_user():
     user_id = str(uuid4())
     return user_id
 
+
 uid = create_uuid_for_new_user()
 
 
@@ -81,7 +82,8 @@ class PlayerQueries:
                             lon,
                             location_radius
                         ) VALUES (
-                            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                            %s, %s, %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s, %s, %s
                         )
                         RETURNING player_id;
                         """,
@@ -130,7 +132,12 @@ class PlayerQueries:
             logging.error(f"Error fetching players: {e}")
             raise UserDatabaseException("Could not retrieve players")
 
-    def update(self, player_id: str, player: PlayerIn, user_id: str) -> PlayerOut:
+    def update(
+            self,
+            player_id: str,
+            player: PlayerIn,
+            user_id: str
+            ) -> PlayerOut:
         """
         Updates a player's details in the database
         """
@@ -179,7 +186,6 @@ class PlayerQueries:
             print(e)
             return Error(message=f"Could not update: {e}")
 
-
     def delete(self, player_id: str) -> bool:
         """
         Deletes a player from the database
@@ -221,5 +227,7 @@ class PlayerQueries:
                         return None
                     return self.convert_to_record(record)
         except Exception as e:
-            logging.error(f"Error fetching player details: {e}")
+            logging.error(
+                f"Error fetching player details:{e}"
+                )
             raise UserDatabaseException(f"Could not retrieve player details")

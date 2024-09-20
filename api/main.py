@@ -29,6 +29,7 @@ app.include_router(meetup_router.router)
 app.include_router(game_router.router)
 app.include_router(players_router.router)
 
+
 @app.get("/api/launch-details")
 def launch_details():
     return {

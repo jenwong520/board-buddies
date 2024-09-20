@@ -127,7 +127,10 @@ async def authenticate(
     is logged in or not
     """
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Not logged in"
+            )
     return user
 
 
