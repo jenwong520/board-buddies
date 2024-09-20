@@ -32,9 +32,10 @@ class LocationQueries:
         return LocationOut(
             id=record[0],
             name=record[1],
-            city=record[2],
-            state=record[3],
-            store_type=record[4]
+            address=record[2],
+            city=record[3],
+            state=record[4],
+            store_type=record[5]
         )
 
     def create_location(self, location: LocationIn) -> LocationOut:
@@ -50,16 +51,18 @@ class LocationQueries:
                         """
                         INSERT INTO locations (
                         name,
+                        address,
                         city,
                         state,
                         store_type
                         ) Values (
-                            %s, %s, %s, %s
+                            %s, %s, %s, %s, %s
                         )
                         RETURNING id;
                         """,
                         [
                             location.name,
+                            location.address,
                             location.city,
                             location.state,
                             location.store_type
@@ -107,6 +110,7 @@ class LocationQueries:
                         """
                         UPDATE locations
                         SET name = %s,
+                        address = %s,
                         city = %s,
                         state = %s,
                         store_type = %s
@@ -114,6 +118,7 @@ class LocationQueries:
                         """,
                         [
                             location.name,
+                            location.address,
                             location.city,
                             location.state,
                             location.store_type,
@@ -149,6 +154,7 @@ class LocationQueries:
                         """
                         SELECT id
                             , name
+                            , address
                             , city
                             , state
                             , store_type

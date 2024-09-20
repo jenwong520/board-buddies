@@ -2,9 +2,10 @@ steps = [
     [
         # "Up" SQL statement
         """
-        CREATE TABLE player_details (
-            id SERIAL PRIMARY KEY NOT NULL,
-            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        CREATE TABLE players (
+            player_id VARCHAR (100) NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+            PRIMARY KEY (player_id),
+            email VARCHAR(255) UNIQUE,
             age SMALLINT,
             city VARCHAR(100),
             state VARCHAR(2),
@@ -17,11 +18,12 @@ steps = [
             lat FLOAT,
             lon FLOAT,
             location_radius SMALLINT
+
         );
         """,
         # "Down" SQL statement
         """
-        DROP TABLE users;
+        DROP TABLE players;
         """
     ],
 ]

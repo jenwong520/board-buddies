@@ -1,20 +1,7 @@
-function Construct(props) {
-    if (!props.info) {
-        return <p>Loading...</p>
-    }
-
+function Construct() {
     return (
         <>
-            <h1>Board Buddies Is Under Construction!</h1>
-            <h2>Coming on (or before)</h2>
-            <h2>
-                Module: {props.info.module} Week: {props.info.week} Day:{' '}
-                {props.info.day}
-            </h2>
-            <h2>
-                by or <strong>WELL BEFORE</strong> {props.info.hour}:
-                {props.info.min} Cohort Time
-            </h2>
+            <h1>Under Construction</h1>
         </>
     )
 }

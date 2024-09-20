@@ -2,14 +2,13 @@ steps = [
     [
         # "Up" SQL statement
         """
-        CREATE TYPE user_role AS ENUM ('player', 'game_developer', 'admin');
-
         CREATE TABLE users (
-            id SERIAL PRIMARY KEY NOT NULL,
+            user_id VARCHAR(100) NOT NULL UNIQUE,
+            PRIMARY KEY (user_id),
             username VARCHAR(25) NOT NULL UNIQUE,
             password VARCHAR(100) NOT NULL,
-            email VARCHAR(255) NOT NULL UNIQUE,
-            user_type user_role NOT NULL
+            is_developer BOOLEAN DEFAULT FALSE,
+            is_player BOOLEAN DEFAULT FALSE
         );
         """,
         # "Down" SQL statement
