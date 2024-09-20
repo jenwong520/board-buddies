@@ -57,8 +57,7 @@ class UserQueries:
                     user = cur.fetchone()
                     if not user:
                         logging.warning(
-                            f"User with username
-                            {username} not found."
+                            f"User with username {username} not found."
                             )
         except psycopg.Error as e:
             logging.error(f"Error fetching user by username: {e}")

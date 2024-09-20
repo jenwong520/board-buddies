@@ -11,7 +11,7 @@ class UserRequest(BaseModel):
     """
     username: constr(min_length=3, max_length=50) = Field(
         ...,
-        description="Username should be alphanumeric with dashes or underscores."
+        description="Username should be alphanumeric with dashes/underscores."
     )
     password: constr(min_length=8) = Field(
         ...,
@@ -23,7 +23,7 @@ class UserRequest(BaseModel):
 def validate_username(cls, value):
     if not re.match("^[a-zA-Z0-9_-]+$", value):
         raise ValueError(
-            "Username should be alphanumeric with dashes or underscores."
+            "Username should be alphanumeric with dashes/underscores."
         )
     return value
 
