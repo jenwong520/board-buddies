@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from "react";
 import States from "../../assets/states"
+import { redirect, useNavigate } from "react-router-dom";
 
 const CreateLocation = () => {
     const [getState, setGetState] = useState([])
@@ -43,6 +44,8 @@ const CreateLocation = () => {
         setStoreType(value)
     }
 
+    const navigate = useNavigate()
+
     const handleSubmit = async (event) => {
         event.preventDefault()
         const data = {}
@@ -66,6 +69,7 @@ const CreateLocation = () => {
             if (response.ok) {
                 const newLocation = await response.json()
                 console.log(newLocation)
+                navigate('/location')
             } else {
                 console.error(`Error: ${response.status} ${response.statusText}`)
             }
@@ -76,11 +80,11 @@ const CreateLocation = () => {
 
     return(
         <div className="row">
-            <div className="offset-3 col-6">
+            <div className="col">
                 <div className="shadow p-4 mt-4">
                     <h1>Create a New Location</h1>
                     <form onSubmit={handleSubmit} id="create-location-form">
-                        <div className="form-floating mb-3">
+                        <div className="mb-3 ">
                             <input onChange={handleNameChange}
                             placeholder="Name"
                             type="text"
@@ -89,16 +93,16 @@ const CreateLocation = () => {
                             className="form-control"
                             />
                         </div>
-                        <div className="form-floating mb-3">
+                        <div className="mb-3">
                             <input onChange={handleAddressChange}
-                            placeholder="Address"
+                            placeholder="Adderess"
                             type="text"
                             name="address"
                             id="address"
                             className="form-control"
                              />
                         </div>
-                        <div className="form-floating mb-3">
+                        <div className="mb-3">
                             <input onChange={handleCityChange}
                             placeholder="City"
                             type="text"
@@ -107,7 +111,7 @@ const CreateLocation = () => {
                             className="form-control"
                              />
                         </div>
-                        <div className="form-floating mb-3">
+                        <div className="mb-3">
                             <select
                             name="state"
                             id="state"
@@ -123,7 +127,7 @@ const CreateLocation = () => {
                                 ))}
                             </select>
                         </div>
-                        <div className="form-floating mb-3">
+                        <div className="mb-3">
                             <input onChange={handleStoreTypeChange}
                             placeholder="Store Type"
                             type="text"

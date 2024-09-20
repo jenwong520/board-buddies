@@ -33,7 +33,6 @@ function LocationDetail() {
     const convertedCity = city.split(' ').join('+')
     const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyCdG1XCUBYkXysiPi1E8cc6UqCR8OvRW5M&q=${convertedName},${convertedCity}+${locations.state}`
 
-
     return (
         <>
             <div>
