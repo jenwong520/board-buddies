@@ -121,7 +121,6 @@ class UserQueries:
                         )
         except psycopg.Error as e:
             raise UserDatabaseException(
-                f"Could not create user with username
-                {username}: {e}"
-                )
+                f"Could not create user with username {username}: {e}"
+            )
         return user

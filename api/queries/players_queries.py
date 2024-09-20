@@ -230,4 +230,4 @@ class PlayerQueries:
             logging.error(
                 f"Error fetching player details: {e}"
             )
-            raise UserDatabaseException(f"Could not retrieve player details")
+            raise UserDatabaseException("Could not retrieve player details")
