@@ -87,9 +87,8 @@ class UserQueries:
         except psycopg.Error as e:
             logging.error(f"Error fetching user by id: {e}")
             raise UserDatabaseException(
-                f"Error getting user with id
-                {user_id}"
-                )
+                f"Error getting user with id {user_id}"
+            )
 
         return user
 
