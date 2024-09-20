@@ -23,3 +23,18 @@ export async function tryFetch(url, options) {
         return new Error('Unknown error while fetching')
     }
 }
+
+export async function convertSpaces(string) {
+    return string.split(' ').join('+')
+}
+
+export function mapsApiCall(name, city, state) {
+        try {
+            const apiHeader = ('https://www.google.com/maps/embed/v1/place?key=AIzaSyCdG1XCUBYkXysiPi1E8cc6UqCR8OvRW5M&q=')
+            const concatedApi = apiHeader + name + "," + city + "+" + state
+            const foramtedApi = convertSpaces(concatedApi)
+            return foramtedApi
+        } catch (error) {
+            console.error("error creating google api call: ", error)
+        }
+    }

@@ -8,9 +8,19 @@ import Construct from './components/Construct'
 import LandingPage from './components/Landing'
 import App from './App'
 import AuthProvider from './components/AuthProvider'
+import LocationForm from './components/location/LocationForm'
+import LocationList from './components/location/LocationList'
+import LocationDetail from './components/location/LocationDetail'
 
+import Dashboard from './components/Dashbord'
+// importing GameList and GameDetail
+import GameList from './components/Games/GameList'
+import GameDetail from './components/Games/GameDetail'
+
+import './index.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+
 
 const BASE_URL = import.meta.env.BASE_URL
 if (!BASE_URL) {
@@ -23,6 +33,10 @@ const router = createBrowserRouter(
             path: '/',
             element: <App />,
             children: [
+                                {
+                    path: '/',
+                    element:<LandingPage/>
+                },
                 {
                     path: 'signup',
                     element: <SignUpForm />,
@@ -32,13 +46,37 @@ const router = createBrowserRouter(
                     element: <SignInForm />,
                 },
                 {
+                    path: 'dashboard',
+                    element: <Dashboard />
+                },
+                {
+                    path: 'location',
+                    element: <LocationList />
+                },
+                {
+                    path: 'location/create',
+                    element: <LocationForm />
+                },
+                {
+                    path: 'location/:id',
+                    element: <LocationDetail />
+                },
+                {
                     path: 'under-construction',
                     element: <Construct />,
                 },
                 {
-                    path: 'landing',
-                    element:<LandingPage/>
-                }
+                    path: 'game',
+                    element: <GameList />,
+                },
+                {
+                    path: 'game/:id',
+                    element: <GameDetail />,
+                },
+                                {
+                    path: 'signout',
+                    element: <GameDetail />,
+                },
             ],
         },
     ],

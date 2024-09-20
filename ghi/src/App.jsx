@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
+import { BrowserRouter, Outlet } from 'react-router-dom'
 
 import ErrorNotification from './components/ErrorNotification'
-import LandingNav from './components/Landing'
-import Construct from './components/Construct'
+import Nav from './components/Nav'
+// import Construct from './components/Construct'
 
 import './App.css'
 
@@ -16,39 +16,40 @@ if (!API_HOST) {
 }
 
 function App() {
-    const [launchInfo, setLaunchInfo] = useState()
+    // const [launchInfo, setLaunchInfo] = useState()
     const [error, setError] = useState(null)
 
-    useEffect(() => {
-        async function getData() {
-            let url = `${API_HOST}/api/launch-details`
-            console.log('fastapi url: ', url)
-            let response = await fetch(url)
-            let data = await response.json()
+    // useEffect(() => {
+    //     async function getData() {
+    //         let url = `${API_HOST}/api/launch-details`
+    //         console.log('fastapi url: ', url)
+    //         let response = await fetch(url)
+    //         let data = await response.json()
 
-            if (response.ok) {
-                if (!data.launch_details) {
-                    console.log('drat! no launch data')
-                    setError('No launch data')
-                    return
-                }
-                console.log('got launch data!')
-                setLaunchInfo(data.launch_details)
-            } else {
-                console.log('drat! something happened')
-                setError(data.message)
-            }
-        }
-        getData()
-    }, [])
+    //         if (response.ok) {
+    //             if (!data.launch_details) {
+    //                 console.log('drat! no launch data')
+    //                 setError('No launch data')
+    //                 return
+    //             }
+    //             console.log('got launch data!')
+    //             setLaunchInfo(data.launch_details)
+    //         } else {
+    //             console.log('drat! something happened')
+    //             setError(data.message)
+    //         }
+    //     }
+    //     getData()
+    // }, [])
 
     return (
-        <div className="App">
-            {/* <header className="App-header"><LandingNav/></header> */}
-            <Outlet />
-            <ErrorNotification error={error} />
-            {/* <Construct info={launchInfo} /> */}
-        </div>
+            <div className="App">
+                {/* <Nav /> */}
+                {/* <header className="App-header"><LandingNav/></header> */}
+                <Outlet />
+                <ErrorNotification error={error} />
+                {/* <Construct info={launchInfo} /> */}
+            </div>
     )
 }
 

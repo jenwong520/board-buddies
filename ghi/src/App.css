@@ -1,6 +1,6 @@
 /* You should probably replace this with your own CSS */
 
-.App {
+/* .App {
     text-align: center;
     background-color: #282c34;
     min-height: 100vh;
@@ -10,7 +10,20 @@
     align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
+} */
+
+ .App {
+    text-align: center;
+    background-color: #282c34;
+    background-image: url(img/Board-buddies-bg.png);
+    min-height: 100vh;
+    color: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
+
 
 .background {
     background-image: url("https://cdn.thewirecutter.com/wp-content/media/2021/07/boardgames-2048px-2233.jpg");
@@ -23,3 +36,161 @@
     height: 200vh;
     width: 100%;
 }
+
+.game-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.game-item {
+    background-color: white;
+    padding: 10px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.game-background {
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: white;
+    overflow: hidden;
+    position: relative;
+
+}
+
+.game-details {
+background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    max-width: 300px;
+    color: white;
+    position: relative;
+    width: 50%;
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+}
+
+.game-details h4, .game-details p {
+    margin: 0;
+    color: white;
+}
+
+.game-header {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
+
+.game-details-container {
+    background-color: #fff;
+    padding: 20px 30px;
+    max-width: 800px;
+    margin: 40px auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+.navbar {
+    flex: none;
+}
+.navbar-nav .nav-link {
+    padding: 10px 20px;
+}
+
+.navbar-brand img {
+    height: 80px;
+    width: auto;
+}
+
+.dashboard {
+    size: 100vh;
+    align-items: center;
+    text-align: center;
+
+}
+.dashboard-container {
+    position: relative;
+    width: 50%;
+}
+.dashboard-img{
+    width: 10rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    border: #282c34;
+    border-width: 4em;
+    outline: auto;
+    outline-color: rgb(88, 88, 88);
+    outline-offset: .2em;
+    outline-style: double;
+
+}
+.dashboard-img:hover{
+    color: #008cba;
+    opacity: 1;
+    filter: grayscale(100%);
+}
+
+/* .dashboard-container:hover {
+    opacity: 1;
+}
+
+.overlay {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008cba
+}
+
+.overlay-text {
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.image {
+    position: relative;
+}
+
+.image img {
+    vertical-align: center;
+}
+
+.image:after {
+    content:'Edit Profile';
+    aspect-ratio: 1;
+    border-radius: 50%;
+    color:#fff;
+    position:absolute;
+    width: 100%; height:100%;
+    top: 0;; left:0;
+    background:rgba(0,0,0,0.6);
+    opacity:0;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+}
+
+.image:hover:after {
+    opacity:1;
+} */
