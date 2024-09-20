@@ -1,6 +1,7 @@
 """
 Database Queries for Users
 """
+import logging
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
@@ -8,12 +9,21 @@ from psycopg.rows import class_row
 from typing import Optional
 from models.users import UserWithPw
 from utils.exceptions import UserDatabaseException
+from uuid import uuid4
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
 
 pool = ConnectionPool(DATABASE_URL)
+
+
+def create_uuid_for_new_user():
+    user_id = str(uuid4())
+    return user_id
+
+
+uid = create_uuid_for_new_user()
 
 
 class UserQueries:
@@ -46,13 +56,15 @@ class UserQueries:
                     )
                     user = cur.fetchone()
                     if not user:
-                        return None
+                        logging.warning(
+                            f"User with username {username} not found."
+                            )
         except psycopg.Error as e:
-            print(e)
+            logging.error(f"Error fetching user by username: {e}")
             raise UserDatabaseException(f"Error getting user {username}")
         return user
 
-    def get_by_id(self, id: int) -> Optional[UserWithPw]:
+    def get_by_id(self, user_id: str) -> Optional[UserWithPw]:
         """
         Gets a user from the database by user id
 
@@ -63,19 +75,20 @@ class UserQueries:
                 with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
                     cur.execute(
                         """
-                            SELECT
-                                *
-                            FROM users
-                            WHERE id = %s
-                            """,
-                        [id],
+                        SELECT *
+                        FROM users
+                        WHERE id = %s
+                        """,
+                        [user_id],
                     )
                     user = cur.fetchone()
                     if not user:
                         return None
         except psycopg.Error as e:
-            print(e)
-            raise UserDatabaseException(f"Error getting user with id {id}")
+            logging.error(f"Error fetching user by id: {e}")
+            raise UserDatabaseException(
+                f"Error getting user with id {user_id}"
+            )
 
         return user
 
@@ -91,25 +104,23 @@ class UserQueries:
                     cur.execute(
                         """
                         INSERT INTO users (
+                            user_id,
                             username,
                             password
                         ) VALUES (
-                            %s, %s
+                            %s, %s, %s
                         )
-                        RETURNING *;
+                        RETURNING user_id, username, password;
                         """,
-                        [
-                            username,
-                            hashed_password,
-                        ],
+                        [uid, username, hashed_password]
                     )
                     user = cur.fetchone()
                     if not user:
                         raise UserDatabaseException(
                             f"Could not create user with username {username}"
                         )
-        except psycopg.Error:
+        except psycopg.Error as e:
             raise UserDatabaseException(
-                f"Could not create user with username {username}"
+                f"Could not create user with username {username}: {e}"
             )
         return user

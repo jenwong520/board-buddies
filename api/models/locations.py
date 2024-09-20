@@ -14,7 +14,7 @@ class Error(BaseModel):
 
 class LatLon(BaseModel):
     """
-    Gets the latatued and longatude of a location bassed of the Google maps api
+    Gets the latitude and longitude of a location bassed of the Google maps api
     """
 
     lat: float
@@ -31,7 +31,6 @@ class LocationIn(BaseModel):
     city: str
     state: str
     store_type: str
-    # lat_lon: Optional[LatLon]
 
 
 class LocationOut(BaseModel):
@@ -45,7 +44,6 @@ class LocationOut(BaseModel):
     city: str
     state: str
     store_type: str
-    # lat_lon: Optional[LatLon]
 
 
 class LocationList(BaseModel):

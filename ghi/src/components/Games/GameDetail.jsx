@@ -28,34 +28,37 @@ function GameDetail() {
     }
 
     return (
-        <div>
-            <header
-                className="game-header"
-                style={{
-                    backgroundImage: `url(${game.game_image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: '10% 40%'
-                }}
-            >
-            </header>
+        <>
+            <Nav />
+            <div>
+                <header
+                    className="game-header"
+                    style={{
+                        backgroundImage: `url(${game.game_image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: '10% 40%'
+                    }}
+                >
+                </header>
 
-            <div className="game-details-container">
-                <h1>{game.name}</h1>
-                <p><strong>Players:</strong> {game.max_players === 0 ? (
-                                        `${game.min_players}+`
-                                        ) : (
-                                            `${game.min_players} - ${game.max_players}`
-                                        )}</p>
-                <p><strong>Duration:</strong> {game.game_duration} minutes</p>
-                <p><strong>Age Range:</strong> {game.max_age === 0 ? (
-                                        `${game.min_age}+`
-                                        ) : (
-                                            `${game.min_age} - ${game.max_age}`
-                                        )}</p>
-                <p><strong>Tags:</strong> {game.tags}</p>
-                <p><strong>Description:</strong> {game.description}</p>
+                <div className="game-details-container">
+                    <h1>{game.name}</h1>
+                    <p><strong>Players:</strong> {game.max_players === 0 ? (
+                                            `${game.min_players}+`
+                                            ) : (
+                                                `${game.min_players} - ${game.max_players}`
+                                            )}</p>
+                    <p><strong>Duration:</strong> {game.game_duration} minutes</p>
+                    <p><strong>Age Range:</strong> {game.max_age === 0 ? (
+                                            `${game.min_age}+`
+                                            ) : (
+                                                `${game.min_age} - ${game.max_age}`
+                                            )}</p>
+                    <p><strong>Tags:</strong> {game.tags}</p>
+                    <p><strong>Description:</strong> {game.description}</p>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
