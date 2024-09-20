@@ -44,7 +44,7 @@ function App() {
 
     return (
             <div className="App">
-                <Nav />
+                {/* <Nav /> */}
                 {/* <header className="App-header"><LandingNav/></header> */}
                 <Outlet />
                 <ErrorNotification error={error} />
