@@ -12,7 +12,6 @@ from fastapi import (
 from queries.user_queries import (
     UserQueries,
 )
-
 from utils.exceptions import UserDatabaseException
 from models.users import UserRequest, UserResponse
 
@@ -23,12 +22,11 @@ from utils.authentication import (
     verify_password,
 )
 
-# Note we are using a prefix here,
-# This saves us typing in all the routes below
+
 router = APIRouter(tags=["Authentication"], prefix="/api/auth")
 
 
-@router.post("/signup")
+@router.post("/signup", response_model=UserResponse)
 async def signup(
     new_user: UserRequest,
     request: Request,
@@ -68,7 +66,7 @@ async def signup(
     return user_out
 
 
-@router.post("/signin")
+@router.post("/signin", response_model=UserResponse)
 async def signin(
     user_request: UserRequest,
     request: Request,
@@ -110,10 +108,10 @@ async def signin(
     )
 
     # Convert the UserWithPW to a UserOut
-    return UserResponse(id=user.id, username=user.username)
+    return UserResponse(user_id=user.user_id, username=user.username)
 
 
-@router.get("/authenticate")
+@router.get("/authenticate", response_model=UserResponse)
 async def authenticate(
     user: UserResponse = Depends(try_get_jwt_user_data),
 ) -> UserResponse:
@@ -130,8 +128,9 @@ async def authenticate(
     """
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Not logged in"
-        )
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Not logged in"
+            )
     return user
 
 

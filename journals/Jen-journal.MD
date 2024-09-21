@@ -80,3 +80,27 @@ Include:
 - Range of player numbers
 Should be clickable to see details
 Perhaps include a "Submit game" button
+
+9/17/2024
+-Created GameList component to list all games
+-Created GameDetail component to show game detail
+-Did some fancy CSS styling
+
+
+## Backing up data
+
+OR https://stackoverflow.com/questions/24718706/backup-restore-a-dockerized-postgresql-database
+
+In your terminal, in your boardbuddies directory:
+
+If you want to backup and restore your psql db here are the commands -->
+
+1) docker exec -t boardbuddies-db-1 pg_dumpall -c -U postgres > my_backup.sql
+
+To upload database back up, run:
+
+2) cat my_backup.sql | docker exec -i boardbuddies-db-1 psql -U postgres
+
+Where you see "authentication-demo-db-1" switch that to the name of your docker containers db (to get that run docker ps)
+-U <username> in this case mine is -U postgres
+> <backup_name> the carrot means output the contents to the named file next, in my case I named it my_backup.sql

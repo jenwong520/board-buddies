@@ -11,7 +11,7 @@ class JWTUserData(BaseModel):
     without looking up the id in the users table
     """
 
-    id: int
+    user_id: str
     username: str
 
 
