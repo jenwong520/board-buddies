@@ -17,6 +17,9 @@ from uuid import uuid4
 logging.basicConfig(level=logging.ERROR)
 
 
+logging.basicConfig(level=logging.ERROR)
+
+
 # Setting up the connection pool
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:

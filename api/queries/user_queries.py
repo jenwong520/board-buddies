@@ -101,6 +101,7 @@ class UserQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
+                    uid = create_uuid_for_new_user()
                     cur.execute(
                         """
                         INSERT INTO users (

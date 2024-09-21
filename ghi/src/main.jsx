@@ -4,11 +4,15 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
-// import Construct from './components/Construct'
+import Construct from './components/Construct'
 import LandingPage from './components/Landing'
 import App from './App'
 import AuthProvider from './components/AuthProvider'
+import LocationForm from './components/location/LocationForm'
+import LocationList from './components/location/LocationList'
+import LocationDetail from './components/location/LocationDetail'
 
+import Dashboard from './components/Dashbord'
 // importing GameList and GameDetail
 import GameList from './components/Games/GameList'
 import GameDetail from './components/Games/GameDetail'
@@ -42,6 +46,26 @@ const router = createBrowserRouter(
                     element: <SignInForm />,
                 },
                 {
+                    path: 'dashboard',
+                    element: <Dashboard />
+                },
+                {
+                    path: 'location',
+                    element: <LocationList />
+                },
+                {
+                    path: 'location/create',
+                    element: <LocationForm />
+                },
+                {
+                    path: 'location/:id',
+                    element: <LocationDetail />
+                },
+                {
+                    path: 'under-construction',
+                    element: <Construct />,
+                },
+                {
                     path: 'game',
                     element: <GameList />,
                 },
@@ -53,10 +77,6 @@ const router = createBrowserRouter(
                     path: 'signout',
                     element: <GameDetail />,
                 },
-                // {
-                //     path: 'under-construction',
-                //     element: <Construct />,
-                // },
             ],
         },
     ],
