@@ -10,4 +10,6 @@ Wrote first draft players endpoints. Pushed and merged.
 
 Since have gone back and forth trying to comprehend and map out functionalties and intergrating with auth stuff provided to us. Tried to integrate all auth/players endpoints. Have experienced much difficulty comprhending scope/etc. Needed revisitng with team. Clarified clearer MVP paths and necessary pages/files to create under/in players/users scope.
 
+09/20/24
 
+Victory is ours! Successfully refactored players and users/auth endpoints and merged. Added data.

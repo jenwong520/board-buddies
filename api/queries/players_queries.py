@@ -12,7 +12,6 @@ from models.players import (
     Error
 )
 from utils.exceptions import UserDatabaseException
-from uuid import uuid4
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -23,14 +22,6 @@ if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
 
 pool = ConnectionPool(DATABASE_URL)
-
-
-def create_uuid_for_new_user():
-    user_id = str(uuid4())
-    return user_id
-
-
-uid = create_uuid_for_new_user()
 
 
 class PlayerQueries:

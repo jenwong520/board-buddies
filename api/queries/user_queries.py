@@ -23,9 +23,6 @@ def create_uuid_for_new_user():
     return user_id
 
 
-uid = create_uuid_for_new_user()
-
-
 class UserQueries:
     """
     Class containing queries for the Users table
@@ -101,6 +98,7 @@ class UserQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor(row_factory=class_row(UserWithPw)) as cur:
+                    uid = create_uuid_for_new_user()
                     cur.execute(
                         """
                         INSERT INTO users (
