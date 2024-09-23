@@ -426,6 +426,7 @@ COPY public.users (user_id, username, password, is_developer, is_player) FROM st
 e802f3cb-de56-42de-baf6-36e33468cde4	Death-To-Docker	$2b$12$wFNa6cv5vwWvxFxcrlu38eb1TRjsawEG320JyO/xHNLWUCKq3oo0S	f	f
 4977eefb-03a9-4943-9c7f-184d0cf7ff82	Llama_Mama	$2b$12$w1T38HGzKTp50hk8TSLSwuwz/onSLiblYS9CV7CkT71FL4.mfwKnK	f	f
 beea9e8c-0319-4736-a8b5-481c41827268	-AmySEIRExtraordaire-	$2b$12$ckYspjlb93gXGc7wcfxLyOHdrL4ToRwWTvEkEB6YIJNaVK6VW4d62	f	f
+89e1e22f-7e7f-45b2-a6cd-2a1499485aa4	Is-A-Bot-Brian	$2b$12$FZns0HNB/BaOSXpGMYCReuph2LqLJyhLDZrGPyfwB1wT7JwvHphwu	f	f
 \.
 
 

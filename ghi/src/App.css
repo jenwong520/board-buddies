@@ -194,3 +194,15 @@ background-color: rgba(0, 0, 0, 0.8);
 .image:hover:after {
     opacity:1;
 } */
+
+.signup-button:hover{
+    color: #2f3530;
+    opacity: 1;
+    filter: grayscale(100%);
+}
+
+.signin-button:hover{
+    color: #2f3530;
+    opacity: 1;
+    filter: grayscale(100%);
+}
