@@ -35,18 +35,20 @@ function LocationDetail() {
 
     return (
         <>
-            <div>
-                <h1>{locations.name}</h1>
-                <h2>{locations.address}, {locations.city}, {locations.state}</h2>
-                <h2>{locations.store_type}</h2>
+            <div className="card mse-5">
+                <h1 className="card-title">{locations.name}</h1>
+                <p className="card-text">{locations.address}, {locations.city}, {locations.state}</p>
+
                 <iframe
-                width="450"
+                width="800"
                 height="450"
                 loading="lazy"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
                 src={mapsUrl}
+                className="m-3"
                 ></iframe>
+                <p>Business  Type : {locations.store_type}</p>
             </div>
         </>
     )
