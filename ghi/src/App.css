@@ -66,7 +66,7 @@
 }
 
 .game-details {
-background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     max-width: 300px;
     color: white;
@@ -138,6 +138,11 @@ background-color: rgba(0, 0, 0, 0.8);
     color: #008cba;
     opacity: 1;
     filter: grayscale(100%);
+}
+
+.location-form {
+    color: black;
+    background-color: white;
 }
 
 /* .dashboard-container:hover {

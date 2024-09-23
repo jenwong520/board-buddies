@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Nav from '../Nav';
 
 function GameDetail() {
     const { id } = useParams();

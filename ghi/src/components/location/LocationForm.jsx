@@ -79,12 +79,12 @@ const CreateLocation = () => {
     }
 
     return(
-        <div className="row">
+        <div className="row location-form">
             <div className="col">
                 <div className="shadow p-4 mt-4">
                     <h1>Create a New Location</h1>
                     <form onSubmit={handleSubmit} id="create-location-form">
-                        <div className="mb-3 ">
+                        <div className="mb-3">
                             <input onChange={handleNameChange}
                             placeholder="Name"
                             type="text"

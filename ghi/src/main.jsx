@@ -12,7 +12,7 @@ import LocationForm from './components/location/LocationForm'
 import LocationList from './components/location/LocationList'
 import LocationDetail from './components/location/LocationDetail'
 
-import Dashboard from './components/Dashbord'
+import Dashboard from './components/Dashboard'
 // importing GameList and GameDetail
 import GameList from './components/Games/GameList'
 import GameDetail from './components/Games/GameDetail'
