@@ -3,11 +3,13 @@ Database Queries for Location
 """
 
 import os
+import psycopg
 from psycopg_pool import ConnectionPool
-from typing import Optional, List
+from typing import Optional, List, Union
 from models.meetups import (
     MeetupIn,
-    MeetupOut
+    MeetupOut,
+    Error
 )
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -21,60 +23,26 @@ class MeetupQueries:
     """
     Class containing queries for the meetups table
     """
-    def meetup_in_out(self, id: int, meetup: MeetupIn) -> MeetupOut:
+    def meetup_in_to_out(self, meetup: MeetupIn, id: int) -> MeetupOut:
         old_data = meetup.dict()
         return MeetupOut(id=id, **old_data)
 
-    def convert_to_record(self, record):
+    def convert_to_record(self, record) -> MeetupOut:
         return MeetupOut(
             id=record[0],
-            time=record[1],
-            description=record[2],
-            min_players=record[3],
-            max_players=record[4],
-            completed=record[5]
+            organizer_id=record[1],
+            game_id=record[2],
+            location_id=record[3],
+            meetup_date=record[4],
+            description=record[5],
+            min_players=record[6],
+            max_players=record[7],
+            status=record[8]
         )
 
-    def create(self, meetup: MeetupIn) -> MeetupOut:
+    def get_all(self) -> Union[Error, List[MeetupOut]]:
         """
-        Creates Meetup in the database
-
-        Raises an Meetup insertion exception if createing the Meetup fails
-        """
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as cur:
-                    result = cur.execute(
-                        """
-                        INSERT INTO meetups (
-                        time,
-                        description,
-                        min_players,
-                        max_players,
-                        completed
-                        ) Values (
-                            %s, %s, %s, %s, %s
-                        )
-                        RETURNING id;
-                        """,
-                        [
-                            meetup.time,
-                            meetup.description,
-                            meetup.min_players,
-                            meetup.max_players,
-                            meetup.completed
-                        ]
-                    )
-                    id = result.fetchone()[0]
-                    return self.meetup_in_out(id, meetup)
-
-        except Exception as e:
-            print(e)
-            return {"message": "could not create meetup in database"}
-
-    def get_all(self) -> List[MeetupOut]:
-        """
-        Gets a liat of all the meetup
+        Gets a list of all the meetups
         """
         try:
             with pool.connection() as conn:
@@ -83,26 +51,86 @@ class MeetupQueries:
                         """
                         SELECT *
                         FROM meetups
-                        ORDER BY id
+                        ORDER BY meetup_date;
                         """
                     )
-                    return [MeetupOut(
-                        id=item[0],
-                        time=item[1],
-                        description=item[2],
-                        min_players=item[3],
-                        max_players=item[4],
-                        completed=item[5]
-                    )
-                        for item in cur]
+                    records = cur.fetchall()
+                    return [self.convert_to_record(record) for record in records]  # noqa
 
         except Exception as e:
             print(e)
-            return {"message": "cound not get a lists of meetups"}
+            return {"message": "Could not get list of meetups"}
 
-    def update(self, meetup_id: int, meetup: MeetupIn) -> MeetupOut:
+    def create(self, meetup: MeetupIn, player_id: str) -> MeetupOut:
         """
-        Updates the details of a sepesific meetup
+        Creates meetup in the database.
+        Associates meetup with authenticated user (organizer).
+        Raises a meetup insertion exception if createing the Meetup fails.
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        INSERT INTO meetups (
+                            organizer_id,
+                            game_id,
+                            location_id,
+                            meetup_date,
+                            description,
+                            min_players,
+                            max_players,
+                            status
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                        RETURNING id;
+                        """,
+                        [
+                            player_id,
+                            meetup.game_id,
+                            meetup.location_id,
+                            meetup.meetup_date,
+                            meetup.description,
+                            meetup.min_players,
+                            meetup.max_players,
+                            meetup.status or 'scheduled'
+                        ]
+                    )
+                    meetup_id = cur.fetchone()[0]
+                    return self.meetup_in_to_out(meetup, meetup_id)
+
+        except Exception as e:
+            print(e)
+            return {"message": "Could not create meetup in database"}
+
+    def details(self, meetup_id: int) -> Optional[MeetupOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT *
+                        FROM meetups
+                        WHERE id = %s
+                        """,
+                        [meetup_id]
+                    )
+                    record = cur.fetchone()
+                    if record:
+                        return self.convert_to_record(record)
+                    return None
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get meetup details"}
+
+    def update(
+            self,
+            meetup_id: int,
+            meetup: MeetupIn,
+            organizer_id: str
+    ) -> Union[MeetupOut, Error]:
+        """
+        Updates the details of a specific meetup if the user is the host.
+        Only accessible by logged-in user who created the meetup (organizer).
         """
         try:
             with pool.connection() as conn:
@@ -110,26 +138,47 @@ class MeetupQueries:
                     cur.execute(
                         """
                         UPDATE meetups
-                        SET time = %s
-                        , description = %s
-                        , min_players = %s
-                        , max_players = %s
-                        , completed = %s
-                        WHERE id = %s
+                        SET game_id = %s,
+                            location_id = %s,
+                            meetup_date = %s,
+                            description = %s,
+                            min_players = %s,
+                            max_players = %s,
+                            status = %s
+                        WHERE id = %s AND organizer_id = %s
+                        RETURNING id
+                        , organizer_id
+                        , game_id
+                        , location_id
+                        , meetup_date
+                        , description
+                        , min_players
+                        , max_players
+                        , status;
                         """,
                         [
-                            meetup.time,
+                            meetup.game_id,
+                            meetup.location_id,
+                            meetup.meetup_date,
                             meetup.description,
                             meetup.min_players,
                             meetup.max_players,
-                            meetup.completed,
-                            meetup_id
+                            meetup.status,
+                            meetup_id,
+                            organizer_id
                         ]
                     )
-                    return self.meetup_in_out(meetup_id, meetup)
-        except Exception as e:
+                    if cur.rowcount == 0:
+                        return None
+                    record = cur.fetchone()
+                    if record:
+                        return self.convert_to_record(record)
+                    else:
+                        return Error(message="Meetup not found or not authorized to update")  # noqa
+
+        except psycopg.Error as e:
             print(e)
-            return {"message": "Could not update meetup details"}
+            return Error(message="Could not update meetup")
 
     def delete(self, meetup_id: int) -> bool:
         try:
@@ -146,26 +195,3 @@ class MeetupQueries:
         except Exception as e:
             print(e)
             return False
-
-    def details(self, meetup_id: int) -> Optional[MeetupOut]:
-        try:
-            with pool.connection() as conn:
-                with conn.cursor() as cur:
-                    result = cur.execute(
-                        """
-                        SELECT id
-                            , time
-                            , description
-                            , min_players
-                            , max_players
-                            , completed
-                        FROM meetups
-                        WHERE id = %s
-                        """,
-                        [meetup_id]
-                    )
-                    record = result.fetchone()
-                    return self.convert_to_record(record)
-        except Exception as e:
-            print(e)
-            return {"message": "Could not get meetup details"}

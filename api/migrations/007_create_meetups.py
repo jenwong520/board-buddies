@@ -4,11 +4,14 @@ steps = [
         """
         CREATE TABLE meetups (
             id SERIAL PRIMARY KEY NOT NULL,
-            time TIMESTAMP NOT NULL,
+            organizer_id VARCHAR NOT NULL REFERENCES players(player_id) ON DELETE SET NULL,
+            game_id INT NOT NULL REFERENCES games(id) ON DELETE SET NULL,
+            location_id INT NOT NULL REFERENCES locations(id) ON DELETE SET NULL,
+            meetup_date TIMESTAMP NOT NULL,
             description TEXT,
             min_players SMALLINT NOT NULL,
             max_players SMALLINT NOT NULL,
-            completed BOOLEAN NOT NULL
+            status VARCHAR(25) NOT NULL DEFAULT 'scheduled'
         );
         """,
         ## Drop the table

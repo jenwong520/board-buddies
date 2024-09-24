@@ -411,6 +411,7 @@ COPY public.players (player_id, email, age, city, state, tags, is_verified, is_g
 e802f3cb-de56-42de-baf6-36e33468cde4	death2docker@example.com	25	Tucson	AZ	monopoly	t	t	0	t	0	0	0	0
 4977eefb-03a9-4943-9c7f-184d0cf7ff82	llamamama@example.com	30	Somewhere	CA	catan	t	t	0	t	0	0	0	0
 beea9e8c-0319-4736-a8b5-481c41827268	amySEIR@example.com	33	San Diego	CA	life	t	t	0	t	0	0	0	0
+89e1e22f-7e7f-45b2-a6cd-2a1499485aa4	fastesthandsinthecohort@example.com	12	Denver	CO	speed	t	t	0	t	0	0	0	0
 \.
 
 
@@ -586,4 +587,3 @@ COMMENT ON DATABASE postgres IS 'default administrative connection database';
 --
 -- PostgreSQL database cluster dump complete
 --
-
