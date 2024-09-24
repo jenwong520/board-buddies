@@ -17,8 +17,8 @@ steps = [
             playtester_id INTEGER,
             lat FLOAT,
             lon FLOAT,
-            location_radius SMALLINT
-
+            location_radius SMALLINT,
+            profile_picture VARCHAR(250)
         );
         """,
         # "Down" SQL statement

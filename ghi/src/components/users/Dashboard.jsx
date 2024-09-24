@@ -1,8 +1,21 @@
-import { useState,useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import banner from "../../img/Board-buddies-banner.png"
+import { AuthContext } from "../../components/AuthProvider";
 
 function Dashboard() {
+
+    const { signout, user } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log('Current user:', user);
+    }, [user]);
+
+    function handleSignout() {
+        signout();
+        navigate("/");
+    }
 
     return(
         <div className="dashboard">
@@ -15,7 +28,7 @@ function Dashboard() {
                     alt="" />
                 </NavLink>
                 <div className="mb-3">
-                    <h2 className="mt-2">Llama Mama</h2>
+                    <h2 className="mt-2">{user?.username || 'YOU SHOULDN\'T BE HERE!!!...'}</h2>
                 </div>
                 <div className="">
                     <div className="nav-item">
@@ -44,9 +57,7 @@ function Dashboard() {
                         </NavLink>
                     </div>
                     <div className="nav-item">
-                        <NavLink to="/under-construction">
-                            <button className="btn btn-outline-danger mb-5 col-6 mt-2" type="button">Signout</button>
-                        </NavLink>
+                            <button className="btn btn-outline-danger mb-5 col-6 mt-2" type="button" onClick={handleSignout}>Signout</button>
                     </div>
                 </div>
             </div>

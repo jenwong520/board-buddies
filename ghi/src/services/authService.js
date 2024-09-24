@@ -75,7 +75,7 @@ export async function signup(signUpRequest) {
         const result = await res.json()
 
         if (
-            typeof result.id !== 'number' ||
+            typeof result.user_id !== 'string' ||
             typeof result.username !== 'string'
         ) {
             throw new Error('Invalid user data')
@@ -112,7 +112,7 @@ export async function signin(signInRequest) {
         // This is validating our JSON response to make sure
         // It's got the correct types.
         if (
-            typeof result.id !== 'number' ||
+            typeof result.user_id !== 'string' ||
             typeof result.username !== 'string'
         ) {
             return new Error('Invalid user data')
