@@ -75,6 +75,7 @@ async def update_player(
 
 @router.delete("/{player_id}", response_model=bool)
 async def delete_player(
+    player_id: str,
     repo: PlayerQueries = Depends(),
     user: Optional[JWTUserData] = Depends(try_get_jwt_user_data)
 ) -> bool:

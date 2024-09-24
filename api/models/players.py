@@ -33,6 +33,7 @@ class PlayerIn(BaseModel):
     lat: Optional[float]
     lon: Optional[float]
     location_radius: Optional[int] = None
+    profile_picture: Optional[str] = None
 
 
 class PlayerOut(BaseModel):
@@ -57,3 +58,4 @@ class PlayerOut(BaseModel):
     lat: Optional[float]
     lon: Optional[float]
     location_radius: Optional[int] = None
+    profile_picture: Optional[str] = None

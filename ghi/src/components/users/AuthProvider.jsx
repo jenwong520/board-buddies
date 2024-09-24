@@ -4,9 +4,9 @@ import { authenticate } from '../../services/authService'
 export const AuthContext = createContext(null)
 
 export default function AuthProvider({ children }) {
-    const [user, setUser] = useState()
-    const [error, setError] = useState()
-    const [isLoading, setIsLoading] = useState(true)
+    const [user, setUser] = useState();
+    const [error, setError] = useState();
+    const [isLoading, setIsLoading] = useState(true);
 
     // This calls our backend once when this component
     // renders to populate the user information
@@ -18,13 +18,17 @@ export default function AuthProvider({ children }) {
             if (result instanceof Error) {
                 setUser(undefined)
                 setIsLoading(false)
-                return
+                return;
             }
             // Otherwise, set the user to the result we got from the backend
-            setUser(result)
-            setIsLoading(false)
-        })
-    }, [])
+            setUser(result);
+            setIsLoading(false);
+        });
+    }, []);
+
+    const signout = () => {
+        setUser(undefined);
+    }
 
     return (
         <AuthContext.Provider
@@ -38,6 +42,7 @@ export default function AuthProvider({ children }) {
                 // This is a helper property you can check in components
                 // to determine if a user is logged in or not
                 isLoggedIn: user ? true : false,
+                signout
             }}
         >
             {isLoading ? <div>loading...</div> : children}
