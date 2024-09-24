@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { AuthContext } from '../components/users/AuthProvider'
+import { AuthContext } from '../components/AuthProvider'
 import { signin, signup, signout } from '../services/authService'
 
 // This is a custom hook that lets us get access to
