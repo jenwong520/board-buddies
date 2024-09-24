@@ -9,7 +9,7 @@ function ProfilePicModal() {
 
     const updateProfilePic  = async (src)  => {
         const data = {}
-        data.profile_pic = src
+        data.profile_picture = src
         const url = 'http://localhost:8000/api/players/'
         const fetchConfig = {
             method: "POST",

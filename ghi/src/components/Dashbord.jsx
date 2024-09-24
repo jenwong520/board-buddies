@@ -9,7 +9,7 @@ function Dashboard() {
     return(
         <>
             <ProfilePicModal />
-            <div className="dashboard conatiner-fluid">
+            <div className="dashboard conatiner-fluid mt-5 align-items-center" id="dashboard">
                 <div className="card" style={{width:"30rem"}}>
                 <img className="m-3" src={banner} alt="" />
                     <NavLink className="image" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
