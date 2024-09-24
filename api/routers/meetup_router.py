@@ -55,7 +55,7 @@ async def update_meetup(
     response: Response,
     meetup: MeetupIn,
     repo: MeetupQueries = Depends(),
-    user: Optional[JWTUserData] = Depends(try_get_jwt_user_data)  # JWT dependency
+    user: Optional[JWTUserData] = Depends(try_get_jwt_user_data)
 ) -> Union[MeetupOut, Error]:
     if not user:
         return {"message": "Authentication required"}

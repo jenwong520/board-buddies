@@ -18,6 +18,7 @@ if not DATABASE_URL:
 
 pool = ConnectionPool(DATABASE_URL)
 
+
 class MeetupQueries:
     """
     Class containing queries for the meetups table
@@ -54,7 +55,7 @@ class MeetupQueries:
                         """
                     )
                     records = cur.fetchall()
-                    return [self.convert_to_record(record) for record in records]
+                    return [self.convert_to_record(record) for record in records] #noqa
 
         except Exception as e:
             print(e)
@@ -62,9 +63,9 @@ class MeetupQueries:
 
     def create(self, meetup: MeetupIn, player_id: str) -> MeetupOut:
         """
-        Creates Meetup in the database, associated with authenticated user(organizer)
-
-        Raises a Meetup insertion exception if createing the Meetup fails
+        Creates meetup in the database.
+        Associates meetup with authenticated user (organizer).
+        Raises a meetup insertion exception if createing the Meetup fails.
         """
         try:
             with pool.connection() as conn:
@@ -121,10 +122,15 @@ class MeetupQueries:
             print(e)
             return {"message": "Could not get meetup details"}
 
-    def update(self, meetup_id: int, meetup: MeetupIn, organizer_id: str) -> Union[MeetupOut, Error]:
+    def update(
+            self,
+            meetup_id: int,
+            meetup: MeetupIn,
+            organizer_id: str
+        ) -> Union[MeetupOut, Error]:
         """
         Updates the details of a specific meetup if the user is the host.
-        Only accessible by the logged-in user who created the meetup (organizer).
+        Only accessible by logged-in user who created the meetup (organizer).
         """
         try:
             with pool.connection() as conn:
@@ -140,8 +146,15 @@ class MeetupQueries:
                             max_players = %s,
                             status = %s
                         WHERE id = %s AND organizer_id = %s
-                        RETURNING id, organizer_id, game_id, location_id, meetup_date,
-                                  description, min_players, max_players, status;
+                        RETURNING id
+                        , organizer_id
+                        , game_id
+                        , location_id
+                        , meetup_date
+                        , description
+                        , min_players
+                        , max_players
+                        , status;
                         """,
                         [
                             meetup.game_id,
@@ -161,7 +174,7 @@ class MeetupQueries:
                     if record:
                         return self.convert_to_record(record)
                     else:
-                        return Error(message="Meetup not found or not authorized to update")
+                        return Error(message="Meetup not found or not authorized to update") #noqa
 
         except psycopg.Error as e:
             print(e)
