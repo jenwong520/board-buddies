@@ -1,17 +1,17 @@
 import { useState,useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import banner from "../img/Board-buddies-banner.png"
+import banner from "../../img/Board-buddies-banner.png"
 
 function Dashboard() {
 
     return(
-        <div className="dashboard conatiner-fluid">
+        <div className="dashboard">
             <div className="card" style={{width:"30rem"}}>
             <img className="m-3" src={banner} alt="" />
                 <NavLink className="image" to="/under-construction">
                     <img className="dashboard-img"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytOw7-0igVgRdWHj3wbBAg-EFq09tAup1w&s"
-                    title="Profile"
+                    title="View Profile"
                     alt="" />
                 </NavLink>
                 <div className="mb-3">
