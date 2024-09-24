@@ -64,10 +64,10 @@ class MeetupQueries:
                     for meetup in meetups:
                         cur.execute(
                             """
-                            SELECT players.player_id, users.username
+                            SELECT p.player_id, u.username
                             FROM meetup_participants mp
-                            JOIN players ON mp.participant_id = players.player_id
-                            JOIN users ON users.user_id = players.player_id
+                            JOIN players p ON mp.participant_id = p.player_id
+                            JOIN users u ON u.user_id = p.player_id
                             WHERE mp.meetup_id = %s
                             """,
                             [meetup[0]]
@@ -334,7 +334,7 @@ class MeetupQueries:
                     current_participants = cur.fetchone()[0]
                     if current_participants >= max_players:
                         return Error(
-                            message="This meetup has reached the maximum number of participants"
+                            message="This meetup has reached the maximum number of participants"  # noqa
                         )
 
                     cur.execute(
@@ -346,7 +346,7 @@ class MeetupQueries:
                     )
                     if cur.fetchone():
                         return Error(
-                            message="You are already a participant in this meetup"
+                            message="You are already a participant in this meetup"  # noqa
                         )
 
                     cur.execute(
