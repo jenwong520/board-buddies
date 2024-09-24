@@ -253,16 +253,32 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 
 
 --
+-- Name: meetup_participants; Type: TABLE; Schema: public; Owner: user
+--
+
+CREATE TABLE public.meetup_participants (
+    participant_id character varying(100) NOT NULL,
+    meetup_id integer NOT NULL,
+    joined_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.meetup_participants OWNER TO "user";
+
+--
 -- Name: meetups; Type: TABLE; Schema: public; Owner: user
 --
 
 CREATE TABLE public.meetups (
     id integer NOT NULL,
-    "time" timestamp without time zone NOT NULL,
+    organizer_id character varying NOT NULL,
+    game_id integer NOT NULL,
+    location_id integer NOT NULL,
+    meetup_date timestamp without time zone NOT NULL,
     description text,
     min_players smallint NOT NULL,
     max_players smallint NOT NULL,
-    completed boolean NOT NULL
+    status character varying(25) DEFAULT 'scheduled'::character varying NOT NULL
 );
 
 
@@ -367,6 +383,9 @@ ALTER TABLE ONLY public.meetups ALTER COLUMN id SET DEFAULT nextval('public.meet
 --
 
 COPY public.games (id, name, game_image, min_players, max_players, game_duration, min_age, max_age, tags, description) FROM stdin;
+1	Catan	https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg	3	4	90	10	0	strategy	In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep.
+2	Codenames	https://czechgames.com/for-press/codenames/images/cn-family/codenames.jpg	2	8	15	14	0	party	The two rival spymasters know the secret identities of 25 agents. Their teammates know the agents only by their CODENAMES.The teams compete to see who can make contact with all of their agents first. Spymasters give one-word clues that can point to multiple words on the board. Their teammates try to guess words of the right color while avoiding those that belong to the opposing team. And everyone wants to avoid the assassin. Codenames: win or lose, it’s fun to figure out the clues.
+3	Magic: The Gathering	https://1000logos.net/wp-content/uploads/2022/10/Magic-The-Gathering-Logo-1993.png	2	0	20	10	0	card	In the Magic game, you play the role of a planeswalker—a powerful wizard who fights other planeswalkers for glory, knowledge, and conquest. Your deck of cards represents all the weapons in your arsenal. It contains the spells you know and the creatures you can summon to fight for you.
 \.
 
 
@@ -375,6 +394,26 @@ COPY public.games (id, name, game_image, min_players, max_players, game_duration
 --
 
 COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
+1	Turn Zero Games	3959 Wilshire Blvd ste a-9	Los Angeles	CA	Game Store
+2	Paper Hero's Games	14109 Burbank Blvd	Van Nuys	CA	Game Store
+3	Geeky Teas and Games	900 W Alameda Ave	Burbank	CA	Nerd Bar
+4	Guildhall	3516 W Victory Blvd	Burbank	CA	Nerd_Bar
+5	Fire and Dice	19801 Vanowen St	Winnetka	CA	Game Store
+\.
+
+
+--
+-- Data for Name: meetup_participants; Type: TABLE DATA; Schema: public; Owner: user
+--
+
+COPY public.meetup_participants (participant_id, meetup_id, joined_at) FROM stdin;
+6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	7	2024-09-24 19:09:37.345244
+e153967e-7bb1-42d1-8e6b-442470fc9a04	7	2024-09-24 21:13:18.498769
+e153967e-7bb1-42d1-8e6b-442470fc9a04	12	2024-09-24 21:13:24.13467
+3f17c086-b382-41f4-a9b7-9224678d8390	7	2024-09-24 22:06:37.080261
+6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	1	2024-09-24 22:19:11.399165
+e153967e-7bb1-42d1-8e6b-442470fc9a04	1	2024-09-24 22:19:57.114191
+3f17c086-b382-41f4-a9b7-9224678d8390	2	2024-09-24 23:05:44.226046
 \.
 
 
@@ -382,7 +421,12 @@ COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
 -- Data for Name: meetups; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.meetups (id, "time", description, min_players, max_players, completed) FROM stdin;
+COPY public.meetups (id, organizer_id, game_id, location_id, meetup_date, description, min_players, max_players, status) FROM stdin;
+2	f52ef2cb-b07c-455e-80c1-a720deef34d0	2	1	2024-09-28 01:25:49.804	Let's play Codenames for Axel's birthday!	4	8	scheduled
+12	6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	1	3	2024-09-28 18:24:09	Axel's first meetup. Updating date so it falls on my birthday!	3	4	scheduled
+7	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	1	2024-09-24 18:24:09	Changing max players	2	3	scheduled
+1	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	1	2024-09-24 01:25:49.804	Let's play Catan! Does anybody have an extension pack? An unauthorized user cannot update this meetup	1	2	scheduled
+13	3f17c086-b382-41f4-a9b7-9224678d8390	3	4	2024-09-24 23:00:55.479	I don't know this game. I KNOW THIS GAME!	1	3	scheduled
 \.
 
 
@@ -395,7 +439,8 @@ COPY public.migrations (name, digest) FROM stdin;
 004_create_location	\\xef96ab97f0f1d79e4c5846471afcb3871b83fca95e89c3067e8566efccda635c
 005_create_game	\\x858e11ddb548a17c1105036b3e4ad8a3cc29a66dc26b9416c24d70a1b6720997
 006_create_players	\\x3b1c5218ab7b16ab681c2fdaf4919072f8569b3f35c39fa301f0db1bee005be1
-007_meetup_table	\\x6dac25571c83c29eec31e6b384dc6e0520b3d3f7ef77961e718fb5bb48b43489
+007_create_meetups	\\x12b3ede8265a8757dc70abf07097dea987a76c7cb6710459415fee4e97f82737
+008_create_participants	\\x39ba22df20268c4c2a52be8e41e8eaa1261107bbb95390083c90774824fdf5bd
 \.
 
 
@@ -404,14 +449,11 @@ COPY public.migrations (name, digest) FROM stdin;
 --
 
 COPY public.players (player_id, email, age, city, state, tags, is_verified, is_gamehost, gamehost_id, is_playtester, playtester_id, lat, lon, location_radius) FROM stdin;
-0e46339e-70b4-4cfe-bce0-73a93566656a	ghostie@example.com	31	Los Angeles	CA	rpg	t	t	0	t	0	0	0	0
-1805f121-f674-4b75-9186-92e59689ab23	404brain@example.com	33	Denver	CO	cooperative	t	t	0	t	0	0	0	0
-42d56ad5-9d76-47ef-a52f-e820cf5f1517	djengo_wins@example.com	40	Tucson	AZ	strategy	t	t	0	t	0	0	0	0
-5e0ca130-876e-4851-aa44-d037ae59b22a	catdaddy@example.com	50	Davis	CA	Contract Whist	t	t	0	t	0	0	0	0
-e802f3cb-de56-42de-baf6-36e33468cde4	death2docker@example.com	25	Tucson	AZ	monopoly	t	t	0	t	0	0	0	0
-4977eefb-03a9-4943-9c7f-184d0cf7ff82	llamamama@example.com	30	Somewhere	CA	catan	t	t	0	t	0	0	0	0
-beea9e8c-0319-4736-a8b5-481c41827268	amySEIR@example.com	33	San Diego	CA	life	t	t	0	t	0	0	0	0
-89e1e22f-7e7f-45b2-a6cd-2a1499485aa4	fastesthandsinthecohort@example.com	12	Denver	CO	speed	t	t	0	t	0	0	0	0
+f52ef2cb-b07c-455e-80c1-a720deef34d0	djengo_wins@example.com	40	Tucson	AZ	strategy	t	t	0	t	0	0	0	0
+6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	axel@example.com	31	California City	CA	string	t	f	0	t	0	0	0	0
+e153967e-7bb1-42d1-8e6b-442470fc9a04	404brain@example.com	33	Denver	CO	cooperative	t	t	0	t	0	0	0	0
+3f17c086-b382-41f4-a9b7-9224678d8390	catdaddy@example.com	50	Davis	CA	Contract Whist	t	t	0	t	0	0	0	0
+2f9e7d96-e322-4d58-a8dc-64ac3a3c612b	death2docker@example.com	25	Tucson	AZ	monopoly	t	t	0	t	0	0	0	0
 \.
 
 
@@ -420,14 +462,11 @@ beea9e8c-0319-4736-a8b5-481c41827268	amySEIR@example.com	33	San Diego	CA	life	t	
 --
 
 COPY public.users (user_id, username, password, is_developer, is_player) FROM stdin;
-42d56ad5-9d76-47ef-a52f-e820cf5f1517	Djengo_Wins	$2b$12$/D9racN2td9zMahIQXWn3.z2j.XpaY99jyk.MAuPGrdOgiGacRmZe	f	f
-0e46339e-70b4-4cfe-bce0-73a93566656a	_GhostOfCRSFToken_	$2b$12$rqpHBh85AbIrjSZi8t3QxOalC.gBQ9X.EzQL4vURUdqMKJjIfVijm	f	f
-1805f121-f674-4b75-9186-92e59689ab23	BrainNotFound_404	$2b$12$rhfLC7V.hk/c5YlpTyK0Ru9G6h56Ob9tvcX02qPWXMXPelVz81jk6	f	f
-5e0ca130-876e-4851-aa44-d037ae59b22a	Receipts&Recipes	$2b$12$imavWtFN0TirOs66jx6pw.gHaiuy2TEQfaYM2kaHYNe4bFGiH4Kli	f	f
-e802f3cb-de56-42de-baf6-36e33468cde4	Death-To-Docker	$2b$12$wFNa6cv5vwWvxFxcrlu38eb1TRjsawEG320JyO/xHNLWUCKq3oo0S	f	f
-4977eefb-03a9-4943-9c7f-184d0cf7ff82	Llama_Mama	$2b$12$w1T38HGzKTp50hk8TSLSwuwz/onSLiblYS9CV7CkT71FL4.mfwKnK	f	f
-beea9e8c-0319-4736-a8b5-481c41827268	-AmySEIRExtraordaire-	$2b$12$ckYspjlb93gXGc7wcfxLyOHdrL4ToRwWTvEkEB6YIJNaVK6VW4d62	f	f
-89e1e22f-7e7f-45b2-a6cd-2a1499485aa4	Is-A-Bot-Brian	$2b$12$FZns0HNB/BaOSXpGMYCReuph2LqLJyhLDZrGPyfwB1wT7JwvHphwu	f	f
+f52ef2cb-b07c-455e-80c1-a720deef34d0	Djengo_Wins	$2b$12$qqcNtTMxcZAre6xBNt8yh.PmfW/H4g1VfN5bNEK7swnyQe2gRGEhe	f	f
+6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	_GhostOfCRSFToken_	$2b$12$x81IGfiUvP9m0AXN2hQPBuT9dIVk/1HDBryAnVdgQ.Rs4yW/qPPtq	f	f
+e153967e-7bb1-42d1-8e6b-442470fc9a04	BrainNotFound_404	$2b$12$3ER6DVMXpK.Lgfx8foAgWe.SUpfcN1QH4sKwoTAWgV6e4rnPgX0KS	f	f
+3f17c086-b382-41f4-a9b7-9224678d8390	Receipts&Recipes	$2b$12$fpbzxLLznP.rK4KR77HsTOz2T5LUF00zKfWoR9zWqrgt0UMxLCC9e	f	f
+2f9e7d96-e322-4d58-a8dc-64ac3a3c612b	Death-To-Docker	$2b$12$oJ6HitP1ojR9k5haJfQIZeip0WasstBPZzi.i8zB15hLYrV5EyBy.	f	f
 \.
 
 
@@ -435,21 +474,21 @@ beea9e8c-0319-4736-a8b5-481c41827268	-AmySEIRExtraordaire-	$2b$12$ckYspjlb93gXGc
 -- Name: games_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.games_id_seq', 1, false);
+SELECT pg_catalog.setval('public.games_id_seq', 3, true);
 
 
 --
 -- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.locations_id_seq', 1, false);
+SELECT pg_catalog.setval('public.locations_id_seq', 5, true);
 
 
 --
 -- Name: meetups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.meetups_id_seq', 1, false);
+SELECT pg_catalog.setval('public.meetups_id_seq', 13, true);
 
 
 --
@@ -466,6 +505,14 @@ ALTER TABLE ONLY public.games
 
 ALTER TABLE ONLY public.locations
     ADD CONSTRAINT locations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: meetup_participants meetup_participants_pkey; Type: CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetup_participants
+    ADD CONSTRAINT meetup_participants_pkey PRIMARY KEY (participant_id, meetup_id);
 
 
 --
@@ -514,6 +561,46 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: meetup_participants meetup_participants_meetup_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetup_participants
+    ADD CONSTRAINT meetup_participants_meetup_id_fkey FOREIGN KEY (meetup_id) REFERENCES public.meetups(id) ON DELETE CASCADE;
+
+
+--
+-- Name: meetup_participants meetup_participants_participant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetup_participants
+    ADD CONSTRAINT meetup_participants_participant_id_fkey FOREIGN KEY (participant_id) REFERENCES public.players(player_id) ON DELETE CASCADE;
+
+
+--
+-- Name: meetups meetups_game_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetups
+    ADD CONSTRAINT meetups_game_id_fkey FOREIGN KEY (game_id) REFERENCES public.games(id) ON DELETE SET NULL;
+
+
+--
+-- Name: meetups meetups_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetups
+    ADD CONSTRAINT meetups_location_id_fkey FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE SET NULL;
+
+
+--
+-- Name: meetups meetups_organizer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetups
+    ADD CONSTRAINT meetups_organizer_id_fkey FOREIGN KEY (organizer_id) REFERENCES public.players(player_id) ON DELETE SET NULL;
 
 
 --
@@ -587,3 +674,4 @@ COMMENT ON DATABASE postgres IS 'default administrative connection database';
 --
 -- PostgreSQL database cluster dump complete
 --
+
