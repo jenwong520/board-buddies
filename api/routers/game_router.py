@@ -5,7 +5,7 @@ from models.games import (
     GameOut,
     Error
 )
-from queries.game_query import GameRepository
+from queries.game_queries import GameRepository
 
 
 router = APIRouter(tags=["Game"], prefix="/api/game")

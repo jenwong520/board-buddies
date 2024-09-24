@@ -258,11 +258,14 @@ ALTER SEQUENCE public.locations_id_seq OWNED BY public.locations.id;
 
 CREATE TABLE public.meetups (
     id integer NOT NULL,
-    "time" timestamp without time zone NOT NULL,
+    gamehost_id character varying,
+    game_id integer,
+    location_id integer,
+    meetup_date timestamp without time zone NOT NULL,
     description text,
     min_players smallint NOT NULL,
     max_players smallint NOT NULL,
-    completed boolean NOT NULL
+    is_completed boolean NOT NULL
 );
 
 
@@ -367,6 +370,9 @@ ALTER TABLE ONLY public.meetups ALTER COLUMN id SET DEFAULT nextval('public.meet
 --
 
 COPY public.games (id, name, game_image, min_players, max_players, game_duration, min_age, max_age, tags, description) FROM stdin;
+1	Catan	https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg	3	4	90	10	0	strategy	In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep.
+2	Codenames	https://czechgames.com/for-press/codenames/images/cn-family/codenames.jpg	2	8	15	14	0	party	The two rival spymasters know the secret identities of 25 agents. Their teammates know the agents only by their CODENAMES.The teams compete to see who can make contact with all of their agents first. Spymasters give one-word clues that can point to multiple words on the board. Their teammates try to guess words of the right color while avoiding those that belong to the opposing team. And everyone wants to avoid the assassin. Codenames: win or lose, it’s fun to figure out the clues.
+3	Magic: The Gathering	https://1000logos.net/wp-content/uploads/2022/10/Magic-The-Gathering-Logo-1993.png	2	0	20	10	0	card	In the Magic game, you play the role of a planeswalker—a powerful wizard who fights other planeswalkers for glory, knowledge, and conquest. Your deck of cards represents all the weapons in your arsenal. It contains the spells you know and the creatures you can summon to fight for you.
 \.
 
 
@@ -375,6 +381,11 @@ COPY public.games (id, name, game_image, min_players, max_players, game_duration
 --
 
 COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
+1	Turn Zero Games	3959 Wilshire Blvd ste a-9	Los Angeles	CA	Game Store
+2	Paper Hero's Games	14109 Burbank Blvd	Van Nuys	CA	Game Store
+3	Geeky Teas and Games	900 W Alameda Ave	Burbank	CA	Nerd Bar
+4	Guildhall	3516 W Victory Blvd	Burbank	CA	Nerd_Bar
+5	Fire and Dice	19801 Vanowen St	Winnetka	CA	Game Store
 \.
 
 
@@ -382,7 +393,7 @@ COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
 -- Data for Name: meetups; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.meetups (id, "time", description, min_players, max_players, completed) FROM stdin;
+COPY public.meetups (id, gamehost_id, game_id, location_id, meetup_date, description, min_players, max_players, is_completed) FROM stdin;
 \.
 
 
@@ -395,7 +406,7 @@ COPY public.migrations (name, digest) FROM stdin;
 004_create_location	\\xef96ab97f0f1d79e4c5846471afcb3871b83fca95e89c3067e8566efccda635c
 005_create_game	\\x858e11ddb548a17c1105036b3e4ad8a3cc29a66dc26b9416c24d70a1b6720997
 006_create_players	\\x3b1c5218ab7b16ab681c2fdaf4919072f8569b3f35c39fa301f0db1bee005be1
-007_meetup_table	\\x6dac25571c83c29eec31e6b384dc6e0520b3d3f7ef77961e718fb5bb48b43489
+007_meetup_table	\\x070e6ede94b225a851f9ac240148985808825ac6e1ee4aebbab82391ea900062
 \.
 
 
@@ -433,14 +444,14 @@ beea9e8c-0319-4736-a8b5-481c41827268	-AmySEIRExtraordaire-	$2b$12$ckYspjlb93gXGc
 -- Name: games_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.games_id_seq', 1, false);
+SELECT pg_catalog.setval('public.games_id_seq', 3, true);
 
 
 --
 -- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.locations_id_seq', 1, false);
+SELECT pg_catalog.setval('public.locations_id_seq', 5, true);
 
 
 --
@@ -512,6 +523,30 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: meetups meetups_game_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetups
+    ADD CONSTRAINT meetups_game_id_fkey FOREIGN KEY (game_id) REFERENCES public.games(id) ON DELETE SET NULL;
+
+
+--
+-- Name: meetups meetups_gamehost_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetups
+    ADD CONSTRAINT meetups_gamehost_id_fkey FOREIGN KEY (gamehost_id) REFERENCES public.players(player_id) ON DELETE CASCADE;
+
+
+--
+-- Name: meetups meetups_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: user
+--
+
+ALTER TABLE ONLY public.meetups
+    ADD CONSTRAINT meetups_location_id_fkey FOREIGN KEY (location_id) REFERENCES public.locations(id) ON DELETE SET NULL;
 
 
 --
