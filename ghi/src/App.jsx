@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { BrowserRouter, Outlet } from 'react-router-dom'
-
 import ErrorNotification from './components/ErrorNotification'
 import Nav from './components/Nav'
+import { AuthContext } from './components/AuthProvider'
 // import Construct from './components/Construct'
-
 import './App.css'
 
 // When using environment variables, you should do a check to see if
@@ -16,8 +15,9 @@ if (!API_HOST) {
 }
 
 function App() {
+    const { isLoggedIn } = useContext(AuthContext);
     // const [launchInfo, setLaunchInfo] = useState()
-    const [error, setError] = useState(null)
+    const [error, setError] = useState(null);
 
     // useEffect(() => {
     //     async function getData() {
@@ -44,7 +44,8 @@ function App() {
 
     return (
             <div className="App">
-                {/* <Nav /> */}
+                {isLoggedIn}
+                {/* <Nav /> Show Nav only if the user is logged in */}
                 {/* <header className="App-header"><LandingNav/></header> */}
                 <Outlet />
                 <ErrorNotification error={error} />

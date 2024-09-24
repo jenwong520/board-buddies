@@ -102,7 +102,7 @@ def generate_jwt(user: UserWithPw) -> str:
     jwt_data = JWTPayload(
         exp=exp,
         sub=user.username,
-        user=JWTUserData(username=user.username, id=user.id),
+        user=JWTUserData(username=user.username, user_id=user.user_id),
     )
     encoded_jwt = jwt.encode(
         jwt_data.model_dump(), SIGNING_KEY, algorithm=ALGORITHMS.HS256

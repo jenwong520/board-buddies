@@ -1,14 +1,15 @@
 """
 Player Router
 """
+from models.jwt import JWTUserData
+from utils.authentication import try_get_jwt_user_data
 from fastapi import (
     APIRouter,
     Depends,
 )
-from typing import List, Union
+from typing import List, Union, Optional
 from models.players import (
     PlayerIn,
-    PlayerList,
     PlayerOut,
     Error
 )
@@ -18,7 +19,7 @@ from queries.players_queries import PlayerQueries
 router = APIRouter(tags=["Player"], prefix="/api/players")
 
 
-@router.get("/", response_model=List[PlayerList])
+@router.get("/", response_model=List[PlayerOut])
 async def get_players_list(repo: PlayerQueries = Depends()):
     """
     Get a list of all players (id and username)
@@ -28,7 +29,7 @@ async def get_players_list(repo: PlayerQueries = Depends()):
 
 @router.get("/{player_id}", response_model=Union[PlayerOut, Error])
 async def get_player_details(
-    player_id: int,
+    player_id: str,
     repo: PlayerQueries = Depends()
 ):
     """
@@ -43,24 +44,30 @@ async def get_player_details(
 @router.post("/", response_model=Union[PlayerOut, Error])
 async def create_player(
     player: PlayerIn,
-    repo: PlayerQueries = Depends()
+    repo: PlayerQueries = Depends(),
+    user: Optional[JWTUserData] = Depends(try_get_jwt_user_data)
 ):
     """
     Create a new player
     """
-    return repo.create_player(player)
+    if not user:
+        return {"message": "Authentication required"}
+    return repo.create_player(player, user.user_id)
 
 
 @router.put("/{player_id}", response_model=Union[PlayerOut, Error])
 async def update_player(
-    player_id: int,
+    player_id: str,
     player: PlayerIn,
-    repo: PlayerQueries = Depends()
+    repo: PlayerQueries = Depends(),
+    user: Optional[JWTUserData] = Depends(try_get_jwt_user_data)
 ):
     """
     Update a player's information
     """
-    result = repo.update(player_id, player)
+    if not user:
+        return {"message": "Authentication required"}
+    result = repo.update(player_id, player, user.user_id)
     if result:
         return result
     return {"message": "Could not update player"}
@@ -68,10 +75,13 @@ async def update_player(
 
 @router.delete("/{player_id}", response_model=bool)
 async def delete_player(
-    player_id: int,
-    repo: PlayerQueries = Depends()
+    player_id: str,
+    repo: PlayerQueries = Depends(),
+    user: Optional[JWTUserData] = Depends(try_get_jwt_user_data)
 ) -> bool:
     """
     Delete a player by ID
     """
-    return repo.delete(player_id)
+    if not user:
+        return {"message": "Authentication required"}
+    return repo.delete(user.user_id)

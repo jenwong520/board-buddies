@@ -1,4 +1,7 @@
-from pydantic import BaseModel
+"""
+Pydantic Models for Players.
+"""
+from pydantic import BaseModel, EmailStr, Field
 from typing import Optional
 
 
@@ -9,79 +12,50 @@ class Error(BaseModel):
     message: str
 
 
-class LatLon(BaseModel):
-    """
-    Gets the latitude and longitude of a player's location
-    """
-    lat: float
-    lon: float
-
-
 class PlayerIn(BaseModel):
     """
     Parameters required to create a new player
     """
-    username: str
-    age: int
-    city: str
-    state: str
-    # lat: float
-    # lon: float
-    # location_radius: int
+    email: EmailStr = Field(..., description="A valid email address.")
+    age: Optional[int] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
     tags: Optional[str] = None
-    # is_developer = bool
-    # developer_id = int
-    # is_verified = bool
-    # is_gamehost = bool
-    # is_playtester = bool
-    # playtester_id = int
+    is_verified: Optional[bool] = None
+    is_gamehost: Optional[bool] = None
+    gamehost_id: Optional[int] = None
+    is_playtester: Optional[bool] = None
+    playtester_id: Optional[int] = None
+    is_developer: Optional[bool] = None
+    developer_id: Optional[int] = None
+    is_player: Optional[bool] = None
+    # player_id: Optional[UUID] = None
+    lat: Optional[float]
+    lon: Optional[float]
+    location_radius: Optional[int] = None
+    profile_picture: Optional[str] = None
 
 
 class PlayerOut(BaseModel):
     """
     Parameters returned after creating a new player
     """
-    id: int
-    username: str
-    age: int
-    city: str
-    state: str
-    # lat: float
-    # lon: float
-    # location_radius: int
+    user_id: str
+    email: EmailStr = Field(..., description="A valid email address.")
+    age: Optional[int] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
     tags: Optional[str] = None
-    # is_developer = bool
-    # developer_id = int
-    # is_verified = bool
-    # is_gamehost = bool
-    # is_playtester = bool
-    # playtester_id = int
-
-
-class PlayerList(BaseModel):
-    """
-    Gets player's ID and username
-    """
-
-    id: int
-    username: str
-
-
-class PlayerDetails(BaseModel):
-    """
-    Gets all player details including the ID
-    """
-
-    id: int
-    username: str
-    age: int
-    city: str
-    state: str
-    # lat: float
-    # lon: float
-    # location_radius: int
-    tags: Optional[str] = None
-    # is_verified = bool
-    # is_gamehost = bool
-    # is_playtester = bool
-    # playtester_id = int
+    is_verified: Optional[bool] = None
+    is_gamehost: Optional[bool] = None
+    gamehost_id: Optional[int] = None
+    is_playtester: Optional[bool] = None
+    playtester_id: Optional[int] = None
+    is_developer: Optional[bool] = None
+    developer_id: Optional[int] = None
+    is_player: Optional[bool] = None
+    player_id: Optional[str] = None
+    lat: Optional[float]
+    lon: Optional[float]
+    location_radius: Optional[int] = None
+    profile_picture: Optional[str] = None
