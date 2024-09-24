@@ -21,7 +21,7 @@ function Dashboard() {
         <div className="dashboard">
             <div className="card" style={{width:"30rem"}}>
             <img className="m-3" src={banner} alt="" />
-                <NavLink className="image" to="/under-construction">
+                <NavLink className="image" to="/profilepage">
                     <img className="dashboard-img"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbytOw7-0igVgRdWHj3wbBAg-EFq09tAup1w&s"
                     title="View Profile"

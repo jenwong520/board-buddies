@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import SignInForm from './components/users/SignInForm';
 import SignUpForm from './components/users/SignUpForm';
+import ProfilePage from './components/players/ProfilePage';
+import ProfilePageEdit from './components/players/ProfilePageEdit';
 import Construct from './components/Construct';
 import LandingPage from './components/Landing';
 import App from './App';
@@ -41,6 +43,22 @@ const router = createBrowserRouter(
                 {
                     path: 'signin',
                     element: <SignInForm />,
+                },
+                {
+                    path: 'profilepage',
+                    element: (
+                        <ProtectedRoute>
+                            <ProfilePage />
+                        </ProtectedRoute>
+                    ),
+                },
+                {
+                    path: 'profilepageedit',
+                    element: (
+                        <ProtectedRoute>
+                            <ProfilePageEdit />
+                        </ProtectedRoute>
+                    ),
                 },
                 {
                     path: 'dashboard',
