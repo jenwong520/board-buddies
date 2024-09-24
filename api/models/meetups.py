@@ -3,7 +3,7 @@ Pydantic Models for Meetups
 """
 from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 
 class Error(BaseModel):
@@ -19,7 +19,6 @@ class MeetupIn(BaseModel):
     Input model for creating a meetup
     """
 
-    organizer_id: str
     game_id: int
     location_id: int
     meetup_date: datetime
@@ -42,3 +41,13 @@ class MeetupOut(BaseModel):
     min_players: int
     max_players: int
     status: str
+
+
+class ParticipantOut(BaseModel):
+    participant_id: str
+    username: str
+
+
+class MeetupDetailsOut(BaseModel):
+    meetup: MeetupOut
+    participants: List[ParticipantOut]
