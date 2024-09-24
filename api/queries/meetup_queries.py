@@ -40,9 +40,9 @@ class MeetupQueries:
             status=record[8]
         )
 
-    def get_all(self) -> Union[Error, List[MeetupOut]]:
+    def get_all(self) -> Union[Error, List[dict]]:
         """
-        Gets a list of all the meetups
+        Gets a list of all the meetups along with participants' usernames.
         """
         try:
             with pool.connection() as conn:
@@ -51,15 +51,38 @@ class MeetupQueries:
                         """
                         SELECT *
                         FROM meetups
-                        ORDER BY meetup_date;
+                        ORDER BY meetups.meetup_date;
                         """
                     )
-                    records = cur.fetchall()
-                    return [self.convert_to_record(record) for record in records]  # noqa
-
+                    meetups = cur.fetchall()
+                    meetup_list = []
+                    for meetup in meetups:
+                        cur.execute(
+                            """
+                            SELECT players.player_id, users.username
+                            FROM meetup_participants
+                            JOIN players ON meetup_participants.participant_id = players.player_id
+                            JOIN users ON users.user_id = players.player_id
+                            WHERE meetup_participants.meetup_id = %s
+                            """,
+                            [meetup[0]]
+                        )
+                        participants = cur.fetchall()
+                        meetup_list.append({
+                            "meetup": self.convert_to_record(meetup),
+                            "participants": [
+                                {
+                                    "participant_id": participant[0],
+                                    "username": participant[1],
+                                }
+                                for participant in participants
+                            ]
+                        })
+                    return meetup_list
         except Exception as e:
             print(e)
             return {"message": "Could not get list of meetups"}
+
 
     def create(self, meetup: MeetupIn, organizer_id: str) -> MeetupOut:
         """
@@ -102,7 +125,10 @@ class MeetupQueries:
             print(e)
             return {"message": "Could not create meetup in database"}
 
-    def details(self, meetup_id: int) -> Optional[MeetupOut]:
+    def details(self, meetup_id: int) -> Optional[dict]:
+        """
+        Retrieves the details of a specific meetup along with participants.
+        """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
@@ -110,14 +136,35 @@ class MeetupQueries:
                         """
                         SELECT *
                         FROM meetups
-                        WHERE id = %s
+                        WHERE meetups.id = %s
                         """,
                         [meetup_id]
                     )
-                    record = cur.fetchone()
-                    if record:
-                        return self.convert_to_record(record)
-                    return None
+                    meetup_record = cur.fetchone()
+                    if not meetup_record:
+                        return None
+                    cur.execute(
+                        """
+                        SELECT players.player_id, users.username
+                        FROM meetup_participants
+                        JOIN players ON meetup_participants.participant_id = players.player_id
+                        JOIN users ON users.user_id = players.player_id
+                        WHERE meetup_participants.meetup_id = %s
+                        """,
+                        [meetup_id]
+                    )
+                    participants = cur.fetchall()
+                    return {
+                        "meetup": self.convert_to_record(meetup_record),
+                        "participants": [
+                            {
+                                "participant_id": participant[0],
+                                "username": participant[1],
+                            }
+                            for participant in participants
+                        ],
+                    }
+
         except Exception as e:
             print(e)
             return {"message": "Could not get meetup details"}
@@ -234,25 +281,40 @@ class MeetupQueries:
             print(e)
             return False
 
-    def join_meetup(self, meetup_id: int, participant_id: str) -> bool:
+    def join_meetup(self, meetup_id: int, participant_id: str) -> Union[bool, Error]:
         """
-        Adds a participant to the meetup if they are not the organizer
+        Adds a participant to the meetup if they are not the organizer and if the
+        max players limit has not been reached.
         """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT organizer_id
+                        SELECT organizer_id, max_players
                         FROM meetups
                         WHERE id = %s;
                         """,
                         [meetup_id]
                     )
-                    organizer_id = cur.fetchone()[0]
-
+                    result = cur.fetchone()
+                    if not result:
+                        return Error(message="Meetup not found")
+                    organizer_id, max_players = result
                     if organizer_id == participant_id:
-                        return Error(message="You cannot join a meetup you organized.")
+                        return Error(message="You cannot join a meetup you organized")
+
+                    cur.execute(
+                        """
+                        SELECT COUNT(*)
+                        FROM meetup_participants
+                        WHERE meetup_id = %s
+                        """,
+                        [meetup_id]
+                    )
+                    current_participants = cur.fetchone()[0]
+                    if current_participants >= max_players:
+                        return Error(message="This meetup has reached the maximum number of participants")
 
                     cur.execute(
                         """
@@ -262,20 +324,21 @@ class MeetupQueries:
                         [meetup_id, participant_id]
                     )
                     if cur.fetchone():
-                        return Error(message="You are already a participant in this meetup.")
+                        return Error(message="You are already a participant in this meetup")
 
                     cur.execute(
                         """
-                        INSERT INTO meetup_participants (participant_id,meetup_id)
+                        INSERT INTO meetup_participants (participant_id, meetup_id)
                         VALUES (%s, %s);
                         """,
                         [participant_id, meetup_id]
                     )
+
                     return {"message": "Successfully joined the meetup"}
 
         except Exception as e:
             print(e)
-            return Error(message="Could not join the meetup.")
+            return Error(message="Could not join the meetup")
 
     def leave_meetup(self, meetup_id: int, participant_id: str) -> bool:
         """

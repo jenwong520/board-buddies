@@ -10,6 +10,7 @@ from typing import List, Union, Optional
 from models.meetups import (
     MeetupIn,
     MeetupOut,
+    MeetupDetailsOut,
     Error
 )
 from queries.meetup_queries import MeetupQueries
@@ -20,10 +21,10 @@ from utils.authentication import try_get_jwt_user_data
 router = APIRouter(tags=["Meetup"], prefix="/api/meetup")
 
 
-@router.get("/", response_model=Union[List[MeetupOut], Error])
+@router.get("/", response_model=Union[List[MeetupDetailsOut], Error])
 async def list_meetups(
     repo: MeetupQueries = Depends()
-) -> List[MeetupOut]:
+) -> List[MeetupDetailsOut]:
     return repo.get_all()
 
 
@@ -38,11 +39,11 @@ async def create_meetup(
     return repo.create(meetup, user.user_id)
 
 
-@router.get("/{meetup_id}", response_model=Union[MeetupOut, Error])
+@router.get("/{meetup_id}", response_model=Union[MeetupDetailsOut, Error])
 async def get_meetup_details(
     meetup_id: int,
     repo: MeetupQueries = Depends()
-) -> MeetupOut:
+) -> Union[MeetupDetailsOut, Error]:
     result = repo.details(meetup_id)
     if result:
         return result
