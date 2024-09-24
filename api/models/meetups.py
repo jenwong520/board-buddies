@@ -19,7 +19,7 @@ class MeetupIn(BaseModel):
     Input model for creating a meetup
     """
 
-    organizer_id: str
+    # organizer_id: str
     game_id: int
     location_id: int
     meetup_date: datetime

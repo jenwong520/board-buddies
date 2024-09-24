@@ -23,9 +23,9 @@ class MeetupQueries:
     """
     Class containing queries for the meetups table
     """
-    def meetup_in_to_out(self, meetup: MeetupIn, id: int) -> MeetupOut:
+    def meetup_in_to_out(self, meetup: MeetupIn, id: int, organizer_id: str) -> MeetupOut:
         old_data = meetup.dict()
-        return MeetupOut(id=id, **old_data)
+        return MeetupOut(id=id, organizer_id=organizer_id, **old_data)
 
     def convert_to_record(self, record) -> MeetupOut:
         return MeetupOut(
@@ -61,7 +61,7 @@ class MeetupQueries:
             print(e)
             return {"message": "Could not get list of meetups"}
 
-    def create(self, meetup: MeetupIn, player_id: str) -> MeetupOut:
+    def create(self, meetup: MeetupIn, organizer_id: str) -> MeetupOut:
         """
         Creates meetup in the database.
         Associates meetup with authenticated user (organizer).
@@ -85,7 +85,7 @@ class MeetupQueries:
                         RETURNING id;
                         """,
                         [
-                            player_id,
+                            organizer_id,
                             meetup.game_id,
                             meetup.location_id,
                             meetup.meetup_date,
@@ -96,7 +96,7 @@ class MeetupQueries:
                         ]
                     )
                     meetup_id = cur.fetchone()[0]
-                    return self.meetup_in_to_out(meetup, meetup_id)
+                    return self.meetup_in_to_out(meetup, meetup_id, organizer_id)
 
         except Exception as e:
             print(e)
@@ -192,6 +192,106 @@ class MeetupQueries:
                         [meetup_id]
                     )
                     return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def check_if_participant(self, meetup_id: int, participant_id: str) -> bool:
+        """
+        Checks if the user is already a participant in the meetup.
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT 1 FROM meetup_participants
+                        WHERE meetup_id = %s AND participant_id = %s
+                        """,
+                        [meetup_id, participant_id]
+                    )
+                    return cur.fetchone() is not None
+        except Exception as e:
+            print(e)
+            return False
+
+    def check_if_organizer(self, meetup_id: int, organizer_id: str) -> bool:
+        """
+        Checks if the logged-in user is the organizer of the meetup.
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT 1 FROM meetups
+                        WHERE id = %s AND organizer_id = %s
+                        """,
+                        [meetup_id, organizer_id]
+                    )
+                    return cur.fetchone() is not None
+        except Exception as e:
+            print(e)
+            return False
+
+    def join_meetup(self, meetup_id: int, participant_id: str) -> bool:
+        """
+        Adds a participant to the meetup if they are not the organizer
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        SELECT organizer_id
+                        FROM meetups
+                        WHERE id = %s;
+                        """,
+                        [meetup_id]
+                    )
+                    organizer_id = cur.fetchone()[0]
+
+                    if organizer_id == participant_id:
+                        return Error(message="You cannot join a meetup you organized.")
+
+                    cur.execute(
+                        """
+                        SELECT 1 FROM meetup_participants
+                        WHERE meetup_id = %s AND participant_id = %s
+                        """,
+                        [meetup_id, participant_id]
+                    )
+                    if cur.fetchone():
+                        return Error(message="You are already a participant in this meetup.")
+
+                    cur.execute(
+                        """
+                        INSERT INTO meetup_participants (participant_id,meetup_id)
+                        VALUES (%s, %s);
+                        """,
+                        [participant_id, meetup_id]
+                    )
+                    return {"message": "Successfully joined the meetup"}
+
+        except Exception as e:
+            print(e)
+            return Error(message="Could not join the meetup.")
+
+    def leave_meetup(self, meetup_id: int, participant_id: str) -> bool:
+        """
+        Removes a participant from the meetup.
+        """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        """
+                        DELETE FROM meetup_participants
+                        WHERE meetup_id = %s AND participant_id = %s
+                        """,
+                        [meetup_id, participant_id]
+                    )
+                    return cur.rowcount > 0
         except Exception as e:
             print(e)
             return False
