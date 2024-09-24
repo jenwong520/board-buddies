@@ -81,7 +81,10 @@ async def delete_meetup(
 
     is_organizer = repo.check_if_organizer(meetup_id, user.user_id)
     if not is_organizer:
-        raise HTTPException(status_code=403, detail="Only the organizer can delete this meetup")
+        raise HTTPException(
+            status_code=403,
+            detail="Only the organizer can delete this meetup"
+        )
 
     return repo.delete(meetup_id)
 
