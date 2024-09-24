@@ -15,7 +15,7 @@ function GameList() {
     return (
         <>
             <Nav />
-            <div>
+            <div className='container '>
                 <h1 style={{padding:"10px"}}>Games List</h1>
                 <div className="game-list">
                     {games.length > 0 ? (
