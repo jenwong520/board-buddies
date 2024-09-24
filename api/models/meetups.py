@@ -3,6 +3,7 @@ Pydantic Models for Meetups
 """
 from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import Optional
 
 
 class Error(BaseModel):
@@ -18,21 +19,26 @@ class MeetupIn(BaseModel):
     Input model for creating a meetup
     """
 
-    time: datetime
+    organizer_id: str
+    game_id: int
+    location_id: int
+    meetup_date: datetime
     description: str
     min_players: int
     max_players: int
-    completed: bool = Field(default=False)
+    status: Optional[str] = Field(default="scheduled")
 
 
 class MeetupOut(BaseModel):
     """
-    Input model for creating a meetup
+    Output model for meetup details
     """
-
     id: int
-    time: datetime
+    organizer_id: str
+    game_id: int
+    location_id: int
+    meetup_date: datetime
     description: str
     min_players: int
     max_players: int
-    completed: bool = Field(default=False)
+    status: str

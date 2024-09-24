@@ -406,11 +406,11 @@ COPY public.migrations (name, digest) FROM stdin;
 COPY public.players (player_id, email, age, city, state, tags, is_verified, is_gamehost, gamehost_id, is_playtester, playtester_id, lat, lon, location_radius) FROM stdin;
 0e46339e-70b4-4cfe-bce0-73a93566656a	ghostie@example.com	31	Los Angeles	CA	rpg	t	t	0	t	0	0	0	0
 1805f121-f674-4b75-9186-92e59689ab23	404brain@example.com	33	Denver	CO	cooperative	t	t	0	t	0	0	0	0
-42d56ad5-9d76-47ef-a52f-e820cf5f1517	djengo_wins@example.com	40	Tucson	AZ	strategy	t	t	0	t	0	0	0	0
 5e0ca130-876e-4851-aa44-d037ae59b22a	catdaddy@example.com	50	Davis	CA	Contract Whist	t	t	0	t	0	0	0	0
 e802f3cb-de56-42de-baf6-36e33468cde4	death2docker@example.com	25	Tucson	AZ	monopoly	t	t	0	t	0	0	0	0
 4977eefb-03a9-4943-9c7f-184d0cf7ff82	llamamama@example.com	30	Somewhere	CA	catan	t	t	0	t	0	0	0	0
 beea9e8c-0319-4736-a8b5-481c41827268	amySEIR@example.com	33	San Diego	CA	life	t	t	0	t	0	0	0	0
+89e1e22f-7e7f-45b2-a6cd-2a1499485aa4	fastesthandsinthecohort@example.com	12	Denver	CO	speed	t	t	0	t	0	0	0	0
 \.
 
 
@@ -426,6 +426,13 @@ COPY public.users (user_id, username, password, is_developer, is_player) FROM st
 e802f3cb-de56-42de-baf6-36e33468cde4	Death-To-Docker	$2b$12$wFNa6cv5vwWvxFxcrlu38eb1TRjsawEG320JyO/xHNLWUCKq3oo0S	f	f
 4977eefb-03a9-4943-9c7f-184d0cf7ff82	Llama_Mama	$2b$12$w1T38HGzKTp50hk8TSLSwuwz/onSLiblYS9CV7CkT71FL4.mfwKnK	f	f
 beea9e8c-0319-4736-a8b5-481c41827268	-AmySEIRExtraordaire-	$2b$12$ckYspjlb93gXGc7wcfxLyOHdrL4ToRwWTvEkEB6YIJNaVK6VW4d62	f	f
+89e1e22f-7e7f-45b2-a6cd-2a1499485aa4	Is-A-Bot-Brian	$2b$12$FZns0HNB/BaOSXpGMYCReuph2LqLJyhLDZrGPyfwB1wT7JwvHphwu	f	f
+73464a3a-1172-4fc4-a8db-f74dca9ccaf0	Test_Test	$2b$12$vTModQ6IgSvjulebMxYVEOBk.U0/OFjgEe2Okt6.Hcn2Cy61hS1MC	f	f
+c05329c9-3632-4b8e-a0b7-54dba9483fdc	Test_	$2b$12$kEEVtKgJb5EXjsPQfa.dJePQO.Yfyg04oDTw2lwn7Grry3ECLMWgG	f	f
+f8559805-66a3-4a2c-8232-8fb690262840	-Test-	$2b$12$s3V0m4wem1K/s9uIAPLoJuR.iq.YpMseLMOTbTvlHLI53ky4e4brG	f	f
+64069d82-ae08-433f-b966-b27dc569c039	Test-Test	$2b$12$jKQlKRVg02q4FB.6cRntROFqO62tmowerlATJ9xrCd6WGkVsisdi.	f	f
+33592a3c-d804-4ae0-950f-eeda44cc7fe2	TestOTest	$2b$12$rzbX.0IPY2Ql9FalkVAljuOLztnLzVWwCAXIfAkbdsDVk7X509MgW	f	f
+2451eb8f-ddd2-4e22-b8fb-9a6a83d488fd	admin	$2b$12$5eOf7OpM1I29co.hCzmLqeYJMxOtGdXJAw6tqmMS38GQ.0hgNRLXO	f	f
 \.
 
 

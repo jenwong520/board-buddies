@@ -6,20 +6,37 @@ In that python file, I wrote some SQL stuff that will CREATE TABLE and DROP TABL
 # USEFUL COMMANDS
 ## HOW TO GET IN THE DB
 Stop docker in terminal, but run it through Docker app
-Type this terminal to see what docker containers are running: docker ps
-Find the database api and get the name: boardbuddies-db-1
-Type in terminal to connect to running service that contains api service: docker exec -it boardbuddies-db-1 bash
-Inside that running service with starts with root@568d54a5fe3d:/#, run this command to get in database: psql -h localhost -U user db_name
+
+Type this terminal to see what docker containers are running:```docker ps```
+
+Find the database api and get the name: ```boardbuddies-db-1```
+
+Type in terminal to connect to running service that contains api service:
+```
+docker exec -it boardbuddies-db-1 bash
+```
+Inside that running service with starts with ```root@568d54a5fe3d:/#```, run this command to get in database:
+```
+psql -h localhost -U user db_name
+```
 
 ## ALTERNATIVE WAY TO GET INTO THE DB
 In terminal, enter this command to get into your database:
+```
 docker exec -it boardbuddies-db-1 psql -U user -d db_name
+```
 
 ## WHILE IN THE DB
-In database, use \d to look at database
+In database, use ```\d``` to look at database:
+```
 \d <name of table> like \d games
+```
+To see table, enter this command:
+```
+TABLE <name of table>;
+```
 
-## IN THE API
+## MIGRATE UP AND DOWN IN THE API
 docker exec -it boardbuddies-api-1 bash
 python -m migrations up (this will create table in db)
 python -m migrations down (this will destroy table in db)
@@ -80,3 +97,30 @@ Include:
 - Range of player numbers
 Should be clickable to see details
 Perhaps include a "Submit game" button
+
+9/17/2024
+-Created GameList component to list all games
+-Created GameDetail component to show game detail
+-Did some fancy CSS styling
+
+
+## Backing up data
+
+OR https://stackoverflow.com/questions/24718706/backup-restore-a-dockerized-postgresql-database
+
+In your terminal, in your boardbuddies directory:
+
+If you want to backup and restore your psql db here are the commands -->
+
+1) docker exec -t <name of docker containers db> pg_dumpall -c -U <username> > my_backup.sql
+
+To upload database back up, run:
+
+2) cat my_backup.sql | docker exec -i <name of docker containers db> psql -U <username> <database name>
+
+Where you see "authentication-demo-db-1" switch that to the name of your docker containers db (to get that run docker ps)
+-U <username> in this case mine is -U postgres
+> <backup_name> the carrot means output the contents to the named file next, in my case I named it my_backup.sql
+
+9/23/2024
+Taking over Meetups API. I created a new dev branch on git lab 'meetups-api-integration' to continue working on the Meetups API.
