@@ -55,7 +55,7 @@ class MeetupQueries:
                         """
                     )
                     records = cur.fetchall()
-                    return [self.convert_to_record(record) for record in records] #noqa
+                    return [self.convert_to_record(record) for record in records]  # noqa
 
         except Exception as e:
             print(e)
@@ -127,7 +127,7 @@ class MeetupQueries:
             meetup_id: int,
             meetup: MeetupIn,
             organizer_id: str
-        ) -> Union[MeetupOut, Error]:
+    ) -> Union[MeetupOut, Error]:
         """
         Updates the details of a specific meetup if the user is the host.
         Only accessible by logged-in user who created the meetup (organizer).
@@ -174,7 +174,7 @@ class MeetupQueries:
                     if record:
                         return self.convert_to_record(record)
                     else:
-                        return Error(message="Meetup not found or not authorized to update") #noqa
+                        return Error(message="Meetup not found or not authorized to update")  # noqa
 
         except psycopg.Error as e:
             print(e)
