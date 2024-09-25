@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-
-import SignInForm from './components/SignInForm'
-import SignUpForm from './components/SignUpForm'
-import Construct from './components/Construct'
-import LandingPage from './components/Landing'
-import App from './App'
-import AuthProvider from './components/AuthProvider'
-import LocationForm from './components/location/LocationForm'
-import LocationList from './components/location/LocationList'
-import LocationDetail from './components/location/LocationDetail'
-
-import Dashboard from './components/Dashbord'
-// importing GameList and GameDetail
-import GameList from './components/Games/GameList'
-import GameDetail from './components/Games/GameDetail'
-
-import './index.css'
-=======
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -34,10 +12,10 @@ import LocationDetail from './components/location/LocationDetail';
 import Dashboard from './components/users/Dashboard';
 import GameList from './components/Games/GameList';
 import GameDetail from './components/Games/GameDetail';
+import MeetupDetail from './components/Meetups/MeetupDetail';
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from './components/ProtectedRoute';
 import './index.css';
->>>>>>> main
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 
@@ -53,7 +31,7 @@ const router = createBrowserRouter(
             path: '/',
             element: <App />,
             children: [
-                                {
+                {
                     path: '/',
                     element:<LandingPage/>
                 },
@@ -67,15 +45,11 @@ const router = createBrowserRouter(
                 },
                 {
                     path: 'dashboard',
-<<<<<<< HEAD
-                    element: <Dashboard />
-=======
                     element: (
                         <ProtectedRoute>
                             <Dashboard />
                         </ProtectedRoute>
                     ),
->>>>>>> main
                 },
                 {
                     path: 'location',
@@ -112,6 +86,10 @@ const router = createBrowserRouter(
                 {
                     path: 'game/:id',
                     element: <GameDetail />,
+                },
+                {
+                    path: 'meetup/:id',
+                    element: <MeetupDetail />,
                 },
                                 {
                     path: 'signout',
