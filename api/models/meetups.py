@@ -34,8 +34,14 @@ class MeetupOut(BaseModel):
     """
     id: int
     organizer_id: str
-    game_id: int
-    location_id: int
+    organizer_username: str
+    game_name: str
+    game_image: Optional[str]
+    location_name: str
+    location_address: str
+    location_city: str
+    location_state: str
+    location_store_type: str
     meetup_date: datetime
     description: str
     min_players: int
