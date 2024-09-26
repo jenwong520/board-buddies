@@ -5,17 +5,17 @@ import mainLogo from "../img/Board-buddies-logo.png"
  function LandingPage() {
     return(
         <>
-            <nav className="navbar navbar-expand-sm navbar-info fixed-top bg-info">
+            <nav className="navbar navbar-expand-sm navbar-dark fixed-top bg-dark fs-2">
                 <div className="container-fluid">
                     <NavLink className="navbar-brand">Board Buddies</NavLink>
                     <ul className="navbar-nav mb-2 mb-lg-2 flex-wrap">
-                        <li className="nav-item">
+                        <li className="nav-item me-3">
                             <a className="nav-link" href="#about">About</a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item me-3">
                             <a className="nav-link" href="#how">How it Works</a>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item me-3">
                             <NavLink className="nav-link" to="/signin">Login</NavLink>
                         </li>
                         <li className="nav-item">
