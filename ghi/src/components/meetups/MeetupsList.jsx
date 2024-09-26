@@ -18,33 +18,36 @@ function MeetupsList() {
         <>
             <Nav />
             <div className='container'>
-                <h1 className='mt-5' style={{padding:"80px"}}>Meetups List</h1>
+                <h1 className='mt-5 text-white' style={{padding:"30px"}}>Meetups List</h1>
                 <form action="">
                     <input
                         type="text"
                         placeholder='Search Games'
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
-                        className='form-control mb-2'/>
+                        className='form-control mb-3'/>
                 </form>
                 <div className="game-list">
                     {meetups.length > 0 ? (
                         meetups.filter((game) => {
-                            return search === '' ? game : game.game_id.includes(search)
+                            return search.toLowerCase() === ''
+                            ? game : game.meetup.game_name.toLowerCase().includes(search.toLowerCase())
                         }).map((meetup) => (
                             <Link to={`/meetup/${meetup.meetup.id}`} key={meetup.meetup.id} className="game-item">
                                 <div
                                     className="game-background"
-                                //     style={{ backgroundImage: `url(${game.game_image})`,
-                                //     backgroundPosition: "20% 40%"
-                                // }}
+                                    style={{ backgroundImage: `url(${meetup.meetup.game_image})`,
+                                    backgroundPosition: "left",
+                                    backgroundSize: "cover"
+                                }}
                                 >
                                     <div className="game-details">
-                                        <h4>{meetup.meetup.id}</h4>
-                                        <p>Meetup Game : {meetup.meetup.game_id}</p>
-                                        <p>Players: {meetup.meetup.min_players} - {meetup.meetup.max_players}</p>
-                                        <p>Location: {meetup.meetup.location_id}</p>
-                                        {/* <p>test - {meetup.participants.username}</p> */}
+                                        <h2 className='fs-4'>{new Date(meetup.meetup.meetup_date).toLocaleString()}</h2>
+                                        <h4 className='mt-2'>Organizer: {meetup.meetup.organizer_username}</h4>
+                                        <p className='mt-2'>Meetup Game : {meetup.meetup.game_name}</p>
+                                        <p className='mt-2'>Players: {meetup.meetup.min_players} - {meetup.meetup.max_players}</p>
+                                        <p className='mt-2'>Location: {meetup.meetup.location_name}</p>
+                                        <p>{meetup.meetup.location_city}, {meetup.meetup.location_state}</p>
                                     </div>
                                 </div>
                             </Link>

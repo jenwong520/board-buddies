@@ -15,7 +15,11 @@
  .App {
     text-align: center;
     background-color: #282c34;
-    background-image: url(img/Board-buddies-bg.png);
+    background-image: url(img/Torch_Wall_15.jpg);
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     min-height: 100vh;
     color: rgb(0, 0, 0);
     display: flex;
