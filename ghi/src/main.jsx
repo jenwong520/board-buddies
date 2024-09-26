@@ -12,9 +12,10 @@ import LocationDetail from './components/location/LocationDetail';
 import Dashboard from './components/users/Dashboard';
 import GameList from './components/Games/GameList';
 import GameDetail from './components/Games/GameDetail';
-import MeetupDetail from './components/Meetups/MeetupDetail';
+import MeetupDetail from './components/meetups/MeetupDetail';
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from './components/ProtectedRoute';
+import MeetupsList from './components/meetups/MeetupsList';
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -95,6 +96,10 @@ const router = createBrowserRouter(
                     path: 'signout',
                     element: <GameDetail />,
                 },
+                {
+                    path: 'meetup',
+                    element: <MeetupsList/>
+                }
             ],
         },
     ],

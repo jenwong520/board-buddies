@@ -43,7 +43,7 @@ function App() {
     // }, [])
 
     return (
-            <div className="App">
+            <div className="App mt-5">
                 {isLoggedIn}
                 {/* <Nav /> Show Nav only if the user is logged in */}
                 {/* <header className="App-header"><LandingNav/></header> */}
