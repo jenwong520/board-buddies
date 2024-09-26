@@ -91,9 +91,9 @@ const router = createBrowserRouter(
                     path: 'meetup/:id',
                     element: <MeetupDetail />,
                 },
-                                {
+                {
                     path: 'signout',
-                    element: <GameDetail />,
+                    element: <SignInForm />,
                 },
             ],
         },
