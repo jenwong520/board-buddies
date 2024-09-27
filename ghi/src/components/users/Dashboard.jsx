@@ -42,7 +42,7 @@ function Dashboard() {
                         </NavLink>
                     </div>
                     <div className="nav-item">
-                        <NavLink to="/under-construction">
+                        <NavLink to="/meetup">
                             <button className="btn btn-outline-primary col-6 mt-2" type="button">Find Meetups</button>
                         </NavLink>
                     </div>
