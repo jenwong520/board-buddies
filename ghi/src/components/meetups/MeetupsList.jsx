@@ -20,6 +20,9 @@ function MeetupsList() {
             <Nav />
             <div className='container'>
                 <h1 className='mt-5 text-white' style={{padding:"30px"}}>Meetups List</h1>
+                <Link to="/meetup/create">
+                    <button className="btn btn-primary col-8 mb-5 " type="button">Create a New Meetup</button>
+                </Link>
                 <form action="">
                     <input
                         type="text"
@@ -28,6 +31,7 @@ function MeetupsList() {
                         onChange={(event) => setSearch(event.target.value)}
                         className='form-control mb-3'/>
                 </form>
+
                 <div className="game-list">
                     {meetups.length > 0 ? (
                         meetups.filter((game) => {

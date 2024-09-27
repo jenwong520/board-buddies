@@ -16,6 +16,7 @@ import MeetupDetail from './components/meetups/MeetupDetail';
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from './components/ProtectedRoute';
 import MeetupsList from './components/meetups/MeetupsList';
+import MeetupForm from './components/meetups/MeetupForm'
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -99,6 +100,14 @@ const router = createBrowserRouter(
                 {
                     path: 'meetup',
                     element: <MeetupsList/>
+                },
+                {
+                    path: "meetup/create",
+                    element: (
+                        <ProtectedRoute>
+                            <MeetupForm />
+                        </ProtectedRoute>
+                    )
                 }
             ],
         },
