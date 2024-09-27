@@ -28,7 +28,7 @@ function GameList() {
                                 }}
                                 >
                                     <div className="game-details">
-                                        <h4>{game.name}</h4>
+                                        <h4 className="mt-5">{game.name}</h4>
                                         <p>Age: {game.max_age === 0 ? (
                                             `${game.min_age}+`
                                             ) : (

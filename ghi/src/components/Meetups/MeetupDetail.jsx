@@ -10,6 +10,8 @@ function MeetupDetail() {
     const [participants, setParticipants] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isParticipant, setIsParticipant] = useState(false);
+    console.log("P", participants)
+    console.log("U", user)
 
     useEffect(() => {
         fetch(`http://localhost:8000/api/meetup/${id}`)
@@ -23,7 +25,20 @@ function MeetupDetail() {
             console.error('Error fetching meetup details:', error);
             setLoading(false);
         });
-    }, []);
+    }, [id]);
+
+    useEffect(() => {
+        if (user && participants.length > 0) {
+            for (let p of participants) {
+                if (p.participant_id === user.user_id) {
+                    setIsParticipant(true);
+                    break;
+                }
+            }
+        } else {
+            setIsParticipant(false);
+        }
+    }, [participants, user]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -86,19 +101,22 @@ function MeetupDetail() {
                     <h1>{meetup.game_name}</h1>
                     <p><strong>Organizer:</strong> {meetup.organizer_username}</p>
                     <p><strong>Date and Time:</strong> {new Date(meetup.meetup_date).toLocaleString()}</p>
-                    <p><strong>Location:</strong> {meetup.location_name}, {meetup.location_address}, {meetup.location_city}, {meetup.location_state}</p>
-                    <p><strong>Store Type:</strong> {meetup.location_store_type}</p>
-                    <p><strong>Description:</strong> {meetup.description}</p>
-                    <p><strong>Players:</strong> {meetup.min_players} - {meetup.max_players}</p>
+                    <p><strong>Location:</strong><br />
+                        {meetup.location_name} <br />
+                        {meetup.location_address} <br />
+                        {meetup.location_city}, {meetup.location_state}</p>
+                    <p><strong>Details:</strong> <br />
+                        {meetup.description}</p>
+                    <p><strong>Players Needed:</strong> {meetup.min_players} - {meetup.max_players}</p>
                 </div>
 
                 <div>
                     {user && meetup.organizer_id !== user.user_id && (
                         <>
-                            {isParticipant && (
-                                <button onClick={handleLeave}>Leave Meetup</button>
-                            )} {!isParticipant && (
+                            {!isParticipant && (
                                 <button onClick={handleJoin}>Join Meetup</button>
+                            )} {isParticipant && (
+                                <button onClick={handleLeave}>Leave Meetup</button>
                             )}
                         </>
                     )}
