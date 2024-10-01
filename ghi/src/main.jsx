@@ -10,11 +10,13 @@ import LocationForm from './components/location/LocationForm';
 import LocationList from './components/location/LocationList';
 import LocationDetail from './components/location/LocationDetail';
 import Dashboard from './components/users/Dashboard';
-import GameList from './components/Games/GameList';
-import GameDetail from './components/Games/GameDetail';
-import MeetupDetail from './components/Meetups/MeetupDetail';
+import GameList from './components/games/GameList';
+import GameDetail from './components/games/GameDetail';
+import MeetupDetail from './components/meetups/MeetupDetail';
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from './components/ProtectedRoute';
+import MeetupsList from './components/meetups/MeetupsList';
+import MeetupForm from './components/meetups/MeetupForm'
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -91,10 +93,22 @@ const router = createBrowserRouter(
                     path: 'meetup/:id',
                     element: <MeetupDetail />,
                 },
-                                {
+                {
                     path: 'signout',
-                    element: <GameDetail />,
+                    element: <SignInForm />,
                 },
+                {
+                    path: 'meetup',
+                    element: <MeetupsList/>
+                },
+                {
+                    path: "meetup/create",
+                    element: (
+                        <ProtectedRoute>
+                            <MeetupForm />
+                        </ProtectedRoute>
+                    )
+                }
             ],
         },
     ],
