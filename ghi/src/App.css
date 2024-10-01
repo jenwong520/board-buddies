@@ -47,6 +47,20 @@
     gap: 5px;
 }
 
+.game-details {
+    text-justify: center;
+    position: relative;
+    top: 0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    max-width: 300px;
+    color: white;
+    /* clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%); */
+}
+
 .game-item {
     background-color: white;
     padding: 10px;
@@ -69,7 +83,7 @@
 
 }
 
-.game-details {
+.details {
 background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     max-width: 300px;
@@ -79,12 +93,15 @@ background-color: rgba(0, 0, 0, 0.8);
     clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
 }
 
-.game-details h4, .game-details p {
+.details h4, .details p {
     margin: 0;
     color: white;
 }
 
-.game-header {
+.detail-header {
+    margin-top: 80px;
+    background-size: cover;
+    background-position: center;
     color: white;
     display: flex;
     align-items: center;
@@ -92,7 +109,7 @@ background-color: rgba(0, 0, 0, 0.8);
     height: 300px;
 }
 
-.game-details-container {
+.details-container {
     background-color: #fff;
     padding: 20px 30px;
     max-width: 800px;
