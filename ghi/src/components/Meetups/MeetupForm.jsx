@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
 
 function CreateMeetup() {
-
     const { user } = useContext(AuthContext)
-
     const [game, setGame] = useState([]);
     const [location, setLocation] = useState([])
+
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:8000/api/game/')
@@ -21,10 +21,11 @@ function CreateMeetup() {
             .then((response) => response.json())
             .then((data) => setLocation(data))
             .catch((error) => console.error('Error fetching games:', error));
-    }, [user]);
+    }, []);
 
     console.log(game)
     console.log(location)
+
     const [gameId, setGameId] = useState('')
     const handleGameId = (event) => {
         const value = event.target.value
@@ -65,30 +66,66 @@ function CreateMeetup() {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const data = {}
 
-        data.game_id = gameId
-        data.location_id = locationId
-        data.meetup_date = meetupDate
-        data.description = description
-        data.min_players = minPlayers
-        data.max_players = maxPlayers
-        data.status = "scheduled"
+        const formattedDate = new Date(meetupDate).toISOString();
+
+        const data = {
+            game_id: parseInt(gameId, 10),
+            location_id: parseInt(locationId, 10),
+            meetup_date: formattedDate,
+            description: description,
+            min_players: parseInt(minPlayers, 10),
+            max_players: parseInt(maxPlayers, 10),
+        };
+        // data.game_id = gameId
+        // data.location_id = locationId
+        // data.meetup_date = meetupDate
+        // data.description = description
+        // data.min_players = minPlayers
+        // data.max_players = maxPlayers
+        // data.status = "scheduled"
 
         console.log(data)
 
-        const url = "http://localhost:8000/api/meetup/"
+        const url = "http://localhost:8000/api/meetup/" // Changed url name
         const fetchConfig = {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}` // Added this
             }
         }
+        console.log('User token:', user.token);
         const apicall = await tryFetch(url,fetchConfig)
         console.log("this is the api call", apicall)
         navigate("/meetup")
-    }
+
+        try {
+            const response = await fetch(url, fetchConfig);
+            if (response.ok) {
+                navigate('/meetup');
+            } else {
+                const errorData = await response.json(); // Get the error details from the response body
+                setErrorMessage(`Error: ${response.status} ${response.statusText}. Details: ${errorData.message || 'No details provided'}`);
+
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            setErrorMessage('An unexpected error occurred. Please try again.');
+        }
+
+    };
+
+    // const resetForm = () => {
+    //     setGameId('');
+    //     setLocationId('');
+    //     setMeetupDate('');
+    //     setDescription('');
+    //     setMinPlayers('');
+    //     setMaxPlayers('');
+    //     setErrorMessage('');
+    //     }
 
     return(
     <>
