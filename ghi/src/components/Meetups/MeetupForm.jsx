@@ -81,10 +81,12 @@ function CreateMeetup() {
         const fetchConfig = {
             method: "POST",
             body: JSON.stringify(data),
+            credentials: 'include',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         }
+
         const apicall = await tryFetch(url,fetchConfig)
         console.log("this is the api call", apicall)
         navigate("/meetup")
