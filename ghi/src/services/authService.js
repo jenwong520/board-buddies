@@ -50,7 +50,7 @@ export async function authenticate() {
     }
 
     // Check if the result has the required properties
-    if (typeof result.id !== 'number' || typeof result.username !== 'string') {
+    if (typeof result.user_id !== 'string' || typeof result.username !== 'string') {
         return new Error('Invalid user data')
     }
 
