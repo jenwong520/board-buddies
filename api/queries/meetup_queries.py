@@ -105,6 +105,7 @@ class MeetupQueries:
                                 {
                                     "participant_id": participant[0],
                                     "username": participant[1],
+                                    "profile_picture": participant[2]
                                 }
                                 for participant in participants
                             ]
@@ -241,6 +242,7 @@ class MeetupQueries:
                             {
                                 "participant_id": participant[0],
                                 "username": participant[1],
+                                "profile_picture": participant[2]
                             }
                             for participant in participants
                         ],

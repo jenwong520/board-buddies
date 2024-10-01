@@ -55,7 +55,11 @@ function MeetupDetail() {
         })
             .then((response) => {
                 if (response.ok) {
-                    const newParticipant = { participant_id: user.user_id, username: user.username };
+                    const newParticipant = {
+                        participant_id: user.user_id,
+                        username: user.username,
+                        profile_picture: user.profile_picture
+                     };
                     setParticipants([...participants, newParticipant]);
                     setIsParticipant(true);
                 } else {
@@ -111,12 +115,18 @@ function MeetupDetail() {
                 </div>
 
                 <div>
-                    {user && meetup.organizer_id !== user.user_id && (
+                    {user && meetup.organizer_id === user.user_id && (
                         <>
-                            {!isParticipant && (
-                                <button onClick={handleJoin}>Join Meetup</button>
-                            )} {isParticipant && (
-                                <button onClick={handleLeave}>Leave Meetup</button>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={isParticipant}
+                                    onChange={(e) => setIsParticipant(e.target.checked)}
+                                />
+                                Join as participant
+                            </label>
+                            {isParticipant && (
+                                <button onClick={handleJoin}>Add Yourself as Participant</button>
                             )}
                         </>
                     )}
@@ -127,8 +137,14 @@ function MeetupDetail() {
                     {participants.length > 0 ? (
                         <ul>
                             {participants.map((participant) => (
-                                <p key={participant.participant_id}>
+                                <p key={participant.participant_id} style={{ display: 'flex', alignItems: 'center' }}>
                                     {participant.username}
+                                    <img
+                                        src={participant.profile_picture}
+                                        alt={`${participant.username}'s profile`}
+                                        style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '10px' }}
+                                    />
+                                    <span>{participant.username}</span>
                                 </p>
                             ))}
                         </ul>

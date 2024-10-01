@@ -52,6 +52,7 @@ class MeetupOut(BaseModel):
 class ParticipantOut(BaseModel):
     participant_id: str
     username: str
+    profile_picture: Optional[str]
 
 
 class MeetupDetailsOut(BaseModel):
