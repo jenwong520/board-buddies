@@ -20,6 +20,9 @@ function MeetupsList() {
             <Nav />
             <div className='container'>
                 <h1 className='mt-5 text-white' style={{padding:"30px"}}>Meetups List</h1>
+                <Link to="/meetup/create">
+                    <button className="btn btn-primary col-8 mb-5 " type="button">Create a New Meetup</button>
+                </Link>
                 <form action="">
                     <input
                         type="text"
@@ -28,6 +31,7 @@ function MeetupsList() {
                         onChange={(event) => setSearch(event.target.value)}
                         className='form-control mb-3'/>
                 </form>
+
                 <div className="game-list">
                     {meetups.length > 0 ? (
                         meetups.filter((game) => {
@@ -51,20 +55,22 @@ function MeetupsList() {
                                         <p>{meetup.meetup.location_city}, {meetup.meetup.location_state}</p>
                                     </div>
                                     <div className='meetup-card'>
-                                        <h2 className='text-white row'>Players currently going to this meetup</h2>
-                                        <div className='row ms-2'>
+                                        <h2 className='text-white'>Players currently going to this meetup</h2>
+                                        <div className='container'>
+                                            <div className='row'>
                                             <div className='col-3'>
-                                                <img className='rounded-circle' src={testImage} alt="" />
+                                                <img className='rounded-circle img-fluid' src={testImage} alt="" />
                                                 <p>{meetup.meetup.organizer_username}</p>
                                             </div>
                                             {meetup.participants.map((player)=> {
                                                 return(
                                                     <div className='col-3 ' key={player.participant_id}>
-                                                        <img className='rounded-circle' src={testImage} alt="" />
+                                                        <img className='rounded-circle img-fluid' src={testImage} alt="" />
                                                         <p>{player.username}</p>
                                                     </div>
                                                 )
                                             })}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

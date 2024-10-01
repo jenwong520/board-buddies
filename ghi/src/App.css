@@ -213,13 +213,13 @@ background-color: rgba(0, 0, 0, 0.8);
 .meetup-card {
     position: relative;
     top: 0;
-    left: 1%;
+    left: 0%;
     height: 100%;
     width: 100%;
     opacity: 0;
     background-color: #000000da;
     /* clip-path: polygon(5% 0, 100% 0, 100% 100%, 0% 100%); */
-    transition: opacity .3s ease-out 100ms;
+    transition: opacity .2s ease-out 100ms;
 }
 
 .meetup-card:hover {
@@ -237,5 +237,5 @@ background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     max-width: 300px;
     color: white;
-    /* clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%); */
+    clip-path: polygon(0 0, 95% 0, 95% 100%, 0% 100%);
 }
