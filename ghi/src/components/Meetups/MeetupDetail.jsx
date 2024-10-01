@@ -103,8 +103,6 @@ function MeetupDetail() {
                 >
                 </header>
 
-
-
                 <div className="details-container ">
                     <h2>Participants</h2>
                     {participants.length > 0 ? (
@@ -154,7 +152,6 @@ function MeetupDetail() {
                     className='col-12'
                     ></iframe>
                 </div>
-
             </div>
         </>
     );
