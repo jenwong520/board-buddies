@@ -15,7 +15,8 @@ function MeetupEditForm() {
     const [meetupName, setMeetupName] = useState('');
     const [gameId, setGameId] = useState('');
     const [locationId, setLocationId] = useState('');
-    const [meetupDate, setMeetupDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const [description, setDescription] = useState('');
     const [minPlayers, setMinPlayers] = useState('');
     const [maxPlayers, setMaxPlayers] = useState('');
@@ -48,7 +49,8 @@ function MeetupEditForm() {
                     setGameId(meetupData.game_id);
                     setLocationId(meetupData.location_id);
 
-                    setMeetupDate(meetupData.meetup_date);
+                    setStartTime(meetupData.start_time);
+                    setEndTime(meetupData.end_time);
                     setDescription(meetupData.description);
                     setMinPlayers(meetupData.min_players);
                     setMaxPlayers(meetupData.max_players);
@@ -81,9 +83,14 @@ function MeetupEditForm() {
         setLocationId(value)
     }
 
-    const handleMeetupDate = (event) => {
+    const handleStartTime = (event) => {
         const value = event.target.value
-        setMeetupDate(value)
+        setStartTime(value)
+    }
+
+    const handleEndTime = (event) => {
+        const value = event.target.value
+        setEndTime(value)
     }
 
     const handleDescription = (event) => {
@@ -108,7 +115,8 @@ function MeetupEditForm() {
         data.meetup_name = meetupName
         data.game_id = gameId
         data.location_id = locationId
-        data.meetup_date = new Date(meetupDate).toISOString()
+        data.start_time = new Date(startTime).toISOString()
+        data.end_time = new Date(endTime).toISOString()
         data.description = description
         data.min_players = minPlayers
         data.max_players = maxPlayers
@@ -126,11 +134,8 @@ function MeetupEditForm() {
         }
 
         const apicall = await tryFetch(url,fetchConfig)
-        if (apicall && apicall.ok) {
-            navigate(`/meetup/${id}`);
-        } else {
-            setErrorMessage('Failed to update the meetup');
-        }
+        console.log("this is the api call", apicall)
+        navigate(`/meetup/${id}`)
     }
 
     const handleDelete = async () => {
@@ -154,13 +159,13 @@ function MeetupEditForm() {
     };
 
     if (loading) {
-    return (
-    <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
-        <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
+        return (
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
+            <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+            </div>
         </div>
-    </div>
-    );
+        );
   }
 
     return(
@@ -217,15 +222,27 @@ function MeetupEditForm() {
                         </div>
                         <div className="form-floating m-3">
                             <input
-                            onChange={handleMeetupDate}
-                            value={meetupDate || ''}
-                            placeholder="Date"
+                            onChange={handleStartTime}
+                            value={startTime || ''}
+                            placeholder="Start"
                             type="datetime-local"
-                            name="date"
-                            id="date"
+                            name="start"
+                            id="start"
                             className="form-control"
                              />
-                             <label>Meetup Date</label>
+                             <label>Start</label>
+                        </div>
+                        <div className="form-floating m-3">
+                            <input
+                            onChange={handleEndTime}
+                            value={endTime || ''}
+                            placeholder="End"
+                            type="datetime-local"
+                            name="end"
+                            id="end"
+                            className="form-control"
+                             />
+                             <label>End</label>
                         </div>
                         <div className="form-floating m-3">
                             <textarea
@@ -264,7 +281,7 @@ function MeetupEditForm() {
                              />
                              <label>Maximum Players</label>
                         </div>
-                        <button type="submit" className="btn btn-primary mb-5 col-10">Save Edits</button>
+                        <button type="submit" className="btn btn-primary mb-5 col-10">Save Changes</button>
                         <div className="mt-5">
                             <p>Do you want to delete your meetup?</p>
                             <button type="button" className="btn btn-danger" onClick={handleDelete}>Delete Meetup</button>

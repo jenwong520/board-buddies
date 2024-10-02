@@ -175,7 +175,7 @@ function MeetupDetail() {
                     <h2>Game: {meetup.game_name}</h2>
                     <p>
                         <img
-                            src={`/${meetup.organizer_picture}.png`}
+                            src={`${meetup.organizer_picture}.png`}
                             alt="Organizer"
                             style={{
                                 width: '40px',
@@ -186,8 +186,16 @@ function MeetupDetail() {
                             }}
                             />
                             Organized by {meetup.organizer_username}</p>
-                    <p><strong>Date and Time:</strong><br />
-                        {new Date(meetup.meetup_date).toLocaleString([], {
+                    <p><strong>Start:</strong><br />
+                        {new Date(meetup.start_time).toLocaleString([], {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</p>
+                    <p><strong>End:</strong><br />
+                        {new Date(meetup.end_time).toLocaleString([], {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric',
@@ -233,9 +241,9 @@ function MeetupDetail() {
                                 >
                                     <img
                                         className="rounded-circle"
-                                        src={`/${participant.profile_picture}.png`}
+                                        src={`${participant.profile_picture}.png`}
                                         alt=""
-                                        style={{ width: '100px', height: '100px', objectFit: 'cover', marginBottom: '10px' }} // Set fixed size for images
+                                        style={{ width: '100px', height: '100px', objectFit: 'cover', marginBottom: '10px' }}
                                     />
                                     <p style={{ textAlign: 'center', fontSize: '14px', wordWrap: 'break-word' }}>
                                         {participant.username}

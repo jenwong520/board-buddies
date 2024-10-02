@@ -44,10 +44,16 @@ function CreateMeetup() {
         setLocationId(value)
     }
 
-    const [meetupDate, setMeetupDate] = useState('')
-    const handleMeetupDate = (event) => {
+    const [startTime, setStartTime] = useState('')
+    const handleStartTime = (event) => {
         const value = event.target.value
-        setMeetupDate(value)
+        setStartTime(value)
+    }
+
+    const [endTime, setEndTime] = useState('')
+    const handleEndTime = (event) => {
+        const value = event.target.value
+        setEndTime(value)
     }
 
     const [description, setDescription] = useState('')
@@ -77,7 +83,8 @@ function CreateMeetup() {
         data.meetup_name = meetupName
         data.game_id = gameId
         data.location_id = locationId
-        data.meetup_date = meetupDate
+        data.start_time = startTime
+        data.end_time = endTime
         data.description = description
         data.min_players = minPlayers
         data.max_players = maxPlayers
@@ -151,14 +158,25 @@ function CreateMeetup() {
                         </div>
                         <div className="form-floating m-3">
                             <input
-                            onChange={handleMeetupDate}
-                            placeholder="Date"
+                            onChange={handleStartTime}
+                            placeholder="Start"
                             type="datetime-local"
-                            name="date"
-                            id="date"
+                            name="start"
+                            id="start"
                             className="form-control"
                              />
-                             <label>Meetup Date</label>
+                             <label>Start</label>
+                        </div>
+                        <div className="form-floating m-3">
+                            <input
+                            onChange={handleEndTime}
+                            placeholder="End"
+                            type="datetime-local"
+                            name="end"
+                            id="end"
+                            className="form-control"
+                             />
+                             <label>End</label>
                         </div>
                         <div className="form-floating m-3">
                             <textarea
