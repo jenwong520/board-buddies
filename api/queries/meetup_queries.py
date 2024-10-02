@@ -208,7 +208,7 @@ class MeetupQueries:
                         return self.convert_to_record(meetup_record)
                     else:
                         return Error(
-                            message="Meetup created but could not retrieve details"
+                            message="Meetup created but could not retrieve details"  # noqa
                         )
 
         except Exception as e:
