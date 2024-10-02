@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useAuthService from '../../hooks/useAuthService'
 import { useParams } from 'react-router-dom';
 import Nav from '../Nav';
-import testImage from "../../img/player-icons/board-buddies-icon-shiba.png"
+import baseImg from "../../../public/default/board-buddies-icon-default.png"
 
 function MeetupDetail() {
     const { id } = useParams();
@@ -86,6 +86,7 @@ function MeetupDetail() {
             });
     };
 
+    const icon = "board-buddies-icon-cat"
     const name = String(meetup.location_name)
     const city = String(meetup.location_city)
     const convertedName = name.split(' ').join('+')
@@ -109,7 +110,7 @@ function MeetupDetail() {
                         <div className='row'>
                             {participants.map((participant) => (
                                 <div className='col-3 m-3' key={participant.participant_id}>
-                                    <img className='img-fluid rounded-circle' src={testImage}/>
+                                    <img className='img-fluid rounded-circle' src={`ghi/public/${meetup.profie_picture}.png`}/>
                                     <p>{participant.username}</p>
                                 </div>
                             ))}
