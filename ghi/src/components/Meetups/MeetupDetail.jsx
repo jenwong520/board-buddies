@@ -11,7 +11,6 @@ function MeetupDetail() {
     const [participants, setParticipants] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isParticipant, setIsParticipant] = useState(false);
-    const [organizerJoin, setOrganizerJoin] = useState(false);
     console.log("P", participants)
     console.log("U", user)
     console.log("M", meetup)
@@ -140,6 +139,24 @@ function MeetupDetail() {
             });
     };
 
+    const handleOrganizerLeave = () => {
+        fetch(`http://localhost:8000/api/meetup/${id}/leave`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+            .then((response) => {
+                if (response.ok) {
+                    setParticipants(participants.filter(participant => participant.participant_id !== user.user_id));
+                    setIsParticipant(false);
+                } else {
+                    console.error('Failed to leave the meetup');
+                }
+            })
+            .catch((error) => {
+                console.error('Error leaving meetup:', error);
+            });
+    };
+
 
     return (
         <>
@@ -187,8 +204,11 @@ function MeetupDetail() {
                 </div>
 
                 <div>
-                    {user && meetup.organizer_id === user.user_id && !organizerJoin && (
+                    {!isParticipant && user && meetup.organizer_id === user.user_id && (
                         <button onClick={handleOrganizerJoin}>Join as Participant</button>
+                    )}
+                    {isParticipant && user && meetup.organizer_id === user.user_id && (
+                        <button onClick={handleOrganizerLeave}>Leave as Participant</button>
                     )}
                     {user && meetup.organizer_id !== user.user_id && (
                         <>
