@@ -12,7 +12,6 @@ function MeetupDetail() {
     const [participants, setParticipants] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isParticipant, setIsParticipant] = useState(false);
-    const [organizerJoin, setOrganizerJoin] = useState(false);
     console.log("P", participants)
     console.log("U", user)
     console.log("M", meetup)
@@ -195,8 +194,16 @@ function MeetupDetail() {
                             }}
                             />
                             Organized by {meetup.organizer_username}</p>
-                    <p><strong>Date and Time:</strong><br />
-                        {new Date(meetup.meetup_date).toLocaleString([], {
+                    <p><strong>Start:</strong><br />
+                        {new Date(meetup.start_time).toLocaleString([], {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</p>
+                    <p><strong>End:</strong><br />
+                        {new Date(meetup.end_time).toLocaleString([], {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric',
@@ -225,7 +232,6 @@ function MeetupDetail() {
                         )}
                     </div>
                 </div>
-
 
                 <div className="details-container">
                     <h2>Players</h2>
@@ -266,7 +272,6 @@ function MeetupDetail() {
                     className='col-12'
                     ></iframe>
                 </div>
-
 
             </div>
         </>

@@ -48,13 +48,20 @@ function MeetupsList() {
                                 >
                                     <div className="meetup-details">
                                         <h1 className='fs-4'><strong>{meetup.meetup.meetup_name}</strong></h1>
-                                        <h4 className='fs-4'>{new Date(meetup.meetup.meetup_date).toLocaleString([], {
+                                        <p>Start: {new Date(meetup.meetup.start_time).toLocaleString([], {
                                             year: 'numeric',
                                             month: 'long',
                                             day: 'numeric',
                                             hour: '2-digit',
                                             minute: '2-digit'
-                                        })}</h4>
+                                        })}</p>
+                                        <p>End: {new Date(meetup.meetup.end_time).toLocaleString([], {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })}</p>
                                         <p className='mt-2'>Game: {meetup.meetup.game_name}</p>
                                         <p className=''>Organizer: {meetup.meetup.organizer_username}</p>
                                         <p>Players: {meetup.meetup.min_players} - {meetup.meetup.max_players}<br/>

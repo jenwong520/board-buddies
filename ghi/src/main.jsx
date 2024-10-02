@@ -19,7 +19,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import MeetupsList from './components/meetups/MeetupsList';
 import MeetupDetail from './components/meetups/MeetupDetail';
-import MeetupForm from './components/meetups/MeetupForm'
+import MeetupForm from './components/meetups/MeetupForm';
+import MeetupEditForm from './components/meetups/MeetupEditForm';
 
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -110,6 +111,14 @@ const router = createBrowserRouter(
                     element: (
                         <ProtectedRoute>
                             <MeetupForm />
+                        </ProtectedRoute>
+                    )
+                },
+                {
+                    path: "meetup/:id/edit",
+                    element: (
+                        <ProtectedRoute>
+                            <MeetupEditForm />
                         </ProtectedRoute>
                     )
                 }
