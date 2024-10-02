@@ -103,9 +103,9 @@ function CreateMeetup() {
     return(
     <>
         <Nav />
-        <div className="row ">
-            <div className="col">
-                <div className="shadow bg-white">
+        <div className=" container row shadow bg-white rounded">
+            <div className="col- ">
+                <div className="mt-3">
                     <h1>Create a Meetup</h1>
                     <form onSubmit={handleSubmit} id="create-meetup-form">
 
@@ -194,7 +194,7 @@ function CreateMeetup() {
                              />
                              <label>Maximum Players</label>
                         </div>
-                        <button type="submit" className="btn btn-primary mb-5">Create</button>
+                        <button type="submit" className="btn btn-primary mb-5 col-10">Create</button>
                     </form>
                 </div>
             </div>
