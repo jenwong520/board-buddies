@@ -6,17 +6,21 @@ import SignUpForm from './components/users/SignUpForm';
 import Construct from './components/Construct';
 import LandingPage from './components/Landing';
 import App from './App';
+import Dashboard from './components/users/Dashboard';
 import LocationForm from './components/location/LocationForm';
 import LocationList from './components/location/LocationList';
 import LocationDetail from './components/location/LocationDetail';
-import Dashboard from './components/users/Dashboard';
+
 import GameList from './components/games/GameList';
 import GameDetail from './components/games/GameDetail';
-import MeetupDetail from './components/meetups/MeetupDetail';
+
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from './components/ProtectedRoute';
+
 import MeetupsList from './components/meetups/MeetupsList';
+import MeetupDetail from './components/meetups/MeetupDetail';
 import MeetupForm from './components/meetups/MeetupForm'
+
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";

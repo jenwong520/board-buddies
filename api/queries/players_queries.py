@@ -72,10 +72,11 @@ class PlayerQueries:
                             playtester_id,
                             lat,
                             lon,
-                            location_radius
+                            location_radius,
+                            profile_picture
                         ) VALUES (
                             %s, %s, %s, %s, %s, %s, %s,
-                            %s, %s, %s, %s, %s, %s, %s
+                            %s, %s, %s, %s, %s, %s, %s, %s
                         )
                         RETURNING player_id;
                         """,
@@ -93,7 +94,8 @@ class PlayerQueries:
                             player.playtester_id,
                             player.lat,
                             player.lon,
-                            player.location_radius
+                            player.location_radius,
+                            player.profile_picture
 
                         ]
                     )
