@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import Nav from '../Nav';
-import testImage from '../../img/player-icons/board-buddies-icon-cat.png'
+// import testImage from '/img/player-icons/board-buddies-icon-cat.png'
 
 function MeetupsList() {
     const [meetups, setMeetups] = useState([])
@@ -59,13 +59,13 @@ function MeetupsList() {
                                         <div className='container'>
                                             <div className='row'>
                                             <div className='col-3'>
-                                                <img className='rounded-circle img-fluid' src={testImage} alt="" />
+                                                <img className='rounded-circle img-fluid' src={'/player-icons/board-buddies-icon-cat.png'} alt="" />
                                                 <p>{meetup.meetup.organizer_username}</p>
                                             </div>
                                             {meetup.participants.map((player)=> {
                                                 return(
                                                     <div className='col-3 ' key={player.participant_id}>
-                                                        <img className='rounded-circle img-fluid' src={testImage} alt="" />
+                                                        <img className='rounded-circle img-fluid' src={'/player-icons/board-buddies-icon-cat.png'} alt="" />
                                                         <p>{player.username}</p>
                                                     </div>
                                                 )

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import useAuthService from '../../hooks/useAuthService'
 import { useParams } from 'react-router-dom';
 import Nav from '../Nav';
+// import testImage from '../../img/player-icons/board-buddies-icon-cat.png'
+
 
 function MeetupDetail() {
     const { id } = useParams();
@@ -53,22 +55,36 @@ function MeetupDetail() {
             method: 'POST',
             credentials: 'include'
         })
-            .then((response) => {
-                if (response.ok) {
-                    const newParticipant = {
-                        participant_id: user.user_id,
-                        username: user.username,
-                        profile_picture: user.profile_picture
-                     };
-                    setParticipants([...participants, newParticipant]);
-                    setIsParticipant(true);
-                } else {
-                    console.error('Failed to join the meetup');
-                }
-            })
-            .catch((error) => {
-                console.error('Error joining meetup:', error);
-            });
+        .then((response) => {
+            if (response.ok) {
+                // Fetch the player's profile to get the profile picture
+                return fetch(`http://localhost:8000/api/players/${user.user_id}`);
+            } else {
+                console.error('Failed to join the meetup');
+            }
+        })
+        .then((response) => {
+            if (response && response.ok) {
+                return response.json();
+            } else {
+                console.error('Failed to fetch player profile');
+            }
+        })
+        .then((playerData) => {
+            if (playerData) {
+                const newParticipant = {
+                    participant_id: user.user_id,
+                    username: user.username,
+                    profile_picture: playerData.profile_picture // Use the fetched profile picture
+                };
+                // Update the participants state to include the new participant
+                setParticipants(prevParticipants => [...prevParticipants, newParticipant]);
+                setIsParticipant(true);
+            }
+        })
+        .catch((error) => {
+            console.error('Error joining meetup:', error);
+        });
     };
 
     const handleLeave = () => {
@@ -103,7 +119,7 @@ function MeetupDetail() {
 
                 <div className="details-container">
                     <h1>{meetup.game_name}</h1>
-                    <p><strong>Organizer:</strong> {meetup.organizer_username}</p>
+                    <p><strong>Organized by</strong> {meetup.organizer_username}</p>
                     <p><strong>Date and Time:</strong> {new Date(meetup.meetup_date).toLocaleString()}</p>
                     <p><strong>Location:</strong><br />
                         {meetup.location_name} <br />
@@ -115,18 +131,12 @@ function MeetupDetail() {
                 </div>
 
                 <div>
-                    {user && meetup.organizer_id === user.user_id && (
+                    {user && meetup.organizer_id !== user.user_id && (
                         <>
-                            <label>
-                                <input
-                                    type="checkbox"
-                                    checked={isParticipant}
-                                    onChange={(e) => setIsParticipant(e.target.checked)}
-                                />
-                                Join as participant
-                            </label>
-                            {isParticipant && (
-                                <button onClick={handleJoin}>Add Yourself as Participant</button>
+                            {!isParticipant && (
+                                <button onClick={handleJoin}>Join Meetup</button>
+                            )} {isParticipant && (
+                                <button onClick={handleLeave}>Leave Meetup</button>
                             )}
                         </>
                     )}
@@ -137,15 +147,14 @@ function MeetupDetail() {
                     {participants.length > 0 ? (
                         <ul>
                             {participants.map((participant) => (
-                                <p key={participant.participant_id} style={{ display: 'flex', alignItems: 'center' }}>
-                                    {participant.username}
+                                <div className = 'row' key={participant.participant_id} style={{ display: 'flex', alignItems: 'center' }}>
                                     <img
-                                        src={participant.profile_picture}
-                                        alt={`${participant.username}'s profile`}
-                                        style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '10px' }}
+                                        className='rounded-circle img-fluid'
+                                        src={`/${participant.profile_picture}.png`}
+                                        alt=""
                                     />
-                                    <span>{participant.username}</span>
-                                </p>
+                                    <p>{participant.username}</p>
+                                </div>
                             ))}
                         </ul>
                     ) : (

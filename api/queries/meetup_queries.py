@@ -89,7 +89,7 @@ class MeetupQueries:
                     for meetup in meetups:
                         cur.execute(
                             """
-                            SELECT p.player_id, u.username
+                            SELECT p.player_id, u.username, COALESCE(p.profile_picture, '') AS profile_picture
                             FROM meetup_participants mp
                             JOIN players p ON mp.participant_id = p.player_id
                             JOIN users u ON u.user_id = p.player_id
@@ -226,7 +226,7 @@ class MeetupQueries:
 
                     cur.execute(
                         """
-                        SELECT p.player_id, u.username
+                        SELECT p.player_id, u.username, COALESCE(p.profile_picture, '') AS profile_picture
                         FROM meetup_participants mp
                         JOIN players p ON mp.participant_id = p.player_id
                         JOIN users u ON u.user_id = p.player_id

@@ -48,7 +48,8 @@ class PlayerQueries:
             playtester_id=record[10],
             lat=record[11],
             lon=record[12],
-            location_radius=record[13]
+            location_radius=record[13],
+            profile_picture=record[14]
         )
 
     def create_player(self, player: PlayerIn, user_id: str) -> PlayerOut:
@@ -150,7 +151,8 @@ class PlayerQueries:
                             playtester_id = %s,
                             lat = %s,
                             lon = %s,
-                            location_radius = %s
+                            location_radius = %s,
+                            profile_picture = %s
                         WHERE player_id = %s
                         """,
                         [
@@ -167,6 +169,7 @@ class PlayerQueries:
                             player.lat,
                             player.lon,
                             player.location_radius,
+                            player.profile_picture,
                             player_id
                         ]
                     )
