@@ -71,7 +71,9 @@ async def update_player(
     result = repo.update(player_id, player, user.user_id)
 
     # if result in None:
-    #     return {"message": "Player not found"}      # was breaking something significantly for some reason
+    #     return {"message": "Player not found"}
+
+    # was breaking something significantly for some reason
 
     return result
 

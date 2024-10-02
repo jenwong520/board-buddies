@@ -8,7 +8,7 @@ import psycopg
 from psycopg_pool import ConnectionPool
 from psycopg.rows import class_row
 from typing import Optional
-from models.users import UserResponse, UserWithPw
+from models.users import UserWithPw
 from utils.exceptions import UserDatabaseException
 from uuid import uuid4
 
@@ -90,7 +90,14 @@ class UserQueries:
 
         return user
 
-    def create_user(self, username: str, hashed_password: str, is_developer: bool, is_player: bool, date_joined: datetime) -> UserWithPw:
+    def create_user(
+            self,
+            username: str,
+            hashed_password: str,
+            is_developer: bool,
+            is_player: bool,
+            date_joined: datetime
+        ) -> UserWithPw:
         """
         Creates a new user in the database
 

@@ -41,7 +41,9 @@ async def signup(
     hashed_password = hash_password(new_user.password)
 
     # Set the current UTC time as the date joined
-    date_joined = datetime.utcnow() + timedelta(hours=12)    # Not fully functioning yet
+    date_joined = datetime.utcnow() + timedelta(hours=12)
+
+    # Not fully functioning yet ^^^^
 
     # Create the user in the database
     try:

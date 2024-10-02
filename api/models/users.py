@@ -44,7 +44,6 @@ def validate_password(cls, value):
     return value
 
 
-
 class UserResponse(BaseModel):
     """
     Represents a user, without the password

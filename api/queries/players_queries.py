@@ -190,7 +190,9 @@ class PlayerQueries:
                         ]
                     )
                     if cur.rowcount == 0:
-                        raise UserDatabaseException("No player found with the given ID.")
+                        raise UserDatabaseException(
+                            "No player found with the given ID."
+                        )
                     return self.player_in_to_out(player, user_id)
         except psycopg.Error as e:
             print(e)

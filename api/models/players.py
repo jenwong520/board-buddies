@@ -18,7 +18,7 @@ class PlayerIn(BaseModel):
     Parameters required to create a new player
     """
     profile_picture: Optional[str] = None
-    email: Optional[EmailStr] = Field(None, description="A valid email address.")
+    email: Optional[EmailStr] = Field(None, description="Valid email address.")
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     city: Optional[str] = None
@@ -46,7 +46,7 @@ class PlayerOut(BaseModel):
     """
     user_id: str
     profile_picture: Optional[str] = None
-    email: Optional[EmailStr] = Field(None, description="A valid email address.")
+    email: Optional[EmailStr] = Field(None, description="Valid email address.")
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     city: Optional[str] = None
