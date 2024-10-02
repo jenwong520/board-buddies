@@ -97,7 +97,7 @@ class UserQueries:
             is_developer: bool,
             is_player: bool,
             date_joined: datetime
-        ) -> UserWithPw:
+    ) -> UserWithPw:
         """
         Creates a new user in the database
 
