@@ -2,7 +2,9 @@
 Pydantic Models for Users.
 """
 import re
+from typing import Optional
 from pydantic import BaseModel, Field, constr, validator
+from datetime import datetime
 
 
 class UserRequest(BaseModel):
@@ -17,6 +19,9 @@ class UserRequest(BaseModel):
         ...,
         description="Password must be at least 8 characters long."
     )
+    is_developer: Optional[bool] = None
+    is_player: Optional[bool] = None
+    date_joined: Optional[datetime] = None
 
 
 @validator('username')
@@ -39,12 +44,16 @@ def validate_password(cls, value):
     return value
 
 
+
 class UserResponse(BaseModel):
     """
     Represents a user, without the password
     """
     user_id: str
     username: str
+    is_developer: Optional[bool] = None
+    is_player: Optional[bool] = None
+    date_joined: Optional[datetime] = None
 
 
 class UserWithPw(BaseModel):
@@ -54,3 +63,6 @@ class UserWithPw(BaseModel):
     user_id: str
     username: str
     password: str
+    is_developer: Optional[bool] = None
+    is_player: Optional[bool] = None
+    date_joined: Optional[datetime] = None

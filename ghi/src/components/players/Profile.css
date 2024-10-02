@@ -1,32 +1,10 @@
 .profile-header, .user-info, .preferences, .charts, .games-played, .useful-links {
   margin-bottom: 20px;
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-}
-
-.profile-picture {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+  margin-top: 20%;
 }
 
 .profile-info {
   margin-left: 20px;
-}
-
-.badges {
-  display: flex;
-  gap: 10px;
-}
-
-.badge {
-  background-color: #f0f0f0;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
 }
 
 /* Responsive adjustments */
@@ -35,9 +13,8 @@
     flex-direction: column;
     align-items: center;
   }
+}
 
-  .profile-picture {
-    width: 80px;
-    height: 80px;
-  }
+.navbar {
+  height: 10%;
 }

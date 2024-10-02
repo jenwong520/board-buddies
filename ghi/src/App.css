@@ -12,14 +12,18 @@
     font-size: calc(10px + 2vmin);
 } */
 
- .App {
+.App {
     text-align: center;
-    background-color: #282c34;
-    background-image: url(img/Board-buddies-bg.png);
-    min-height: 100vh;
+    background-color: #282c34; /* Fallback color */
+    background-image: url(img/backgrounds/Torch-Wall-16.jpg);
+    background-size: cover; /* Ensure the background covers the entire area */
+    background-repeat: no-repeat; /* Prevent repeating of the image */
+    background-position: center; /* Center the background image */
+    min-height: 200vh; /* Minimum height is 100% of the viewport height */
+    padding: 100px; /* Add padding to see more background */
     color: rgb(0, 0, 0);
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Change to column if you want items stacked */
     align-items: center;
     justify-content: center;
 }
@@ -32,7 +36,7 @@
     background-position: center;
     background-attachment: fixed;
     background-color: #282c34;
-
+    display: auto;
     height: 200vh;
     width: 100%;
 }
@@ -66,7 +70,7 @@
 }
 
 .game-details {
-background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     max-width: 300px;
     color: white;
@@ -100,6 +104,7 @@ background-color: rgba(0, 0, 0, 0.8);
     color: #333;
 }
 .navbar {
+    background-color: rgba(30, 30, 30, 0.7);
     flex: none;
 }
 .navbar-nav .nav-link {
@@ -122,21 +127,19 @@ background-color: rgba(0, 0, 0, 0.8);
     position: relative;
     width: 50%;
 }
-.dashboard-img{
-    width: 10rem;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 50%;
-    border: #282c34;
-    border-width: 4em;
-    outline: auto;
-    outline-color: rgb(88, 88, 88);
-    outline-offset: .2em;
-    outline-style: double;
 
+.dashboard-image{
+    aspect-ratio: 1;
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    outline-color: rgba(255, 255, 255, 0.5);
+    outline-style: solid;
+    outline-width: 3px;
 }
-.dashboard-img:hover{
-    color: #008cba;
+
+.dashboard-image:hover{
+    color: #ffffff;
     opacity: 1;
     filter: grayscale(100%);
 }
@@ -186,5 +189,11 @@ background-color: rgba(0, 0, 0, 0.8);
 @media (max-width: 600px) {
     .main-content {
         grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .App {
+        background-size: contain; /* Change for smaller screens */
     }
 }
