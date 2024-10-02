@@ -271,6 +271,7 @@ ALTER TABLE public.meetup_participants OWNER TO "user";
 
 CREATE TABLE public.meetups (
     id integer NOT NULL,
+    meetup_name character varying(70) NOT NULL,
     organizer_id character varying NOT NULL,
     game_id integer NOT NULL,
     location_id integer NOT NULL,
@@ -408,8 +409,9 @@ COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
 --
 
 COPY public.meetup_participants (participant_id, meetup_id, joined_at) FROM stdin;
-6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	14	2024-10-01 19:56:24.726605
-6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	20	2024-10-02 00:32:40.412239
+6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	35	2024-10-02 06:27:22.408469
+e153967e-7bb1-42d1-8e6b-442470fc9a04	35	2024-10-02 06:39:29.863966
+e153967e-7bb1-42d1-8e6b-442470fc9a04	37	2024-10-02 06:39:54.5396
 \.
 
 
@@ -417,14 +419,9 @@ COPY public.meetup_participants (participant_id, meetup_id, joined_at) FROM stdi
 -- Data for Name: meetups; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.meetups (id, organizer_id, game_id, location_id, meetup_date, description, min_players, max_players, status) FROM stdin;
-14	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	5	2024-10-01 12:07:00	Hello, let's play Catan.	2	4	scheduled
-15	6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	3	4	2024-10-01 12:12:00	The largest Magic: the Gathering tournament in the world!!!	100	1000	scheduled
-16	6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	1	5	2024-10-01 12:17:00	Hi, let's play Catan!	3	4	scheduled
-17	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	3	2024-10-01 12:21:00	Let's play	3	4	scheduled
-18	f52ef2cb-b07c-455e-80c1-a720deef34d0	3	4	2024-10-01 12:23:00	Magic	10	20	scheduled
-19	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	3	2024-10-01 12:25:00	huk	5	7	scheduled
-20	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	5	2024-10-01 12:32:00	Let's play 	3	4	scheduled
+COPY public.meetups (id, meetup_name, organizer_id, game_id, location_id, meetup_date, description, min_players, max_players, status) FROM stdin;
+37	Catan and Craft Beers	6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	1	4	2024-11-08 12:15:00	Have some beer while playing Catan.	3	12	scheduled
+35	We're playing Codenames now	f52ef2cb-b07c-455e-80c1-a720deef34d0	2	1	2024-10-02 20:00:00	Only Codenames	10	100	scheduled
 \.
 
 
@@ -437,8 +434,8 @@ COPY public.migrations (name, digest) FROM stdin;
 004_create_location	\\xef96ab97f0f1d79e4c5846471afcb3871b83fca95e89c3067e8566efccda635c
 005_create_game	\\x858e11ddb548a17c1105036b3e4ad8a3cc29a66dc26b9416c24d70a1b6720997
 006_create_players	\\x21a4f307f56bf8d7a45b260679d26a4a513754818f957e7fe5b3cfb4ea84bd6a
-007_create_meetups	\\x542103853659bfe4bfb285e34eb0f0e85184980bb4e629c097ab1cbb73b42689
-008_create_participants	\\x2282b52b96f5ca1d578b39cec52dbe936eac7d74d4046408b977868368cef450
+007_create_meetups	\\x08b4533e6c9c67729b46ece4b36aaa1c9dc335b1f8e15edffb1bfbd66e3d6a94
+008_create_participants	\\x354dc84057489387ee5282c99c83b85b3a7a5f316c22fe1552104f29fda479b8
 \.
 
 
@@ -447,8 +444,9 @@ COPY public.migrations (name, digest) FROM stdin;
 --
 
 COPY public.players (player_id, email, age, city, state, tags, is_verified, is_gamehost, gamehost_id, is_playtester, playtester_id, lat, lon, location_radius, profile_picture) FROM stdin;
-6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	ghostie@example.com	31	Los Angeles	CA	rpg	t	t	0	t	0	0	0	0	player-icons/board-buddies-icon-cat
 f52ef2cb-b07c-455e-80c1-a720deef34d0	djengo_wins@example.com	\N	Tucson	AZ	strategy	t	t	0	t	0	0	0	0	player-icons/board-buddies-icon-shiba
+6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	ghostie@example.com	31	Los Angeles	CA	rpg	t	t	0	t	0	0	0	0	player-icons/board-buddies-icon-cat
+e153967e-7bb1-42d1-8e6b-442470fc9a04	404brain@example.com	33	Denver	CO	cooperative	t	t	0	t	0	0	0	0	player-icons/board-buddies-icon-racoon
 \.
 
 
@@ -483,7 +481,7 @@ SELECT pg_catalog.setval('public.locations_id_seq', 5, true);
 -- Name: meetups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.meetups_id_seq', 20, true);
+SELECT pg_catalog.setval('public.meetups_id_seq', 37, true);
 
 
 --
