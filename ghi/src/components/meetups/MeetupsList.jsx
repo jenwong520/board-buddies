@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import Nav from '../Nav';
-import testImage from '../../img/player-icons/board-buddies-icon-cat.png'
 
 function MeetupsList() {
     const [meetups, setMeetups] = useState([])
     const [search, setSearch] = useState('')
+    console.log("M", meetups)
 
 
     useEffect(() => {
@@ -47,25 +47,34 @@ function MeetupsList() {
                                 }}
                                 >
                                     <div className="meetup-details">
-                                        <h2 className='fs-4'>{new Date(meetup.meetup.meetup_date).toLocaleString()}</h2>
-                                        <h4 className='mt-2'>Organizer: {meetup.meetup.organizer_username}</h4>
-                                        <p className='mt-2'>Meetup Game : {meetup.meetup.game_name}</p>
-                                        <p className='mt-2'>Players: {meetup.meetup.min_players} - {meetup.meetup.max_players}</p>
-                                        <p className='mt-2'>Location: {meetup.meetup.location_name}</p>
-                                        <p>{meetup.meetup.location_city}, {meetup.meetup.location_state}</p>
+                                        <h1 className='fs-4'><strong>{meetup.meetup.meetup_name}</strong></h1>
+                                        <h4 className='fs-4'>{new Date(meetup.meetup.meetup_date).toLocaleString([], {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })}</h4>
+                                        <p className='mt-2'>Game: {meetup.meetup.game_name}<br/>
+                                            Organizer: {meetup.meetup.organizer_username}<br/>
+                                            Players: {meetup.meetup.min_players} - {meetup.meetup.max_players}<br/>
+                                            Location: {meetup.meetup.location_name}<br/>
+                                            {meetup.meetup.location_city}, {meetup.meetup.location_state}</p>
                                     </div>
                                     <div className='meetup-card'>
                                         <h2 className='text-white'>Players currently going to this meetup</h2>
                                         <div className='container'>
                                             <div className='row'>
                                             <div className='col-3'>
-                                                <img className='rounded-circle img-fluid' src={testImage} alt="" />
-                                                <p>{meetup.meetup.organizer_username}</p>
+                                                <img className='rounded-circle img-fluid' src={`/${meetup.meetup.organizer_picture}.png`} alt="" />
+                                                <p>{meetup.meetup.organizer_username}<br />
+                                                    Organizer</p>
+
                                             </div>
                                             {meetup.participants.map((player)=> {
                                                 return(
                                                     <div className='col-3 ' key={player.participant_id}>
-                                                        <img className='rounded-circle img-fluid' src={testImage} alt="" />
+                                                        <img className='rounded-circle img-fluid' src={`/${player.profile_picture}.png`} alt="" />
                                                         <p>{player.username}</p>
                                                     </div>
                                                 )
