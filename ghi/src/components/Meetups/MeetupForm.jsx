@@ -17,7 +17,7 @@ function CreateMeetup() {
             .then((data) => setGame(data))
             .catch((error) => console.error('Error fetching games:', error));
 
-            fetch('http://localhost:8000/api/location/')
+        fetch('http://localhost:8000/api/location/')
             .then((response) => response.json())
             .then((data) => setLocation(data))
             .catch((error) => console.error('Error fetching games:', error));
@@ -25,6 +25,13 @@ function CreateMeetup() {
 
     console.log(game)
     console.log(location)
+
+    const [meetupName, setMeetupName] = useState('')
+    const handleMeetupName = (event) => {
+        const value = event.target.value
+        setMeetupName(value)
+    }
+
     const [gameId, setGameId] = useState('')
     const handleGameId = (event) => {
         const value = event.target.value
@@ -67,6 +74,7 @@ function CreateMeetup() {
         event.preventDefault()
         const data = {}
 
+        data.meetup_name = meetupName
         data.game_id = gameId
         data.location_id = locationId
         data.meetup_date = meetupDate
@@ -100,6 +108,19 @@ function CreateMeetup() {
                 <div className="shadow bg-white">
                     <h1>Create a Meetup</h1>
                     <form onSubmit={handleSubmit} id="create-meetup-form">
+
+                        <div className="form-floating m-3">
+                            <input
+                            onChange={handleMeetupName}
+                            placeholder="Name of your meetup"
+                            type="text"
+                            name="name"
+                            id="name"
+                            className="form-control"
+                            required
+                             />
+                             <label>Title</label>
+                        </div>
                         <div className="form-floating m-3">
                             <select
                             name="game"

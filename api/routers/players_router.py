@@ -67,6 +67,9 @@ async def update_player(
     """
     if not user:
         return {"message": "Authentication required"}
+
+    print(f"Updating player ID: {player_id} with data: {player}")
+
     result = repo.update(player_id, player, user.user_id)
     if result:
         return result

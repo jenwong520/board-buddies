@@ -19,6 +19,7 @@ class MeetupIn(BaseModel):
     Input model for creating a meetup
     """
 
+    meetup_name: str
     game_id: int
     location_id: int
     meetup_date: datetime
@@ -33,8 +34,10 @@ class MeetupOut(BaseModel):
     Output model for meetup details
     """
     id: int
+    meetup_name: str
     organizer_id: str
     organizer_username: str
+    organizer_picture: str
     game_name: str
     game_image: Optional[str]
     location_name: str
@@ -52,6 +55,7 @@ class MeetupOut(BaseModel):
 class ParticipantOut(BaseModel):
     participant_id: str
     username: str
+    profile_picture: Optional[str]
 
 
 class MeetupDetailsOut(BaseModel):
