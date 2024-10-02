@@ -95,7 +95,10 @@ class MeetupQueries:
                     for meetup in meetups:
                         cur.execute(
                             """
-                            SELECT p.player_id, u.username, COALESCE(p.profile_picture, '') AS profile_picture
+                            SELECT
+                            p.player_id,
+                            u.username,
+                            COALESCE(p.profile_picture, '') AS profile_picture
                             FROM meetup_participants mp
                             JOIN players p ON mp.participant_id = p.player_id
                             JOIN users u ON u.user_id = p.player_id
@@ -121,7 +124,11 @@ class MeetupQueries:
             print(e)
             return {"message": "Could not get list of meetups"}
 
-    def create(self, meetup: MeetupIn, organizer_id: str) -> Union[MeetupOut, Error]:
+    def create(
+            self,
+            meetup: MeetupIn,
+            organizer_id: str
+    ) -> Union[MeetupOut, Error]:
         """
         Creates meetup in the database.
         Associates meetup with authenticated user (organizer).
@@ -159,7 +166,9 @@ class MeetupQueries:
                     )
                     result = cur.fetchone()
                     if result is None:
-                        return Error(message="Could not create meetup in databaseeeeee")
+                        return Error(
+                            message="Could not create meetup in database"
+                        )
 
                     meetup_id = result[0]
 
@@ -198,7 +207,9 @@ class MeetupQueries:
                     if meetup_record:
                         return self.convert_to_record(meetup_record)
                     else:
-                        return Error(message="Meetup created but could not retrieve details")
+                        return Error(
+                            message="Meetup created but could not retrieve details"
+                        )
 
         except Exception as e:
             print(e)
@@ -248,7 +259,10 @@ class MeetupQueries:
 
                     cur.execute(
                         """
-                        SELECT p.player_id, u.username, COALESCE(p.profile_picture, '') AS profile_picture
+                        SELECT
+                            p.player_id,
+                            u.username,
+                            COALESCE(p.profile_picture, '') AS profile_picture
                         FROM meetup_participants mp
                         JOIN players p ON mp.participant_id = p.player_id
                         JOIN users u ON u.user_id = p.player_id
@@ -478,7 +492,9 @@ class MeetupQueries:
                     )
 
                     if cur.rowcount == 0:
-                        return Error(message="Failed to add participant to the meetup")
+                        return Error(
+                            message="Failed to add participant to the meetup"
+                        )
 
                     return {"message": "Successfully joined the meetup"}
 
