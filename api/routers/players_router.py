@@ -68,12 +68,14 @@ async def update_player(
     if not user:
         return {"message": "Authentication required"}
 
-    print(f"Updating player ID: {player_id} with data: {player}")
-
     result = repo.update(player_id, player, user.user_id)
-    if result:
-        return result
-    return {"message": "Could not update player"}
+
+    # if result in None:
+    #     return {"message": "Player not found"}
+
+    # was breaking something significantly for some reason
+
+    return result
 
 
 @router.delete("/{player_id}", response_model=bool)

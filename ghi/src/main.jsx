@@ -1,22 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import SignInForm from './components/users/SignInForm';
-import SignUpForm from './components/users/SignUpForm';
+import App from './App';
+import ProtectedRoute from './components/ProtectedRoute';
+import AuthProvider from "./components/AuthProvider";
 import Construct from './components/Construct';
 import LandingPage from './components/Landing';
-import App from './App';
+import SignInForm from './components/users/SignInForm';
+import SignUpForm from './components/users/SignUpForm';
+import Profile from './components/players/Profile';
+import CreateProfile from './components/players/CreateProfile';
+import EditProfile from './components/players/EditProfile';
 import Dashboard from './components/users/Dashboard';
 import LocationForm from './components/location/LocationForm';
 import LocationList from './components/location/LocationList';
 import LocationDetail from './components/location/LocationDetail';
-
 import GameList from './components/games/GameList';
 import GameDetail from './components/games/GameDetail';
-
-import AuthProvider from "./components/AuthProvider";
-import ProtectedRoute from './components/ProtectedRoute';
-
 import MeetupsList from './components/meetups/MeetupsList';
 import MeetupDetail from './components/meetups/MeetupDetail';
 import MeetupForm from './components/meetups/MeetupForm';
@@ -25,6 +25,7 @@ import MeetupEditForm from './components/meetups/MeetupEditForm';
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
 const BASE_URL = import.meta.env.BASE_URL
@@ -49,6 +50,30 @@ const router = createBrowserRouter(
                 {
                     path: 'signin',
                     element: <SignInForm />,
+                },
+                {
+                    path: 'profile',
+                    element: (
+                        <ProtectedRoute>
+                            <Profile />
+                        </ProtectedRoute>
+                    ),
+                },
+                {
+                    path: 'createprofile',
+                    element: (
+                        <ProtectedRoute>
+                            <CreateProfile />
+                        </ProtectedRoute>
+                    ),
+                },
+                {
+                    path: 'editprofile',
+                    element: (
+                        <ProtectedRoute>
+                            <EditProfile />
+                        </ProtectedRoute>
+                    ),
                 },
                 {
                     path: 'dashboard',

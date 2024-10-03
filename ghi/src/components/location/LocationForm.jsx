@@ -65,7 +65,7 @@ const CreateLocation = () => {
             }
         }
         try {
-            const response =  await fetch(url,fetchConfig)
+            const response =  await fetch(url, fetchConfig)
             if (response.ok) {
                 const newLocation = await response.json()
                 console.log(newLocation)
