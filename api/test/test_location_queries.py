@@ -18,7 +18,7 @@ class TestGetLocationById:
     def details(self, id: int) -> Optional[LocationOut]:
         if id == 1:
             return LocationOut(
-                id= 1,
+                id=1,
                 name="Turn Zero Games",
                 address="3959 Wilshire Blvd ste a-9",
                 city="Los Angeles",
@@ -61,23 +61,25 @@ def test_post_request():
     app.dependency_overrides[LocationQueries] = TestGetLocationList
     # Act
     response = client.get("/api/location/")
-    #Clean up
+    # Clean up
     app.dependency_overrides = {}
     # Assert
     assert response.status_code == 200
     assert response.json() == [
         {
             "id": 1,
-            "name":"Mythic Games",
+            "name": "Mythic Games",
         }
     ]
+
+
 class TestCreateLocationQueries:
 
     def create_location(
-            self, new_location:LocationIn
+            self, new_location: LocationIn
     ) -> LocationOut:
         return LocationOut(
-            id= 1,
+            id=1,
             name=new_location.name,
             address=new_location.address,
             city=new_location.city,
@@ -112,19 +114,20 @@ def test_create_user():
     assert response.status_code == 200
     assert response.json() == expected
 
+
 class TestUpdateLocationQueries:
 
     def update(
-        self, id:int, response:Response
+        self, id: int, response: Response
     ) -> LocationOut:
         if id == 1:
             return LocationOut(
-            id= 1,
-            name= "Mythic Games",
-            address= "527 Tyler St",
-            city= "Monterery",
-            state= "CA",
-            store_type= "Game Store"
+                id=1,
+                name="Mythic Games",
+                address="527 Tyler St",
+                city="Monterery",
+                state="CA",
+                store_type="Game Store"
             )
         None
 
