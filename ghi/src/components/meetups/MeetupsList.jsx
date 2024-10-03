@@ -48,33 +48,34 @@ function MeetupsList() {
                                 >
                                     <div className="meetup-details">
                                         <h1 className='fs-4'><strong>{meetup.meetup.meetup_name}</strong></h1>
-                                        <h4 className='fs-4'>{new Date(meetup.meetup.meetup_date).toLocaleString([], {
+                                        <p>Start: {new Date(meetup.meetup.start_time).toLocaleString([], {
                                             year: 'numeric',
                                             month: 'long',
                                             day: 'numeric',
                                             hour: '2-digit',
                                             minute: '2-digit'
-                                        })}</h4>
-                                        <p className='mt-2'>Game: {meetup.meetup.game_name}<br/>
-                                            Organizer: {meetup.meetup.organizer_username}<br/>
-                                            Players: {meetup.meetup.min_players} - {meetup.meetup.max_players}<br/>
+                                        })}</p>
+                                        <p>End: {new Date(meetup.meetup.end_time).toLocaleString([], {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })}</p>
+                                        <p className='mt-2'>Game: {meetup.meetup.game_name}</p>
+                                        <p className=''>Organizer: {meetup.meetup.organizer_username}</p>
+                                        <p>Players: {meetup.meetup.min_players} - {meetup.meetup.max_players}<br/>
                                             Location: {meetup.meetup.location_name}<br/>
                                             {meetup.meetup.location_city}, {meetup.meetup.location_state}</p>
                                     </div>
                                     <div className='meetup-card'>
-                                        <h2 className='text-white'>Players currently going to this meetup</h2>
+                                        <h2 className='text-white mb-3'>Players currently going to this meetup</h2>
                                         <div className='container'>
                                             <div className='row'>
-                                            <div className='col-3'>
-                                                <img className='rounded-circle img-fluid' src={`/${meetup.meetup.organizer_picture}.png`} alt="" />
-                                                <p>{meetup.meetup.organizer_username}<br />
-                                                    Organizer</p>
-
-                                            </div>
                                             {meetup.participants.map((player)=> {
                                                 return(
                                                     <div className='col-3 ' key={player.participant_id}>
-                                                        <img className='rounded-circle img-fluid' src={`/${player.profile_picture}.png`} alt="" />
+                                                        <img className='rounded-circle img-fluid' src={`${player.profile_picture}.png`} alt="" />
                                                         <p>{player.username}</p>
                                                     </div>
                                                 )

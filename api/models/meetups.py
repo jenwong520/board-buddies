@@ -22,7 +22,8 @@ class MeetupIn(BaseModel):
     meetup_name: str
     game_id: int
     location_id: int
-    meetup_date: datetime
+    start_time: datetime
+    end_time: datetime
     description: str
     min_players: int
     max_players: int
@@ -45,7 +46,8 @@ class MeetupOut(BaseModel):
     location_city: str
     location_state: str
     location_store_type: str
-    meetup_date: datetime
+    start_time: datetime
+    end_time: datetime
     description: str
     min_players: int
     max_players: int

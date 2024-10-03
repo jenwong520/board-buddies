@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import useAuthService from '../../hooks/useAuthService'
 import { useParams } from 'react-router-dom';
 import Nav from '../Nav';
+import baseImg from "../../../public/default/board-buddies-icon-default.png"
 
 
 function MeetupDetail() {
@@ -11,7 +12,6 @@ function MeetupDetail() {
     const [participants, setParticipants] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isParticipant, setIsParticipant] = useState(false);
-    const [organizerJoin, setOrganizerJoin] = useState(false);
     console.log("P", participants)
     console.log("U", user)
     console.log("M", meetup)
@@ -105,6 +105,13 @@ function MeetupDetail() {
             });
     };
 
+    const icon = "board-buddies-icon-cat"
+    const name = String(meetup.location_name)
+    const city = String(meetup.location_city)
+    const convertedName = name.split(' ').join('+')
+    const convertedCity = city.split(' ').join('+')
+    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyCdG1XCUBYkXysiPi1E8cc6UqCR8OvRW5M&q=${convertedName},${convertedCity}+${meetup.state}`
+
     const handleOrganizerJoin = () => {
         fetch(`http://localhost:8000/api/meetup/${id}/join`, {
             method: 'POST',
@@ -140,13 +147,31 @@ function MeetupDetail() {
             });
     };
 
+    const handleOrganizerLeave = () => {
+        fetch(`http://localhost:8000/api/meetup/${id}/leave`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+            .then((response) => {
+                if (response.ok) {
+                    setParticipants(participants.filter(participant => participant.participant_id !== user.user_id));
+                    setIsParticipant(false);
+                } else {
+                    console.error('Failed to leave the meetup');
+                }
+            })
+            .catch((error) => {
+                console.error('Error leaving meetup:', error);
+            });
+    };
+
 
     return (
         <>
             <Nav />
-            <div>
+            <div className='container row'>
                 <header
-                    className="detail-header"
+                    className="detail-header rounded mb-5"
                     style={{
                         backgroundImage: `url(${meetup.game_image})`,
                     }}
@@ -158,7 +183,7 @@ function MeetupDetail() {
                     <h2>Game: {meetup.game_name}</h2>
                     <p>
                         <img
-                            src={`/${meetup.organizer_picture}.png`}
+                            src={`${meetup.organizer_picture}.png`}
                             alt="Organizer"
                             style={{
                                 width: '40px',
@@ -169,40 +194,47 @@ function MeetupDetail() {
                             }}
                             />
                             Organized by {meetup.organizer_username}</p>
-                    <p><strong>Date and Time:</strong><br />
-                        {new Date(meetup.meetup_date).toLocaleString([], {
+                    <p><strong>Start:</strong><br />
+                        {new Date(meetup.start_time).toLocaleString([], {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric',
                             hour: '2-digit',
                             minute: '2-digit'
                         })}</p>
-                    <p><strong>Location:</strong><br />
-                        {meetup.location_name} <br />
-                        {meetup.location_address} <br />
-                        {meetup.location_city}, {meetup.location_state}</p>
-                    <p><strong>Details:</strong> <br />
-                        {meetup.description}</p>
-                    <p><strong>Players Needed:</strong> {meetup.min_players} - {meetup.max_players}</p>
-                </div>
+                    <p><strong>End:</strong><br />
+                        {new Date(meetup.end_time).toLocaleString([], {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</p>
 
-                <div>
-                    {user && meetup.organizer_id === user.user_id && !organizerJoin && (
-                        <button onClick={handleOrganizerJoin}>Join as Participant</button>
-                    )}
-                    {user && meetup.organizer_id !== user.user_id && (
-                        <>
-                            {!isParticipant && (
-                                <button onClick={handleJoin}>Join Meetup</button>
-                            )} {isParticipant && (
-                                <button onClick={handleLeave}>Leave Meetup</button>
-                            )}
-                        </>
-                    )}
+                        <p><strong>Details:</strong> <br />
+                            {meetup.description}</p>
+                        <p><strong>Players Needed:</strong> {meetup.min_players} - {meetup.max_players}</p>
+                    <div>
+                        {!isParticipant && user && meetup.organizer_id === user.user_id && (
+                            <button className='btn btn-info' onClick={handleOrganizerJoin}>Join as Participant</button>
+                        )}
+                        {isParticipant && user && meetup.organizer_id === user.user_id && (
+                            <button className='btn btn-danger' onClick={handleOrganizerLeave}>Leave as Participant</button>
+                        )}
+                        {user && meetup.organizer_id !== user.user_id && (
+                            <>
+                                {!isParticipant && (
+                                    <button className='btn btn-info' onClick={handleJoin}>Join Meetup</button>
+                                )} {isParticipant && (
+                                    <button className='btn btn-danger' onClick={handleLeave}>Leave Meetup</button>
+                                )}
+                            </>
+                        )}
+                    </div>
                 </div>
 
                 <div className="details-container">
-                    <h2>Participants</h2>
+                    <h2>Players</h2>
                     {participants.length > 0 ? (
                         <div className="row" style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {participants.map((participant) => (
@@ -213,9 +245,9 @@ function MeetupDetail() {
                                 >
                                     <img
                                         className="rounded-circle"
-                                        src={`/${participant.profile_picture}.png`}
+                                        src={`${participant.profile_picture}.png`}
                                         alt=""
-                                        style={{ width: '100px', height: '100px', objectFit: 'cover', marginBottom: '10px' }} // Set fixed size for images
+                                        style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '10px' }} // Set fixed size for images
                                     />
                                     <p style={{ textAlign: 'center', fontSize: '14px', wordWrap: 'break-word' }}>
                                         {participant.username}
@@ -227,7 +259,19 @@ function MeetupDetail() {
                         <p>No participants have joined yet.</p>
                     )}
                 </div>
-
+                <div className='details-container'>
+                    <h2>Location:</h2>
+                    <h3><strong>{meetup.location_name}</strong></h3>
+                    <p>{meetup.location_address} {meetup.location_city}, {meetup.location_state}</p>
+                    <iframe
+                    height="450"
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={mapsUrl}
+                    className='col-12'
+                    ></iframe>
+                </div>
 
             </div>
         </>
