@@ -1,6 +1,7 @@
 """
 Database Queries for Users
 """
+from datetime import datetime
 import logging
 import os
 import psycopg
@@ -74,7 +75,7 @@ class UserQueries:
                         """
                         SELECT *
                         FROM users
-                        WHERE id = %s
+                        WHERE user_id = %s
                         """,
                         [user_id],
                     )
@@ -89,7 +90,14 @@ class UserQueries:
 
         return user
 
-    def create_user(self, username: str, hashed_password: str) -> UserWithPw:
+    def create_user(
+            self,
+            username: str,
+            hashed_password: str,
+            is_developer: bool,
+            is_player: bool,
+            date_joined: datetime
+    ) -> UserWithPw:
         """
         Creates a new user in the database
 
@@ -104,13 +112,29 @@ class UserQueries:
                         INSERT INTO users (
                             user_id,
                             username,
-                            password
+                            password,
+                            is_developer,
+                            is_player,
+                            date_joined
                         ) VALUES (
+                            %s, %s, %s,
                             %s, %s, %s
                         )
-                        RETURNING user_id, username, password;
+                        RETURNING user_id,
+                            username,
+                            password,
+                            is_developer,
+                            is_player,
+                            date_joined;
                         """,
-                        [uid, username, hashed_password]
+                        [
+                            uid,
+                            username,
+                            hashed_password,
+                            is_developer,
+                            is_player,
+                            date_joined
+                        ]
                     )
                     user = cur.fetchone()
                     if not user:

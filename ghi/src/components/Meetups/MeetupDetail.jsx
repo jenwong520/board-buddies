@@ -183,7 +183,7 @@ function MeetupDetail() {
                     <h2>Game: {meetup.game_name}</h2>
                     <p>
                         <img
-                            src={`${meetup.organizer_picture}.png`}
+                            src={`${meetup.organizer_picture}`}
                             alt="Organizer"
                             style={{
                                 width: '40px',
@@ -245,7 +245,7 @@ function MeetupDetail() {
                                 >
                                     <img
                                         className="rounded-circle"
-                                        src={`${participant.profile_picture}.png`}
+                                        src={`${participant.profile_picture}`}
                                         alt=""
                                         style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '10px' }} // Set fixed size for images
                                     />
