@@ -20,14 +20,14 @@ class TestGetGameById:
             return GameOut(
                 id=1,
                 name="Catan",
-                game_image="https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+                game_image="image",
                 min_players=3,
                 max_players=4,
                 game_duration=90,
                 min_age=10,
                 max_age=0,
                 tags="strategy",
-                description="In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+                description="description"
             )
         return None
 
@@ -42,14 +42,14 @@ def test_get_game_by_id():
     assert response.json() == {
         "id": 1,
         "name": "Catan",
-        "game_image": "https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+        "game_image": "image",
         "min_players": 3,
         "max_players": 4,
         "game_duration": 90,
         "min_age": 10,
         "max_age": 0,
         "tags": "strategy",
-        "description": "In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+        "description": "description"
     }
 
 
@@ -60,14 +60,14 @@ class TestGetGameList:
             GameOut(
                 id=1,
                 name="Catan",
-                game_image="https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+                game_image="image",
                 min_players=3,
                 max_players=4,
                 game_duration=90,
                 min_age=10,
                 max_age=0,
                 tags="strategy",
-                description="In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+                description="description"
             )
         ]
 
@@ -85,14 +85,14 @@ def test_post_request():
         {
             "id": 1,
             "name": "Catan",
-            "game_image": "https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+            "game_image": "image",
             "min_players": 3,
             "max_players": 4,
             "game_duration": 90,
             "min_age": 10,
             "max_age": 0,
             "tags": "strategy",
-            "description": "In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+            "description": "description"
         }
     ]
 
@@ -122,27 +122,27 @@ def test_create_game():
     json_data = {
         "id": 1,
         "name": "Catan",
-        "game_image": "https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+        "game_image": "image",
         "min_players": 3,
         "max_players": 4,
         "game_duration": 90,
         "min_age": 10,
         "max_age": 0,
         "tags": "strategy",
-        "description": "In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+        "description": "description"
     }
 
     expected = {
         "id": 1,
         "name": "Catan",
-        "game_image": "https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+        "game_image": "image",
         "min_players": 3,
         "max_players": 4,
         "game_duration": 90,
         "min_age": 10,
         "max_age": 0,
         "tags": "strategy",
-        "description": "In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+        "description": "description"
     }
 
     response = client.post("api/game/", json=json_data)
@@ -161,14 +161,14 @@ class TestUpdateGameQueries:
             return GameOut(
                 id=1,
                 name="Catan",
-                game_image="https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+                game_image="image",
                 min_players=3,
                 max_players=4,
                 game_duration=90,
                 min_age=10,
                 max_age=0,
                 tags="strategy",
-                description="In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+                description="description"
             )
         None
 
@@ -179,27 +179,27 @@ def test_update_game():
     json_data = {
         "id": 1,
         "name": "Catan",
-        "game_image": "https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+        "game_image": "image",
         "min_players": 3,
         "max_players": 4,
         "game_duration": 90,
         "min_age": 10,
         "max_age": 0,
         "tags": "strategy",
-        "description": "In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+        "description": "description"
     }
 
     expected = {
         "id": 1,
         "name": "Catan",
-        "game_image": "https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+        "game_image": "image",
         "min_players": 3,
         "max_players": 4,
         "game_duration": 90,
         "min_age": 10,
         "max_age": 0,
         "tags": "strategy",
-        "description": "In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep."
+        "description": "description"
     }
 
     response = client.put("api/game/1", json=json_data)
