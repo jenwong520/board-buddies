@@ -46,11 +46,12 @@ class MeetupQueries:
             location_city=record[9],
             location_state=record[10],
             location_store_type=record[11],
-            meetup_date=record[12],
-            description=record[13],
-            min_players=record[14],
-            max_players=record[15],
-            status=record[16],
+            start_time=record[12],
+            end_time=record[13],
+            description=record[14],
+            min_players=record[15],
+            max_players=record[16],
+            status=record[17],
 
         )
 
@@ -76,7 +77,8 @@ class MeetupQueries:
                             l.city AS location_city,
                             l.state AS location_state,
                             l.store_type AS location_store_type,
-                            m.meetup_date,
+                            m.start_time,
+                            m.end_time,
                             m.description,
                             m.min_players,
                             m.max_players,
@@ -86,7 +88,7 @@ class MeetupQueries:
                         JOIN games g ON m.game_id = g.id
                         JOIN locations l ON m.location_id = l.id
                         JOIN users u ON m.organizer_id = u.user_id
-                        ORDER BY m.meetup_date;
+                        ORDER BY m.start_time;
                         """
                     )
                     meetups = cur.fetchall()
@@ -144,12 +146,13 @@ class MeetupQueries:
                             organizer_id,
                             game_id,
                             location_id,
-                            meetup_date,
+                            start_time,
+                            end_time,
                             description,
                             min_players,
                             max_players,
                             status
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
@@ -157,7 +160,8 @@ class MeetupQueries:
                             organizer_id,
                             meetup.game_id,
                             meetup.location_id,
-                            meetup.meetup_date,
+                            meetup.start_time,
+                            meetup.end_time,
                             meetup.description,
                             meetup.min_players,
                             meetup.max_players,
@@ -187,7 +191,8 @@ class MeetupQueries:
                             l.city AS location_city,
                             l.state AS location_state,
                             l.store_type AS location_store_type,
-                            m.meetup_date,
+                            m.start_time,
+                            m.end_time,
                             m.description,
                             m.min_players,
                             m.max_players,
@@ -238,7 +243,8 @@ class MeetupQueries:
                             l.city AS location_city,
                             l.state AS location_state,
                             l.store_type AS location_store_type,
-                            m.meetup_date,
+                            m.start_time,
+                            m.end_time,
                             m.description,
                             m.min_players,
                             m.max_players,
@@ -307,7 +313,8 @@ class MeetupQueries:
                         SET meetup_name = %s,
                             game_id = %s,
                             location_id = %s,
-                            meetup_date = %s,
+                            start_time = %s,
+                            end_time = %s,
                             description = %s,
                             min_players = %s,
                             max_players = %s,
@@ -319,7 +326,8 @@ class MeetupQueries:
                             meetup.meetup_name,
                             meetup.game_id,
                             meetup.location_id,
-                            meetup.meetup_date,
+                            meetup.start_time,
+                            meetup.end_time,
                             meetup.description,
                             meetup.min_players,
                             meetup.max_players,
@@ -347,7 +355,8 @@ class MeetupQueries:
                             l.city AS location_city,
                             l.state AS location_state,
                             l.store_type AS location_store_type,
-                            m.meetup_date,
+                            m.start_time,
+                            m.end_time,
                             m.description,
                             m.min_players,
                             m.max_players,
