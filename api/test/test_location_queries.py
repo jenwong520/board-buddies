@@ -1,4 +1,5 @@
 from main import app
+from fastapi import Response
 from fastapi.testclient import TestClient
 from queries.location_queries import LocationQueries
 from models.locations import LocationIn, LocationOut, LocationList
@@ -14,7 +15,7 @@ def test_init():
 
 class TestGetLocationById:
 
-    def get_by_id(self, id: int) -> Optional[LocationOut]:
+    def details(self, id: int) -> Optional[LocationOut]:
         if id == 1:
             return LocationOut(
                 id= 1,
@@ -27,11 +28,11 @@ class TestGetLocationById:
         return None
 
 
-def test_get_user_by_id():
+def test_get_location_by_id():
     app.dependency_overrides[LocationQueries] = TestGetLocationById
 
     response = client.get("/api/location/1")
-    app.dependdency_overrides = {}
+    app.dependency_overrides = {}
 
     assert response.status_code == 200
     assert response.json() == {
@@ -46,7 +47,7 @@ def test_get_user_by_id():
 
 class TestGetLocationList:
 
-    def get_loctation_list(self) -> List[LocationList]:
+    def get_all(self) -> List[LocationList]:
         return [
             LocationList(
                 id="1",
@@ -72,7 +73,7 @@ def test_post_request():
     ]
 class TestCreateLocationQueries:
 
-    def fake_create_user(
+    def create_location(
             self, new_location:LocationIn
     ) -> LocationOut:
         return LocationOut(
@@ -97,7 +98,7 @@ def test_create_user():
     }
 
     expected = {
-        "id": "1",
+        "id": 1,
         "name": "Mythic Games",
         "address": "527 Tyler St",
         "city": "Monterery",
@@ -113,8 +114,8 @@ def test_create_user():
 
 class TestUpdateLocationQueries:
 
-    def fake_update_location(
-        self, id: int
+    def update(
+        self, id:int, response:Response
     ) -> LocationOut:
         if id == 1:
             return LocationOut(
