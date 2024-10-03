@@ -233,6 +233,7 @@ function MeetupDetail() {
                     </div>
                 </div>
 
+
                 <div className="details-container">
                     <h2>Players</h2>
                     {participants.length > 0 ? (
