@@ -70,3 +70,86 @@ def test_post_request():
             "name":"Mythic Games",
         }
     ]
+class TestCreateLocationQueries:
+
+    def fake_create_user(
+            self, new_location:LocationIn
+    ) -> LocationOut:
+        return LocationOut(
+            id= 1,
+            name=new_location.name,
+            address=new_location.address,
+            city=new_location.city,
+            state=new_location.state,
+            store_type=new_location.store_type
+        )
+
+
+def test_create_user():
+    app.dependency_overrides[LocationQueries] = TestCreateLocationQueries
+
+    json_data = {
+        "name": "Mythic Games",
+        "address": "527 Tyler St",
+        "city": "Monterery",
+        "state": "CA",
+        "store_type": "Game Store"
+    }
+
+    expected = {
+        "id": "1",
+        "name": "Mythic Games",
+        "address": "527 Tyler St",
+        "city": "Monterery",
+        "state": "CA",
+        "store_type": "Game Store"
+    }
+
+    response = client.post("api/location/", json=json_data)
+    app.dependency_overrides = {}
+
+    assert response.status_code == 200
+    assert response.json() == expected
+
+class TestUpdateLocationQueries:
+
+    def fake_update_location(
+        self, id: int
+    ) -> LocationOut:
+        if id == 1:
+            return LocationOut(
+            id= 1,
+            name= "Mythic Games",
+            address= "527 Tyler St",
+            city= "Monterery",
+            state= "CA",
+            store_type= "Game Store"
+            )
+        None
+
+
+def test_update_location():
+    app.dependency_overrides[LocationQueries] = TestUpdateLocationQueries
+
+    json_data = {
+        "name": "Mythic Games",
+        "address": "527 Tyler St",
+        "city": "Monterery",
+        "state": "CA",
+        "store_type": "Game Store"
+    }
+
+    expected = {
+        "id": 1,
+        "name": "Mythic Games",
+        "address": "527 Tyler St",
+        "city": "Monterery",
+        "state": "CA",
+        "store_type": "Game Store"
+    }
+
+    response = client.put("api/location/1", json=json_data)
+    app.dependency_overrides = {}
+
+    assert response.status_code == 200
+    assert response.json() == expected
