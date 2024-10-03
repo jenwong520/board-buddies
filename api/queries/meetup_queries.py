@@ -35,14 +35,24 @@ class MeetupQueries:
     def convert_to_record(self, record) -> MeetupOut:
         return MeetupOut(
             id=record[0],
-            organizer_id=record[1],
-            game_id=record[2],
-            location_id=record[3],
-            meetup_date=record[4],
-            description=record[5],
-            min_players=record[6],
-            max_players=record[7],
-            status=record[8]
+            meetup_name=record[1],
+            organizer_id=record[2],
+            organizer_username=record[3],
+            organizer_picture=record[4],
+            game_name=record[5],
+            game_image=record[6],
+            location_name=record[7],
+            location_address=record[8],
+            location_city=record[9],
+            location_state=record[10],
+            location_store_type=record[11],
+            start_time=record[12],
+            end_time=record[13],
+            description=record[14],
+            min_players=record[15],
+            max_players=record[16],
+            status=record[17],
+
         )
 
     def get_all(self) -> Union[Error, List[dict]]:
@@ -54,17 +64,43 @@ class MeetupQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT *
-                        FROM meetups
-                        ORDER BY meetups.meetup_date;
+                        SELECT
+                            m.id,
+                            m.meetup_name,
+                            m.organizer_id,
+                            u.username AS organizer_username,
+                            p.profile_picture AS organizer_picture,
+                            g.name AS game_name,
+                            g.game_image AS game_image,
+                            l.name AS location_name,
+                            l.address AS location_address,
+                            l.city AS location_city,
+                            l.state AS location_state,
+                            l.store_type AS location_store_type,
+                            m.start_time,
+                            m.end_time,
+                            m.description,
+                            m.min_players,
+                            m.max_players,
+                            m.status
+                        FROM meetups m
+                        JOIN players p ON m.organizer_id = p.player_id
+                        JOIN games g ON m.game_id = g.id
+                        JOIN locations l ON m.location_id = l.id
+                        JOIN users u ON m.organizer_id = u.user_id
+                        ORDER BY m.start_time;
                         """
                     )
                     meetups = cur.fetchall()
                     meetup_list = []
+
                     for meetup in meetups:
                         cur.execute(
                             """
-                            SELECT p.player_id, u.username
+                            SELECT
+                            p.player_id,
+                            u.username,
+                            COALESCE(p.profile_picture, '') AS profile_picture
                             FROM meetup_participants mp
                             JOIN players p ON mp.participant_id = p.player_id
                             JOIN users u ON u.user_id = p.player_id
@@ -73,12 +109,14 @@ class MeetupQueries:
                             [meetup[0]]
                         )
                         participants = cur.fetchall()
+
                         meetup_list.append({
                             "meetup": self.convert_to_record(meetup),
                             "participants": [
                                 {
                                     "participant_id": participant[0],
                                     "username": participant[1],
+                                    "profile_picture": participant[2]
                                 }
                                 for participant in participants
                             ]
@@ -88,11 +126,15 @@ class MeetupQueries:
             print(e)
             return {"message": "Could not get list of meetups"}
 
-    def create(self, meetup: MeetupIn, organizer_id: str) -> MeetupOut:
+    def create(
+            self,
+            meetup: MeetupIn,
+            organizer_id: str
+    ) -> Union[MeetupOut, Error]:
         """
         Creates meetup in the database.
         Associates meetup with authenticated user (organizer).
-        Raises a meetup insertion exception if createing the Meetup fails.
+        Raises a meetup insertion exception if creating the meetup fails.
         """
         try:
             with pool.connection() as conn:
@@ -100,34 +142,79 @@ class MeetupQueries:
                     cur.execute(
                         """
                         INSERT INTO meetups (
+                            meetup_name,
                             organizer_id,
                             game_id,
                             location_id,
-                            meetup_date,
+                            start_time,
+                            end_time,
                             description,
                             min_players,
                             max_players,
                             status
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
+                            meetup.meetup_name,
                             organizer_id,
                             meetup.game_id,
                             meetup.location_id,
-                            meetup.meetup_date,
+                            meetup.start_time,
+                            meetup.end_time,
                             meetup.description,
                             meetup.min_players,
                             meetup.max_players,
                             meetup.status or 'scheduled'
                         ]
                     )
-                    meetup_id = cur.fetchone()[0]
-                    return self.meetup_in_to_out(
-                        meetup,
-                        meetup_id,
-                        organizer_id
+                    result = cur.fetchone()
+                    if result is None:
+                        return Error(
+                            message="Could not create meetup in database"
+                        )
+
+                    meetup_id = result[0]
+
+                    cur.execute(
+                        """
+                        SELECT
+                            m.id,
+                            m.meetup_name,
+                            m.organizer_id,
+                            p.profile_picture AS organizer_picture,
+                            u.username AS organizer_username,
+                            g.name AS game_name,
+                            g.game_image AS game_image,
+                            l.name AS location_name,
+                            l.address AS location_address,
+                            l.city AS location_city,
+                            l.state AS location_state,
+                            l.store_type AS location_store_type,
+                            m.start_time,
+                            m.end_time,
+                            m.description,
+                            m.min_players,
+                            m.max_players,
+                            m.status
+                        FROM meetups m
+                        JOIN players p ON m.organizer_id = p.player_id
+                        JOIN games g ON m.game_id = g.id
+                        JOIN locations l ON m.location_id = l.id
+                        JOIN users u ON m.organizer_id = u.user_id
+                        WHERE m.id = %s
+                        """,
+                        [meetup_id]
                     )
+
+                    meetup_record = cur.fetchone()
+                    print(meetup_record)
+                    if meetup_record:
+                        return self.convert_to_record(meetup_record)
+                    else:
+                        return Error(
+                            message="Meetup created but could not retrieve details"  # noqa
+                        )
 
         except Exception as e:
             print(e)
@@ -136,38 +223,68 @@ class MeetupQueries:
     def details(self, meetup_id: int) -> Optional[dict]:
         """
         Retrieves the details of a specific meetup along with participants.
+        Includes game details, location details, organizer's username.
         """
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT *
-                        FROM meetups
-                        WHERE meetups.id = %s
+                        SELECT
+                            m.id,
+                            m.meetup_name,
+                            m.organizer_id,
+                            u.username AS organizer_username,
+                            p.profile_picture AS organizer_picture,
+                            g.name AS game_name,
+                            g.game_image AS game_image,
+                            l.name AS location_name,
+                            l.address AS location_address,
+                            l.city AS location_city,
+                            l.state AS location_state,
+                            l.store_type AS location_store_type,
+                            m.start_time,
+                            m.end_time,
+                            m.description,
+                            m.min_players,
+                            m.max_players,
+                            m.status
+                        FROM meetups m
+                        JOIN players p ON m.organizer_id = p.player_id
+                        JOIN games g ON m.game_id = g.id
+                        JOIN locations l ON m.location_id = l.id
+                        JOIN users u ON m.organizer_id = u.user_id
+                        WHERE m.id = %s
                         """,
                         [meetup_id]
                     )
+
                     meetup_record = cur.fetchone()
                     if not meetup_record:
                         return None
+
                     cur.execute(
                         """
-                        SELECT players.player_id, users.username
+                        SELECT
+                            p.player_id,
+                            u.username,
+                            COALESCE(p.profile_picture, '') AS profile_picture
                         FROM meetup_participants mp
-                        JOIN players ON mp.participant_id = players.player_id
-                        JOIN users ON users.user_id = players.player_id
+                        JOIN players p ON mp.participant_id = p.player_id
+                        JOIN users u ON u.user_id = p.player_id
                         WHERE mp.meetup_id = %s
                         """,
                         [meetup_id]
                     )
                     participants = cur.fetchall()
+
                     return {
                         "meetup": self.convert_to_record(meetup_record),
                         "participants": [
                             {
                                 "participant_id": participant[0],
                                 "username": participant[1],
+                                "profile_picture": participant[2]
                             }
                             for participant in participants
                         ],
@@ -193,28 +310,24 @@ class MeetupQueries:
                     cur.execute(
                         """
                         UPDATE meetups
-                        SET game_id = %s,
+                        SET meetup_name = %s,
+                            game_id = %s,
                             location_id = %s,
-                            meetup_date = %s,
+                            start_time = %s,
+                            end_time = %s,
                             description = %s,
                             min_players = %s,
                             max_players = %s,
                             status = %s
                         WHERE id = %s AND organizer_id = %s
-                        RETURNING id
-                        , organizer_id
-                        , game_id
-                        , location_id
-                        , meetup_date
-                        , description
-                        , min_players
-                        , max_players
-                        , status;
+                        RETURNING id;
                         """,
                         [
+                            meetup.meetup_name,
                             meetup.game_id,
                             meetup.location_id,
-                            meetup.meetup_date,
+                            meetup.start_time,
+                            meetup.end_time,
                             meetup.description,
                             meetup.min_players,
                             meetup.max_players,
@@ -223,8 +336,41 @@ class MeetupQueries:
                             organizer_id
                         ]
                     )
+
                     if cur.rowcount == 0:
                         return None
+
+                    cur.execute(
+                        """
+                        SELECT
+                            m.id,
+                            m.meetup_name,
+                            m.organizer_id,
+                            u.username AS organizer_name,
+                            p.profile_picture AS organizer_picture,
+                            g.name AS game_name,
+                            g.game_image AS game_image,
+                            l.name AS location_name,
+                            l.address AS location_address,
+                            l.city AS location_city,
+                            l.state AS location_state,
+                            l.store_type AS location_store_type,
+                            m.start_time,
+                            m.end_time,
+                            m.description,
+                            m.min_players,
+                            m.max_players,
+                            m.status
+                        FROM meetups m
+                        JOIN players p ON m.organizer_id = p.player_id
+                        JOIN games g ON m.game_id = g.id
+                        JOIN locations l ON m.location_id = l.id
+                        JOIN users u ON m.organizer_id = u.user_id
+                        WHERE m.id = %s
+                        """,
+                        [meetup_id]
+                    )
+
                     record = cur.fetchone()
                     if record:
                         return self.convert_to_record(record)
@@ -300,7 +446,6 @@ class MeetupQueries:
     ) -> Union[bool, Error]:
         """
         Adds a participant to a meetup.
-        Checks that participant cannot be the organizer of meetup.
         Checks that max players limit has not been reached.
         """
         try:
@@ -308,7 +453,7 @@ class MeetupQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT organizer_id, max_players
+                        SELECT max_players
                         FROM meetups
                         WHERE id = %s;
                         """,
@@ -317,11 +462,7 @@ class MeetupQueries:
                     result = cur.fetchone()
                     if not result:
                         return Error(message="Meetup not found")
-                    organizer_id, max_players = result
-                    if organizer_id == participant_id:
-                        return Error(
-                            message="You cannot join a meetup you organized"
-                        )
+                    max_players = result[0]
 
                     cur.execute(
                         """
@@ -358,6 +499,11 @@ class MeetupQueries:
                         """,
                         [participant_id, meetup_id]
                     )
+
+                    if cur.rowcount == 0:
+                        return Error(
+                            message="Failed to add participant to the meetup"
+                        )
 
                     return {"message": "Successfully joined the meetup"}
 

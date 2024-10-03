@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../components/AuthProvider";
 import Chart from 'react-google-charts';
 import Nav from "../Nav";
-import profileIcon from "../../img/player-icons/default-icon.png"
+import profileIcon from "/default/default-icon.png"
 import banner from "../../img/Board-buddies-banner.png"
 import './Profile.css';
 

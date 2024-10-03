@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Nav from '../Nav';
 
 function GameDetail() {
     const { id } = useParams();
@@ -32,16 +33,14 @@ function GameDetail() {
             <Nav />
             <div>
                 <header
-                    className="game-header"
+                    className="detail-header"
                     style={{
                         backgroundImage: `url(${game.game_image})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: '10% 40%'
                     }}
                 >
                 </header>
 
-                <div className="game-details-container">
+                <div className="details-container">
                     <h1>{game.name}</h1>
                     <p><strong>Players:</strong> {game.max_players === 0 ? (
                                             `${game.min_players}+`

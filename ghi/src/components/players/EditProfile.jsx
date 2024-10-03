@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { AuthContext } from "../AuthProvider";
 import { data } from '../../assets/statesData.js'
-import profileIcon from "../../img/player-icons/default-icon.png"
+import profileIcon from "/default/default-icon.png"
 import banner from "../../img/Board-buddies-banner.png"
 import ProfilePicModal from "./ProfilePicModal";
 import './Profile.css';

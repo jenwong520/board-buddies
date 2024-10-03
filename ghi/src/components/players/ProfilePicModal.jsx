@@ -2,7 +2,7 @@ import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 
-const profileImages = import.meta.glob('../../img/player-icons/*.{png,jpg}', {eager:true})
+const profileImages = import.meta.glob('/public/player-icons/*.{png,jpg}', {eager:true})
 
 
 function ProfilePicModal({ setProfilePicture, user }) {
@@ -60,7 +60,7 @@ function ProfilePicModal({ setProfilePicture, user }) {
         </div>
     ));
 
-    
+
     return(
         <>
            <div
