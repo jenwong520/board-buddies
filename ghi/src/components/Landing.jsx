@@ -5,30 +5,41 @@ import mainLogo from "../img/Board-buddies-logo.png"
  function LandingPage() {
     return(
         <>
-            <nav className="navbar navbar-expand-sm navbar-dark fixed-top bg-dark fs-2">
+            <nav className="navbar navbar-expand-sm fixed-top">
                 <div className="container-fluid">
-                    <NavLink className="navbar-brand">Board Buddies</NavLink>
+                    <NavLink className="navbar-brand text-light">Board Buddies</NavLink>
                     <ul className="navbar-nav mb-2 mb-lg-2 flex-wrap">
-                        <li className="nav-item me-3">
-                            <a className="nav-link" href="#about">About</a>
-                        </li>
-                        <li className="nav-item me-3">
-                            <a className="nav-link" href="#how">How it Works</a>
-                        </li>
-                        <li className="nav-item me-3">
-                            <NavLink className="nav-link" to="/signin">Login</NavLink>
+                        <li className="nav-item">
+                            <a className="nav-link text-light" href="#about">About</a>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link badge text-bg-success mt-3" to="/signup">Create Account</NavLink>
+                            <a className="nav-link text-light" href="#how">How It Works</a>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link text-light" to="/signin">Sign In</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink
+                                className="nav-link mt-1"
+                                to="/signup"
+                                style={{
+                                    backgroundColor: 'rgba(20, 20, 20, 0.5)',
+                                    color: 'white',
+                                    padding: '0.5rem 1rem',
+                                    borderRadius: '5px',
+                                    boxShadow: '2px 2px 9px 1px rgba(255, 255, 255, 0.1)'
+                                }}>
+                                    Create Account
+                            </NavLink>
                         </li>
                     </ul>
                 </div>
             </nav>
             <main>
-                <div className="background container-fluid">
+                <div className="background">
                     <img src={mainLogo} alt="Logo" className="mse-1" />
                     <div className="container-fluid" id="about">
-                        <div className="card text-bg-dark mb-3">
+                        <div className="card mb-3" style={{ backgroundColor: 'rgba(30, 30, 30, 0.9)', color: 'white' }}>
                             <div className="row g-0">
                                 <div className="col-md-4">
                                     <img src="https://assets3.thrillist.com/v1/image/2915405/828x610/flatten;crop;webp=auto;jpeg_quality=60.jpg"
@@ -38,11 +49,11 @@ import mainLogo from "../img/Board-buddies-logo.png"
                                 <div className="col-md-8">
                                     <div className="card-body">
                                         <h5 className="card-title">About Us</h5>
-                                        <p className="card-text text-start">
-                                            Board Buddies is the number 1 board game matching service in the world.
+                                        <p className="card-text text-center">
+                                            Board Buddies is the #1 board game matching service in the world!
                                         </p>
                                         <p className="card-text text-start">
-                                            We strive to bring you the best player expirience, community and events through our state of the art matching services.
+                                            We strive to bring you the best player experience, community and events through our state of the art matching services.
                                         </p>
                                     </div>
                                 </div>
@@ -50,15 +61,15 @@ import mainLogo from "../img/Board-buddies-logo.png"
                         </div>
                     </div>
                     <div className="container-fluid" id="how">
-                        <div className="card card text-bg-dark mb-3">
+                        <div className="card mb-5" style={{ backgroundColor: 'rgba(30, 30, 30, 0.9)', color: 'white' }}>
                             <div className="row g-0">
                                 <div className="col-md-8">
                                     <div className="card-body">
-                                        <h5 className="card-title">How it works</h5>
-                                        <p>From home to having the best board game expirence possible</p>
+                                        <h5 className="card-title">How It Works</h5>
+                                        <p>From home to having the best board game experience possible!</p>
                                         <ol>
                                             <li className="text-start">
-                                                Create or sign in to your Account
+                                                Create or sign in to your account
                                             </li>
                                             <li className="text-start">
                                                 Find one of our many board games you want to play
@@ -67,10 +78,10 @@ import mainLogo from "../img/Board-buddies-logo.png"
                                                 Join one of many community driven meetups across the country
                                             </li>
                                             <li className="text-start">
-                                                Go to the varified location speified by the app
+                                                Meet up with your local Board Buddies at loved and trusted local spaces
                                             </li>
                                             <li className="text-start">
-                                                Have fun
+                                                Have fun!
                                             </li>
                                         </ol>
                                     </div>

@@ -1,6 +1,7 @@
 """
 User Authentication API Router
 """
+from datetime import datetime, timedelta
 from fastapi import (
     Depends,
     Request,
@@ -39,9 +40,20 @@ async def signup(
     # Hash the password the user sent us
     hashed_password = hash_password(new_user.password)
 
+    # Set the current UTC time as the date joined
+    date_joined = datetime.utcnow() + timedelta(hours=12)
+
+    # Not fully functioning yet ^^^^
+
     # Create the user in the database
     try:
-        user = queries.create_user(new_user.username, hashed_password)
+        user = queries.create_user(
+            new_user.username,
+            hashed_password,
+            new_user.is_developer,
+            new_user.is_player,
+            date_joined
+        )
     except UserDatabaseException as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)

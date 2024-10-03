@@ -8,7 +8,8 @@ steps = [
             username VARCHAR(25) NOT NULL UNIQUE,
             password VARCHAR(100) NOT NULL,
             is_developer BOOLEAN DEFAULT FALSE,
-            is_player BOOLEAN DEFAULT FALSE
+            is_player BOOLEAN DEFAULT FALSE,
+            date_joined TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         """,
         # "Down" SQL statement

@@ -16,7 +16,6 @@ from utils.exceptions import UserDatabaseException
 logging.basicConfig(level=logging.ERROR)
 
 
-# Setting up the connection pool
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is not set")
@@ -36,20 +35,23 @@ class PlayerQueries:
     def convert_to_record(self, record):
         return PlayerOut(
             user_id=record[0],
-            email=record[1],
-            age=record[2],
-            city=record[3],
-            state=record[4],
-            tags=record[5],
-            is_verified=record[6],
-            is_gamehost=record[7],
-            gamehost_id=record[8],
-            is_playtester=record[9],
-            playtester_id=record[10],
-            lat=record[11],
-            lon=record[12],
-            location_radius=record[13],
-            profile_picture=record[14]
+            profile_picture=record[1],
+            email=record[2],
+            first_name=record[3],
+            last_name=record[4],
+            city=record[5],
+            state=record[6],
+            about_me=record[7],
+            birthdate=record[8],
+            is_verified=record[9],
+            is_gamehost=record[10],
+            gamehost_id=record[11],
+            is_playtester=record[12],
+            playtester_id=record[13],
+            tags=record[14],
+            lat=record[15],
+            lon=record[16],
+            location_radius=record[17]
         )
 
     def create_player(self, player: PlayerIn, user_id: str) -> PlayerOut:
@@ -60,43 +62,49 @@ class PlayerQueries:
                         """
                         INSERT INTO players (
                             player_id,
+                            profile_picture,
                             email,
-                            age,
+                            first_name,
+                            last_name,
                             city,
                             state,
-                            tags,
+                            about_me,
+                            birthdate,
                             is_verified,
                             is_gamehost,
                             gamehost_id,
                             is_playtester,
                             playtester_id,
+                            tags,
                             lat,
                             lon,
-                            location_radius,
-                            profile_picture
+                            location_radius
                         ) VALUES (
-                            %s, %s, %s, %s, %s, %s, %s,
-                            %s, %s, %s, %s, %s, %s, %s, %s
+                            %s, %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s, %s, %s
                         )
                         RETURNING player_id;
                         """,
                         [
                             user_id,
+                            player.profile_picture,
                             player.email,
-                            player.age,
+                            player.first_name,
+                            player.last_name,
                             player.city,
                             player.state,
-                            player.tags,
+                            player.about_me,
+                            player.birthdate,
                             player.is_verified,
                             player.is_gamehost,
                             player.gamehost_id,
                             player.is_playtester,
                             player.playtester_id,
+                            player.tags,
                             player.lat,
                             player.lon,
-                            player.location_radius,
-                            player.profile_picture
-
+                            player.location_radius
                         ]
                     )
                     player_id = cur.fetchone()[0]
@@ -141,42 +149,50 @@ class PlayerQueries:
                     cur.execute(
                         """
                         UPDATE players
-                        SET email = %s,
-                            age = %s,
+                        SET profile_picture = %s,
+                            email = %s,
+                            first_name = %s,
+                            last_name = %s,
                             city = %s,
                             state = %s,
-                            tags = %s,
+                            about_me = %s,
+                            birthdate = %s,
                             is_verified = %s,
                             is_gamehost = %s,
                             gamehost_id = %s,
                             is_playtester = %s,
                             playtester_id = %s,
+                            tags = %s,
                             lat = %s,
                             lon = %s,
-                            location_radius = %s,
-                            profile_picture = %s
+                            location_radius = %s
                         WHERE player_id = %s
                         """,
                         [
+                            player.profile_picture,
                             player.email,
-                            player.age,
+                            player.first_name,
+                            player.last_name,
                             player.city,
                             player.state,
-                            player.tags,
+                            player.about_me,
+                            player.birthdate,
                             player.is_verified,
                             player.is_gamehost,
                             player.gamehost_id,
                             player.is_playtester,
                             player.playtester_id,
+                            player.tags,
                             player.lat,
                             player.lon,
                             player.location_radius,
-                            player.profile_picture,
                             player_id
                         ]
                     )
                     if cur.rowcount == 0:
-                        return None
+                        raise UserDatabaseException(
+                            "No player found with the given ID."
+                        )
                     return self.player_in_to_out(player, user_id)
         except psycopg.Error as e:
             print(e)

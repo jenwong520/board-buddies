@@ -75,7 +75,7 @@ function MeetupsList() {
                                             {meetup.participants.map((player)=> {
                                                 return(
                                                     <div className='col-3 ' key={player.participant_id}>
-                                                        <img className='rounded-circle img-fluid' src={`${player.profile_picture}.png`} alt="" />
+                                                        <img className='rounded-circle img-fluid' src={`${player.profile_picture}`} alt="" />
                                                         <p>{player.username}</p>
                                                     </div>
                                                 )
