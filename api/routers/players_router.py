@@ -13,7 +13,7 @@ from models.players import (
     PlayerOut,
     Error
 )
-from queries.players_queries import PlayerQueries
+from queries.player_queries import PlayerQueries
 
 
 router = APIRouter(tags=["Player"], prefix="/api/players")

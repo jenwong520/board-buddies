@@ -42,7 +42,7 @@ export default function Dashboard() {
 
 function handleSignout() {
     signout();
-    navigate("/");
+    navigate("/signin");
 }
 
 

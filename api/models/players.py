@@ -6,6 +6,11 @@ from pydantic import BaseModel, EmailStr, Field, constr
 from typing import Optional
 
 
+class TagOut(BaseModel):
+    tag_id: int
+    tag_name: str
+
+
 class Error(BaseModel):
     """
     Gets An Error Message
@@ -63,6 +68,7 @@ class PlayerOut(BaseModel):
     is_player: Optional[bool] = None
     player_id: Optional[str] = None
     tags: Optional[str] = None
+    # tags: Optional[List[TagOut]] = None
     lat: Optional[float] = None
     lon: Optional[float] = None
     location_radius: Optional[int] = None
