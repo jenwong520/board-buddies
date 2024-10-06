@@ -3,12 +3,12 @@ Pydantic Models for Players.
 """
 from datetime import date
 from pydantic import BaseModel, EmailStr, Field, constr
-from typing import List, Optional
+from typing import Optional
 
 
 class TagOut(BaseModel):
-        tag_id: int
-        tag_name: str
+    tag_id: int
+    tag_name: str
 
 
 class Error(BaseModel):
