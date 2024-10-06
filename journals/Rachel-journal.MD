@@ -13,3 +13,15 @@ Since have gone back and forth trying to comprehend and map out functionalties a
 09/20/24
 
 Victory is ours! Successfully refactored players and users/auth endpoints and merged. Added data.
+
+09/24/24
+
+Completed and merged phase one of players/users frontend, the sign in and sign up page and other random small visual things across sight. Including touch ups to Dashboard.
+
+10/02/24
+
+Completed and merged phase two of players/users front end, the profile, create profile and edit profile. As well as other random site touch ups such as nav bar things.
+
+10/06/24
+
+Completed minimum of two unit tests plus more. Pushed and merged.
