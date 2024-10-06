@@ -18,7 +18,7 @@ def JwtUserData():
         username="Test_Person",
         is_developer="true",
         is_player="true",
-        date_joined= "2024-10-04T00:08:00.007Z"
+        date_joined="2024-10-04T00:08:00.007Z"
     )
 
 
