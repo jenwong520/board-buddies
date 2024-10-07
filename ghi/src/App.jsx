@@ -1,9 +1,7 @@
-import { useState, useEffect, useContext } from 'react'
-import { BrowserRouter, Outlet } from 'react-router-dom'
+import { useState, useContext } from 'react'
+import { Outlet } from 'react-router-dom'
 import ErrorNotification from './components/ErrorNotification'
-import Nav from './components/Nav'
 import { AuthContext } from './components/AuthProvider'
-// import Construct from './components/Construct'
 import './App.css'
 
 // When using environment variables, you should do a check to see if
@@ -16,40 +14,14 @@ if (!API_HOST) {
 
 function App() {
     const { isLoggedIn } = useContext(AuthContext);
-    // const [launchInfo, setLaunchInfo] = useState()
     const [error, setError] = useState(null);
-
-    // useEffect(() => {
-    //     async function getData() {
-    //         let url = `${API_HOST}/api/launch-details`
-    //         console.log('fastapi url: ', url)
-    //         let response = await fetch(url)
-    //         let data = await response.json()
-
-    //         if (response.ok) {
-    //             if (!data.launch_details) {
-    //                 console.log('drat! no launch data')
-    //                 setError('No launch data')
-    //                 return
-    //             }
-    //             console.log('got launch data!')
-    //             setLaunchInfo(data.launch_details)
-    //         } else {
-    //             console.log('drat! something happened')
-    //             setError(data.message)
-    //         }
-    //     }
-    //     getData()
-    // }, [])
 
     return (
             <div className="App">
                 {isLoggedIn}
-                {/* <Nav /> Show Nav only if the user is logged in */}
-                {/* <header className="App-header"><LandingNav/></header> */}
+
                 <Outlet />
                 <ErrorNotification error={error} />
-                {/* <Construct info={launchInfo} /> */}
             </div>
     )
 }
