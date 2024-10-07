@@ -8,7 +8,6 @@ from psycopg_pool import ConnectionPool
 from typing import Optional, List
 from models.locations import (
     LocationIn,
-    LocationList,
     LocationOut
 )
 from utils.exceptions import UserDatabaseException
@@ -75,7 +74,7 @@ class LocationQueries:
                 f"psycopg error: Flake8 made me do this {location.name}"
             )
 
-    def get_all(self) -> List[LocationList]:
+    def get_all(self) -> List[LocationOut]:
         """
         Gets a list of the names of all the locations including the id
         """
@@ -84,20 +83,29 @@ class LocationQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT id, name
+                        SELECT id,
+                        name,
+                        address,
+                        city,
+                        state,
+                        store_type
                         FROM locations
-                        ORDER BY Name
+                        ORDER BY city
                         """
                     )
-                    return [LocationList(
+                    return [LocationOut(
                         id=item[0],
-                        name=item[1]
+                        name=item[1],
+                        address=item[2],
+                        city=item[3],
+                        state=item[4],
+                        store_type=item[5]
                         )
                         for item in cur]
 
         except Exception as e:
             print(e)
-            return {"message": "could not get all vacations"}
+            return {"message": "could not get all Locations"}
 
     def update(self, location_id: int, location: LocationIn) -> LocationOut:
         """

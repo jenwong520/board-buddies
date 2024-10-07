@@ -401,6 +401,13 @@ COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
 3	Geeky Teas and Games	900 W Alameda Ave	Burbank	CA	Nerd Bar
 4	Guildhall	3516 W Victory Blvd	Burbank	CA	Nerd_Bar
 5	Fire and Dice	19801 Vanowen St	Winnetka	CA	Game Store
+6	Mythic Games	561 Tyler St	Monterey	CA	Game Store
+7	Tucson Games And Gadgets	5870 E Broadway Blvd #409	Tucson	AZ	Game Store
+8	Polyhedron Gamestore	5825 N Oracle Rd	Tucson	AZ	Game Store
+9	Isle of Games	7835 E Broadway Blvd	Tucson	AZ	Game Store
+10	Games Ahoy	982 E Eisenhower Blvd	Loveland	CO	Game Store
+11	Total Escape Games	6831 W 120th Ave ste C	Broomfield	CO	Game Store
+12	Akihabara Arcade and Bar	8901 N Harlan St	Westminster	CO	Nerd_Bar
 \.
 
 
@@ -409,9 +416,7 @@ COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
 --
 
 COPY public.meetup_participants (participant_id, meetup_id, joined_at) FROM stdin;
-6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	35	2024-10-02 06:27:22.408469
-e153967e-7bb1-42d1-8e6b-442470fc9a04	35	2024-10-02 06:39:29.863966
-e153967e-7bb1-42d1-8e6b-442470fc9a04	37	2024-10-02 06:39:54.5396
+f52ef2cb-b07c-455e-80c1-a720deef34d0	22	2024-10-02 17:50:17.451989
 \.
 
 
@@ -420,8 +425,8 @@ e153967e-7bb1-42d1-8e6b-442470fc9a04	37	2024-10-02 06:39:54.5396
 --
 
 COPY public.meetups (id, meetup_name, organizer_id, game_id, location_id, meetup_date, description, min_players, max_players, status) FROM stdin;
-37	Catan and Craft Beers	6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	1	4	2024-11-08 12:15:00	Have some beer while playing Catan.	3	12	scheduled
-35	We're playing Codenames now	f52ef2cb-b07c-455e-80c1-a720deef34d0	2	1	2024-10-02 20:00:00	Only Codenames	10	100	scheduled
+22	Thing 3	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	5	2024-10-07 00:18:00	TEST	2	4	scheduled
+23	stuff	f52ef2cb-b07c-455e-80c1-a720deef34d0	3	4	2024-10-02 00:00:00	TEST MEETUPS	2	4	scheduled
 \.
 
 
@@ -444,9 +449,7 @@ COPY public.migrations (name, digest) FROM stdin;
 --
 
 COPY public.players (player_id, email, age, city, state, tags, is_verified, is_gamehost, gamehost_id, is_playtester, playtester_id, lat, lon, location_radius, profile_picture) FROM stdin;
-f52ef2cb-b07c-455e-80c1-a720deef34d0	djengo_wins@example.com	\N	Tucson	AZ	strategy	t	t	0	t	0	0	0	0	player-icons/board-buddies-icon-shiba
-6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	ghostie@example.com	31	Los Angeles	CA	rpg	t	t	0	t	0	0	0	0	player-icons/board-buddies-icon-cat
-e153967e-7bb1-42d1-8e6b-442470fc9a04	404brain@example.com	33	Denver	CO	cooperative	t	t	0	t	0	0	0	0	player-icons/board-buddies-icon-racoon
+f52ef2cb-b07c-455e-80c1-a720deef34d0	djengo_wins@example.com	\N	Tucson	AZ	strategy	t	t	0	t	0	0	0	0	/player-icons/board-buddies-icon-shiba
 \.
 
 
@@ -474,14 +477,14 @@ SELECT pg_catalog.setval('public.games_id_seq', 3, true);
 -- Name: locations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.locations_id_seq', 5, true);
+SELECT pg_catalog.setval('public.locations_id_seq', 12, true);
 
 
 --
 -- Name: meetups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.meetups_id_seq', 37, true);
+SELECT pg_catalog.setval('public.meetups_id_seq', 23, true);
 
 
 --
