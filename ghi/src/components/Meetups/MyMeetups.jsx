@@ -1,36 +1,58 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../Nav'
+import { AuthContext } from '../AuthProvider'
 
-function MeetupsList() {
+function MyMeetups() {
+    const { user } = useContext(AuthContext)
     const [meetups, setMeetups] = useState([])
+    const [myMeetups, setMyMeetups] = useState([])
     const [search, setSearch] = useState('')
-    console.log('M', meetups)
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/meetup/')
-            .then((response) => response.json())
-            .then((data) => {
+        const fetchMeetups = async () => {
+            try {
+                const response = await fetch(
+                    'http://localhost:8000/api/meetup/'
+                )
+                const data = await response.json()
                 setMeetups(data)
-            })
-            .catch((error) => console.error('Error fetching meetups:', error))
-    }, [])
+
+                const userMeetups = data.filter((meetup) => {
+                    const isOrganizer =
+                        meetup.meetup.organizer_id === user.user_id
+                    const isParticipant = meetup.participants.some(
+                        (participant) =>
+                            participant.participant_id === user.user_id
+                    )
+                    return isOrganizer || isParticipant
+                })
+
+                setMyMeetups(userMeetups)
+            } catch (error) {
+                console.error('Error fetching meetups:', error)
+            }
+        }
+
+        fetchMeetups()
+    }, [user])
 
     return (
         <>
             <Nav />
             <div className="container">
                 <h1 className="mt-5 text-white" style={{ padding: '30px' }}>
-                    Meetups List
+                    My Meetups
                 </h1>
                 <Link to="/meetup/create">
                     <button
-                        className="btn btn-primary col-8 mb-5 "
+                        className="btn btn-primary col-8 mb-5"
                         type="button"
                     >
                         Create a New Meetup
                     </button>
                 </Link>
+
                 <form action="">
                     <input
                         type="text"
@@ -42,12 +64,12 @@ function MeetupsList() {
                 </form>
 
                 <div className="game-list">
-                    {meetups.length > 0 ? (
-                        meetups
-                            .filter((game) => {
+                    {myMeetups.length > 0 ? (
+                        myMeetups
+                            .filter((meetup) => {
                                 return search.toLowerCase() === ''
-                                    ? game
-                                    : game.meetup.game_name
+                                    ? meetup
+                                    : meetup.meetup.meetup_name
                                           .toLowerCase()
                                           .includes(search.toLowerCase())
                             })
@@ -119,49 +141,17 @@ function MeetupsList() {
                                                 {meetup.meetup.location_state}
                                             </p>
                                         </div>
-                                        <div className="meetup-card">
-                                            <h2 className="text-white mb-3">
-                                                Players currently going to this
-                                                meetup
-                                            </h2>
-                                            <div className="container">
-                                                <div className="row">
-                                                    {meetup.participants.map(
-                                                        (player) => {
-                                                            return (
-                                                                <div
-                                                                    className="col-3 "
-                                                                    key={
-                                                                        player.participant_id
-                                                                    }
-                                                                >
-                                                                    <img
-                                                                        className="rounded-circle img-fluid"
-                                                                        src={`${player.profile_picture}`}
-                                                                        alt=""
-                                                                    />
-                                                                    <p>
-                                                                        {
-                                                                            player.username
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </Link>
                             ))
                     ) : (
-                        <p>Meetups coming soon!</p>
+                        <p>You have no meetups.</p>
                     )}
                 </div>
+
             </div>
         </>
     )
 }
 
-export default MeetupsList
+export default MyMeetups

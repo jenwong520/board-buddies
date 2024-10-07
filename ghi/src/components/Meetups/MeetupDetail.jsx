@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import useAuthService from '../../hooks/useAuthService'
 import { useParams, Link } from 'react-router-dom';
 import Nav from '../Nav';
-import { PiNotePencilThin } from "react-icons/pi";
-import { PiPencilSimpleLight } from "react-icons/pi";
-import { PiPencilSimpleThin } from "react-icons/pi";
+
 import { BsPencil } from "react-icons/bs";
-import baseImg from "../../../public/default/board-buddies-icon-default.png"
+
+import { API_KEY } from '../../assets/ApiKeys';
 
 
 function MeetupDetail() {
@@ -114,7 +113,7 @@ function MeetupDetail() {
     const city = String(meetup.location_city)
     const convertedName = name.split(' ').join('+')
     const convertedCity = city.split(' ').join('+')
-    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyCdG1XCUBYkXysiPi1E8cc6UqCR8OvRW5M&q=${convertedName},${convertedCity}+${meetup.state}`
+    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${convertedName},${convertedCity}+${meetup.state}`
 
     const handleOrganizerJoin = () => {
         fetch(`http://localhost:8000/api/meetup/${id}/join`, {
@@ -183,11 +182,14 @@ function MeetupDetail() {
                 </header>
 
                 <div className="details-container">
-                    <h1><strong>{meetup.meetup_name}</strong><PiPencilSimpleThin className="ms-2 mb-5" style={{ width: '1.3rem' }} title="Edit your page"/></h1>
+                    <h1><strong>{meetup.meetup_name}</strong></h1>
                     <h2>Game: {meetup.game_name}</h2>
-                    <Link to={`/meetup/${id}/edit`}>
-                        <p><BsPencil className="ms-3" /> Edit meetup</p>
-                    </Link>
+                    {user && meetup.organizer_id === user.user_id && (
+                            <Link to={`/meetup/${id}/edit`}>
+                                <p><BsPencil className="ms-3" /> Edit meetup</p>
+                            </Link>
+                        )}
+
                     <p>
                         <img
                             src={`${meetup.organizer_picture}`}
@@ -224,10 +226,10 @@ function MeetupDetail() {
 
                     <div>
                         {!isParticipant && user && meetup.organizer_id === user.user_id && (
-                            <button className='btn btn-info' onClick={handleOrganizerJoin}>Join as Participant</button>
+                            <button className='btn btn-info' onClick={handleOrganizerJoin}>Join as Player</button>
                         )}
                         {isParticipant && user && meetup.organizer_id === user.user_id && (
-                            <button className='btn btn-danger' onClick={handleOrganizerLeave}>Leave as Participant</button>
+                            <button className='btn btn-danger' onClick={handleOrganizerLeave}>Leave as Player</button>
                         )}
                         {user && meetup.organizer_id !== user.user_id && (
                             <>
@@ -280,14 +282,6 @@ function MeetupDetail() {
                     src={mapsUrl}
                     className='col-12'
                     ></iframe>
-                </div>
-                <div className="details-container" style={{ textAlign: 'center', marginTop: '20px' }}>
-                    <button
-                        className='btn btn-info'
-                        onClick={() => navigate(`/meetup/${id}/edit`)}
-                    >
-                        Edit Meetup
-                    </button>
                 </div>
 
             </div>

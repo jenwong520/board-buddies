@@ -9,7 +9,6 @@ from fastapi import (
 from typing import List, Union
 from models.locations import (
     LocationIn,
-    LocationList,
     LocationOut,
     Error,
 )
@@ -19,7 +18,7 @@ from queries.location_queries import LocationQueries
 router = APIRouter(tags=["Location"], prefix="/api/location")
 
 
-@router.get("/", response_model=List[LocationList])
+@router.get("/", response_model=List[LocationOut])
 async def get_locations_list(repo: LocationQueries = Depends()):
     return repo.get_all()
 

@@ -1,13 +1,13 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, NavLink, Link } from "react-router-dom";
-import { AuthContext } from "../../components/AuthProvider";
 import profileIcon from "/default/default-icon.png"
 import banner from "../../img/Board-buddies-banner.png"
 import mainLogo from "../../img/Board-buddies-logo.png";
+import useAuthService from '../../hooks/useAuthService'
 
 
 export default function Dashboard() {
-    const { signout, user } = useContext(AuthContext);
+    const { signout, user } = useAuthService()
     const [player, setPlayer] = useState(null);
     const navigate = useNavigate();
     const goBack = (e) => {
@@ -77,7 +77,7 @@ if (!player) {
                     <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                         <ul className="navbar-nav">
                             <li className='nav-item'>
-                                {/* <Link className='nav-link' to="#" onClick={goBack}>Back</Link> */}
+                                {/* insert link if needed */}
                             </li>
                         </ul>
                     </div>
@@ -114,7 +114,7 @@ if (!player) {
                             </NavLink>
                         </div>
                         <div className="nav-item">
-                            <NavLink to="/under-construction">
+                            <NavLink to="/mymeetups">
                                 <button className="btn btn-outline-light col-6 mt-2" type="button">My Meetups</button>
                             </NavLink>
                         </div>

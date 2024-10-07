@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { convertSpaces } from "../../utils"
+import { API_KEY } from "../../assets/ApiKeys.js"
 
 function LocationDetail() {
     const { id } = useParams()
@@ -31,22 +31,28 @@ function LocationDetail() {
     const city = String(locations.city)
     const convertedName = name.split(' ').join('+')
     const convertedCity = city.split(' ').join('+')
-    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyCdG1XCUBYkXysiPi1E8cc6UqCR8OvRW5M&q=${convertedName},${convertedCity}+${locations.state}`
+    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${convertedName},${convertedCity}+${locations.state}`
 
     return (
         <>
-            <div>
-                <h1>{locations.name}</h1>
-                <h2>{locations.address}, {locations.city}, {locations.state}</h2>
-                <h2>{locations.store_type}</h2>
-                <iframe
-                width="450"
-                height="450"
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                src={mapsUrl}
-                ></iframe>
+            <div className="container row">
+                <header className="text-white">
+                    <h1>{locations.name}</h1>
+                    <h2>
+                        {locations.address}, {locations.city}, {locations.state}
+                    </h2>
+                    <h2>Venue type: {locations.store_type}</h2>
+                </header>
+                <div className="details-container">
+                    <iframe
+                        width="450"
+                        height="450"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={mapsUrl}
+                    ></iframe>
+                </div>
             </div>
         </>
     )

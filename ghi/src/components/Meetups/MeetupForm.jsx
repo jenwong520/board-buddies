@@ -5,11 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthProvider";
 
 function CreateMeetup() {
-
-    const { user } = useContext(AuthContext)
-
+    const { user } = useContext(AuthContext);
     const [game, setGame] = useState([]);
-    const [location, setLocation] = useState([])
+    const [location, setLocation] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:8000/api/game/')
@@ -22,9 +21,6 @@ function CreateMeetup() {
             .then((data) => setLocation(data))
             .catch((error) => console.error('Error fetching games:', error));
     }, [user]);
-
-    console.log(game)
-    console.log(location)
 
     const [meetupName, setMeetupName] = useState('')
     const handleMeetupName = (event) => {
@@ -62,22 +58,53 @@ function CreateMeetup() {
         setDescription(value)
     }
 
-    const [minPlayers, setMinPlayers] = useState('')
+    const [minPlayers, setMinPlayers] = useState('1')
     const handleMinPlayers = (event) => {
         const value = event.target.value
-        setMinPlayers(value)
+        if (parseInt(value) < 1) {
+            setMinPlayers('1')
+        } else {
+            setMinPlayers(value)
+        }
     }
 
     const [maxPlayers, setMaxPlayers] = useState('')
     const handleMaxPlayers = (event) => {
         const value = event.target.value
-        setMaxPlayers(value)
+        if (parseInt(value) < 1) {
+            setMaxPlayers('1')
+        } else {
+            setMaxPlayers(value)
+        }
     }
 
     const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+
+        if (parseInt(minPlayers) < 1) {
+            setErrorMessage('Minimum players must be at least 1.')
+            return
+        }
+
+        if (maxPlayers !== '' && parseInt(maxPlayers) < 1) {
+            setErrorMessage('Maximum players must be at least 1.')
+            return
+        }
+
+        if (maxPlayers !== '' && parseInt(maxPlayers) < parseInt(minPlayers)) {
+            setErrorMessage(
+                'Maximum players cannot be less than minimum players.'
+            )
+            return
+        }
+
+        if (new Date(endTime) <= new Date(startTime)) {
+            setErrorMessage('End time must be after the start time.')
+            return
+        }
+
         const data = {}
 
         data.meetup_name = meetupName
@@ -90,7 +117,7 @@ function CreateMeetup() {
         data.max_players = maxPlayers
         data.status = "scheduled"
 
-        console.log(data)
+        console.log("DATA", data)
 
         const url = "http://localhost:8000/api/meetup/"
         const fetchConfig = {
@@ -115,6 +142,11 @@ function CreateMeetup() {
                 <div className="mt-3">
                     <h1>Create a Meetup</h1>
                     <form onSubmit={handleSubmit} id="create-meetup-form">
+                        {errorMessage && (
+                            <div className="alert alert-danger" role="alert">
+                                {errorMessage}
+                            </div>
+                        )}
 
                         <div className="form-floating m-3">
                             <input
@@ -133,7 +165,8 @@ function CreateMeetup() {
                             name="game"
                             id="game"
                             onChange={handleGameId}
-                            className="form-select">
+                            className="form-select"
+                            required>
                                 <option value="">Select Game</option>
                                 {game.map((game) => (
                                     <option key={game.id} value={game.id}>
@@ -147,11 +180,13 @@ function CreateMeetup() {
                             name="location"
                             id="location"
                             onChange={handleLocationId}
-                            className="form-select">
+                            className="form-select"
+                            required>
+
                                 <option value="">Select Location</option>
                                 {location.map((location) => (
                                     <option key={location.id} value={location.id}>
-                                        {location.name}
+                                        {location.name} - {location.city}, {location.state}
                                     </option>
                                 ))}
                             </select>
@@ -164,6 +199,7 @@ function CreateMeetup() {
                             name="start"
                             id="start"
                             className="form-control"
+                            required
                              />
                              <label>Start</label>
                         </div>
@@ -175,6 +211,7 @@ function CreateMeetup() {
                             name="end"
                             id="end"
                             className="form-control"
+                            required
                              />
                              <label>End</label>
                         </div>
@@ -198,6 +235,8 @@ function CreateMeetup() {
                             name="minPlayers"
                             id="minPlayers"
                             className="form-control"
+                            required
+                            min="1"
                              />
                              <label>Minimum Players</label>
                         </div>
@@ -209,6 +248,8 @@ function CreateMeetup() {
                             name="max_players"
                             id="max_players"
                             className="form-control"
+                            required
+                            min="1"
                              />
                              <label>Maximum Players</label>
                         </div>
