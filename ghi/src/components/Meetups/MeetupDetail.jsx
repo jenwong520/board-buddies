@@ -2,11 +2,9 @@ import { useEffect, useState } from 'react';
 import useAuthService from '../../hooks/useAuthService'
 import { useParams, Link } from 'react-router-dom';
 import Nav from '../Nav';
-import { PiNotePencilThin } from "react-icons/pi";
-import { PiPencilSimpleLight } from "react-icons/pi";
-import { PiPencilSimpleThin } from "react-icons/pi";
+
 import { BsPencil } from "react-icons/bs";
-import baseImg from "../../../public/default/board-buddies-icon-default.png"
+
 import { API_KEY } from '../../assets/ApiKeys';
 
 

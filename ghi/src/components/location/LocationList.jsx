@@ -44,7 +44,7 @@ const LocationList = () => {
                                     <p className="card-text">
                                         ID check: {location.id}
                                     </p>
-                                    {/* <p className="card-text">{location.city}, {location.state}</p> */}
+                                    <p className="card-text">{location.city}, {location.state}</p>
                                 </div>
                             </div>
                         </div>
