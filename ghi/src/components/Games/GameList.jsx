@@ -23,9 +23,7 @@ function GameList() {
                             <Link to={`/game/${game.id}`} key={game.id} className="game-item">
                                 <div
                                     className="game-background"
-                                    style={{ backgroundImage: `url(${game.game_image})`,
-                                    backgroundPosition: "20% 40%"
-                                }}
+                                    style={{ backgroundImage: `url(${game.game_image})`}}
                                 >
                                     <div className="game-details">
                                         <h4 className="mt-5">{game.name}</h4>
@@ -41,6 +39,7 @@ function GameList() {
                                             )}</p>
                                         <p>Duration: {game.game_duration} minutes</p>
                                     </div>
+                                    
                                 </div>
                             </Link>
                         ))

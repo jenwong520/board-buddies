@@ -29,7 +29,18 @@ function CreateProfilePage() {
     const navigate = useNavigate();
     const [profilePicture, setProfilePicture] = useState(user.profilePicture || '/default-profile.png');
 
+    // const [selectedTags, setSelectedTags] = useState(profile.tags || []);
     // const [inputTag, setInputTag] = useState('');
+
+
+    // // Function to toggle tag selection
+    // const handleTagToggle = (tag) => {
+    // if (selectedTags.includes(tag)) {
+    //     setSelectedTags(selectedTags.filter((t) => t !== tag)); // Remove if selected
+    // } else {
+    //     setSelectedTags([...selectedTags, tag]); // Add if not selected
+    // }
+    // };
 
 
     // Fetch player data when the component mounts
@@ -82,6 +93,7 @@ function CreateProfilePage() {
          const updatedProfile = {
         ...profile,
         profile_picture: profilePicture, // Include the selected profile picture
+        // tags: selectedTags,
     };
         const url = `http://localhost:8000/api/players/`;
         const fetchConfig = {
@@ -302,8 +314,22 @@ function CreateProfilePage() {
                                         />
                                         <label htmlFor="birthdate">Birthdate</label>
                                     </div>
+                                    {/* <div className="tag-selection">
+                                        <h3>Select Preferences</h3>
+                                        {availableTags.map((tag, index) => (
+                                        <button
+                                            key={index}
+                                            className={`btn ${selectedTags.includes(tag) ? 'btn-primary' : 'btn-secondary'} m-1`}
+                                            onClick={() => handleTagToggle(tag)}
+                                        >
+                                            {tag}
+                                        </button>
+                                        ))}
+                                    </div> */}
+
                                     {/* Tag Selection Section
                                     <TagSelector selectedTags={profile.tags} setSelectedTags={handleTagsChange} /> */}
+
                                     <div className="mb-3">
                                         <input
                                             value={profile.tags}

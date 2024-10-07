@@ -125,7 +125,7 @@ class UserQueries:
                             password,
                             is_developer,
                             is_player,
-                            date_joined;
+                            date_joined
                         """,
                         [
                             uid,
