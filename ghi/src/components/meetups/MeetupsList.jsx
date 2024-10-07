@@ -26,7 +26,7 @@ function MeetupsList() {
                 <form action="">
                     <input
                         type="text"
-                        placeholder='Search Games'
+                        placeholder='Search Meetups'
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
                         className='form-control mb-3'/>
