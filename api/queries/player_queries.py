@@ -221,7 +221,8 @@ class PlayerQueries:
                             "No player found with the given ID."
                         )
 
-                    # self.update_player_tags(conn, cur, player_id, player.tags)    // Work in progress for tags
+                    # // Work in progress for tags
+                    # self.update_player_tags(conn, cur, player_id, player.tags)
 
                     return self.player_in_to_out(player, user_id)
         except psycopg.Error as e:
@@ -233,7 +234,8 @@ class PlayerQueries:
 
     # def update_player_tags(self, cur, player_id: str, tags: List[str]):
     #     """
-    #     Updates the tags for a player using a single query to manage relationships.
+    #     Updates the tags for a player using a
+    #     single query to manage relationships.
     #     """
     #     try:
     #         # Delete old player-tag relationships

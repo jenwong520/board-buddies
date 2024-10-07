@@ -92,6 +92,10 @@ async def delete_player(
 
 # Work In Progress Code For Tags
 # @router.put("/players/{player_id}/tags", response_model=dict)
-# def update_player_tags(player_id: int, tags_update: PlayerTagsUpdate, repository: PlayerRepository = Depends()):
+# def update_player_tags(
+#     player_id: int,
+#     tags_update: PlayerTagsUpdate,
+#     repository: PlayerRepository = Depends()
+# ):
 #     repository.update_player_tags(player_id, tags_update.tags)
 #     return {"message": "Tags updated successfully"}

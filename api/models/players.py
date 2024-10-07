@@ -3,7 +3,7 @@ Pydantic Models for Players.
 """
 from datetime import date
 from pydantic import BaseModel, EmailStr, Field, constr
-from typing import Optional, List
+from typing import Optional
 
 
 class Error(BaseModel):
