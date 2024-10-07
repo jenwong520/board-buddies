@@ -25,3 +25,7 @@ Completed and merged phase two of players/users front end, the profile, create p
 10/06/24
 
 Completed minimum of two unit tests plus more. Pushed and merged.
+
+10/07/24
+
+Did code clean up and small changes across application. Merged.

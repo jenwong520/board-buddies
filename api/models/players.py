@@ -3,12 +3,7 @@ Pydantic Models for Players.
 """
 from datetime import date
 from pydantic import BaseModel, EmailStr, Field, constr
-from typing import Optional
-
-
-class TagOut(BaseModel):
-    tag_id: int
-    tag_name: str
+from typing import Optional, List
 
 
 class Error(BaseModel):
@@ -38,11 +33,7 @@ class PlayerIn(BaseModel):
     is_developer: Optional[bool] = None
     developer_id: Optional[int] = None
     is_player: Optional[bool] = None
-    # player_id: Optional[UUID] = None
-    tags: Optional[str] = None
-    lat: Optional[float] = None
-    lon: Optional[float] = None
-    location_radius: Optional[int] = None
+    # tags: Optional[List[str]]         // Work in progress for tags
 
 
 class PlayerOut(BaseModel):
@@ -67,8 +58,15 @@ class PlayerOut(BaseModel):
     developer_id: Optional[int] = None
     is_player: Optional[bool] = None
     player_id: Optional[str] = None
-    tags: Optional[str] = None
-    # tags: Optional[List[TagOut]] = None
-    lat: Optional[float] = None
-    lon: Optional[float] = None
-    location_radius: Optional[int] = None
+
+
+# Work in progress for tags
+
+# class TagOut(BaseModel):
+#     tag_id: int
+#     tag_name: str
+
+
+# class PlayerDetailsWithTags(BaseModel):
+#     player: PlayerOut
+#     tags: List[TagOut]

@@ -5,8 +5,8 @@ import useAuthService from '../../hooks/useAuthService';
 import mainLogo from "../../img/Board-buddies-logo.png";
 
 export default function SignUpForm() {
-    const [isPlayer, setIsPlayer] = useState(false);
-    const [isGameDeveloper, setIsGameDeveloper] = useState(false);
+    // const [isPlayer, setIsPlayer] = useState(false);                     // For future features
+    // const [isGameDeveloper, setIsGameDeveloper] = useState(false);       // For future features
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -99,7 +99,11 @@ export default function SignUpForm() {
                                     </span>
                                 </div>
                             </div>
-                            <div className="m-3 d-flex align-items-center justify-content-center">
+
+
+                            {/* Keeping for possibly future reintegration */}
+
+                            {/* <div className="m-3 d-flex align-items-center justify-content-center">
                                 <div className="form-check me-3">
                                     <input
                                         type="checkbox"
@@ -124,7 +128,9 @@ export default function SignUpForm() {
                                         Game Developer
                                     </label>
                                 </div>
-                            </div>
+                            </div> */}
+
+
                             {error && <div className="alert alert-danger mx-3">{error.message}</div>}
                             <button
                                 className="btn mb-2"

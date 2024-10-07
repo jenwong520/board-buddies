@@ -49,11 +49,7 @@ class TestCreatePlayerQueries:
             is_developer=new_player.is_developer,
             developer_id=new_player.developer_id,
             is_player=new_player.is_player,
-            player_id=user_id,
-            tags=new_player.tags,
-            lat=new_player.lat,
-            lon=new_player.lon,
-            location_radius=new_player.location_radius
+            player_id=user_id
         )
 
 
@@ -80,11 +76,7 @@ def test_create_player():
         "is_developer": True,
         "developer_id": 0,
         "is_player": True,
-        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4",
-        "tags": "Test",
-        "lat": 0.0,
-        "lon": 0.0,
-        "location_radius": 0
+        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4"
     }
 
     expected = {
@@ -105,11 +97,7 @@ def test_create_player():
         "is_developer": True,
         "developer_id": 0,
         "is_player": True,
-        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4",
-        "tags": "Test",
-        "lat": 0.0,
-        "lon": 0.0,
-        "location_radius": 0
+        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4"
     }
 
     # Act
@@ -147,11 +135,7 @@ class TestUpdatePlayerQueries:
                 is_developer="true",
                 developer_id=0,
                 is_player="true",
-                player_id="0b00da19-4846-451e-b1ef-bbf72de17cd4",
-                tags="Test",
-                lat=0,
-                lon=0,
-                location_radius=0
+                player_id="0b00da19-4846-451e-b1ef-bbf72de17cd4"
             )
         None
 
@@ -179,11 +163,7 @@ def test_update_player():
         "is_developer": True,
         "developer_id": 0,
         "is_player": True,
-        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4",
-        "tags": "Test",
-        "lat": 0.0,
-        "lon": 0.0,
-        "location_radius": 0
+        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4"
     }
 
     expected = {
@@ -204,11 +184,7 @@ def test_update_player():
         "is_developer": True,
         "developer_id": 0,
         "is_player": True,
-        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4",
-        "tags": "Test",
-        "lat": 0.0,
-        "lon": 0.0,
-        "location_radius": 0
+        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4"
     }
 
     # Act
@@ -247,11 +223,7 @@ class TestGetPlayerList:
                 is_developer="true",
                 developer_id=0,
                 is_player="true",
-                player_id="0b00da19-4846-451e-b1ef-bbf72de17cd4",
-                tags="Test",
-                lat=0,
-                lon=0,
-                location_radius=0
+                player_id="0b00da19-4846-451e-b1ef-bbf72de17cd4"
             )
         ]
 
@@ -287,11 +259,7 @@ def test_get_all_players():
             "is_developer": True,
             "developer_id": 0,
             "is_player": True,
-            "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4",
-            "tags": "Test",
-            "lat": 0.0,
-            "lon": 0.0,
-            "location_radius": 0
+            "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4"
         }
     ]
 
@@ -318,11 +286,7 @@ class TestGetPlayerDetails:
                 is_developer="true",
                 developer_id=0,
                 is_player="true",
-                player_id="0b00da19-4846-451e-b1ef-bbf72de17cd4",
-                tags="Test",
-                lat=0,
-                lon=0,
-                location_radius=0
+                player_id="0b00da19-4846-451e-b1ef-bbf72de17cd4"
             )
         return None
 
@@ -357,9 +321,5 @@ def test_get_player_details():
         "is_developer": True,
         "developer_id": 0,
         "is_player": True,
-        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4",
-        "tags": "Test",
-        "lat": 0,
-        "lon": 0,
-        "location_radius": 0
+        "player_id": "0b00da19-4846-451e-b1ef-bbf72de17cd4"
     }

@@ -2,14 +2,13 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { AuthContext } from "../../components/AuthProvider";
 import { data } from '../../assets/statesData.js'
+// import { tagCategories } from '../../assets/tagsData.js'     // Work in progress for tags
+// import { FaPlus } from 'react-icons/fa';                     // Work in progress for tags
 import profileIcon from "/default/default-icon.png"
 import banner from "../../img/Board-buddies-banner.png"
 import ProfilePicModal from "./ProfilePicModal";
 import './Profile.css';
 import Nav from "../Nav";
-
-// import 'bootstrap/dist/js/bootstrap.bundle.min';
-// import { TagSelector } from '../../components/TagSelector';
 
 
 function CreateProfilePage() {
@@ -21,29 +20,23 @@ function CreateProfilePage() {
         city: '',
         state: '',
         about_me: '',
-        birthdate: '',
-        tags: '',
+        birthdate: ''
+        // tags: {
+        //     frequencyOfPlay: [],
+        //     groupSize: [],
+        //     playStyle: [],
+        //     gameGenres: [],
+        //     playedGames: []
+        // },
     });
     const { user } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const [profilePicture, setProfilePicture] = useState(user.profilePicture || '/default-profile.png');
 
-    // const [selectedTags, setSelectedTags] = useState(profile.tags || []);
-    // const [inputTag, setInputTag] = useState('');
+// const [selectedTags, setSelectedTags] = useState(profile.tags || []);    // Work in progress for tags
 
 
-    // // Function to toggle tag selection
-    // const handleTagToggle = (tag) => {
-    // if (selectedTags.includes(tag)) {
-    //     setSelectedTags(selectedTags.filter((t) => t !== tag)); // Remove if selected
-    // } else {
-    //     setSelectedTags([...selectedTags, tag]); // Add if not selected
-    // }
-    // };
-
-
-    // Fetch player data when the component mounts
     useEffect(() => {
         const fetchPlayer = async () => {
             const url = `http://localhost:8000/api/players/${user.user_id}/`;
@@ -60,9 +53,15 @@ function CreateProfilePage() {
                         state: data.state,
                         about_me: data.about_me,
                         birthdate: data.birthdate,
-                        tags: data.tags,
+                        // tags: data.tags || {
+                        //     frequencyOfPlay: [],
+                        //     groupSize: [],
+                        //     playStyle: [],
+                        //     gameGenres: [],
+                        //     playedGames: []
+                        // },
                     });
-                    // Set profilePicture from fetched data
+                    
                     setProfilePicture(data.profile_picture || profileIcon);
 
                 } else {
@@ -76,7 +75,6 @@ function CreateProfilePage() {
         fetchPlayer();
     }, []);
 
-    // Handle changes in the form fields
     const handleChange = (event) => {
         const { name, value } = event.target;
         setProfile((prevProfile) => ({
@@ -85,15 +83,19 @@ function CreateProfilePage() {
         }));
     };
 
-    // Handle form submission`
     const handleSubmit = async (event) => {
-
-        // Ensure you're using the latest profile and profilePicture states
         event.preventDefault();
          const updatedProfile = {
         ...profile,
-        profile_picture: profilePicture, // Include the selected profile picture
+        profile_picture: profilePicture,
         // tags: selectedTags,
+        // {
+            //     frequencyOfPlay: profile.tags.frequencyOfPlay,
+            //     groupSize: profile.tags.groupSize,
+            //     playStyle: profile.tags.playStyle,
+            //     gameGenres: profile.tags.gameGenres,
+            //     playedGames: profile.tags.playedGames,
+            // }
     };
         const url = `http://localhost:8000/api/players/`;
         const fetchConfig = {
@@ -120,44 +122,69 @@ function CreateProfilePage() {
         }
     };
 
-    // Work in progress
+    // Work in progress for tags
 
-    // const handleTagsChange = (tags) => {
-    //     setProfile({ ...profile, tags });
+    //     const handleTagToggle = (category, tag) => {
+    //         setProfile((prevProfile) => {
+    //             const selectedTags = prevProfile.tags[category] || [];
+    //         const newTags = selectedTags.includes(tag)
+    //             ? selectedTags.filter((t) => t !== tag)
+    //             : [...selectedTags, tag];
+
+    //         return {
+    //             ...prevProfile,
+    //             tags: {
+    //                 ...prevProfile.tags,
+    //                 [category]: newTags,
+    //             },
+    //         };
+    //     });
     // };
 
-    // const handleAddTag = (e) => {
-    //     e.preventDefault();
-    //     if (inputTag && !profile.tags.includes(inputTag)) {
-    //         setProfile({ ...profile, tags: [...profile.tags, inputTag] });
-    //         setInputTag(''); // Clear the input
-    //     }
-    // };
 
-    // const handleRemoveTag = (tagToRemove) => {
-    //     setProfile({ ...profile, tags: profile.tags.filter(tag => tag !== tagToRemove) });
-    // };
+    // const renderTagSection = (title, categoryTags, categoryKey) => (
+        //     <div className="tag-selection-section mb-3 mt-2 mx-2">
+        //         <h4 style={{ fontFamily: 'Arial, sans-serif', fontSize: '1rem', fontWeight: '500', color: 'white'}}>{title}</h4>
+        //         <div className="d-flex flex-wrap justify-content-center">
+        //             {categoryTags.map((tag, index) => (
+            //                 <button
+            //                     key={index}
+    //                     type="button"
+    //                     className={`btn ${profile.tags[categoryKey]?.includes(tag) ? 'btn-light' : 'btn-outline-light'} m-1`}
+    //                     onClick={() => handleTagToggle(categoryKey, tag)}
+    //                 >
+    //                     <FaPlus className="me-1 mb-1" />
+    //                     {tag}
+    //                 </button>
+    //             ))}
+    //         </div>
+    //     </div>
+    // );
 
-    return (
-        <>
-            < Nav />
-                <div className="card" style={{ backgroundColor: 'rgba(47, 47, 47, 0.8)', color: 'white', marginBottom: '15%' }}>
-                    <div className="create-profile-page container mt-4">
 
-                        {/* Banner */}
-                        <div className="text-center m-3">
-                            <img className="img-fluid" src={banner} alt="Banner" style={{ width: 'auto', height: 'auto' }} />
-                        </div>
+        return (
+    <>
+        <Nav />
+        <div
+            className="card"
+            style={{ backgroundColor: 'rgba(47, 47, 47, 0.8)', color: 'white', marginBottom: '15%' }}
+        >
+            <div className="create-profile-page container mt-4">
+                {/* Banner */}
+                <div className="text-center m-3">
+                    <img className="img-fluid" src={banner} alt="Banner" style={{ width: 'auto', height: 'auto' }} />
+                </div>
 
-                        {/* Create Profile Title Banner */}
-                        <div className="text-center mb-4">
-                            <h1 className="display-4" style={{ color: '#f8f9fa' }}>Create Profile</h1>
-                            <hr style={{ width: '50%', margin: 'auto', backgroundColor: '#f8f9fa' }} />
-                        </div>
+                {/* Create Profile Title Banner */}
+                <div className="text-center mb-4">
+                    <h1 className="display-4" style={{ color: '#f8f9fa' }}>Create Profile</h1>
+                    <hr style={{ width: '50%', margin: 'auto', backgroundColor: '#f8f9fa' }} />
+                </div>
 
-                        {/* Left Column with Profile Picture and Username */}
-                        <div className="row justify-content-center">
-                            <div className="col-md-3 d-flex flex-column align-items-center text-start">
+                <form onSubmit={handleSubmit} id="create-profile-form">
+                    {/* Profile Picture/Username Section - Left Column */}
+                    <div className="row justify-content-center">
+                        <div className="col-md-3 mt-5 pt-4 ps-4 d-flex flex-column align-items-center text-start">
                             <ProfilePicModal setProfilePicture={setProfilePicture} user={user} />
                             <NavLink className="d-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                 <img
@@ -166,191 +193,174 @@ function CreateProfilePage() {
                                     src={profilePicture || profileIcon}
                                     alt="Profile"
                                     title="Change Profile Picture"
-                                    />
+                                />
                             </NavLink>
-                            <div className="mb-3">
-                                <h1 className="auto-font fs-3 mb-1">{user.username}</h1>
-                            </div>
+                            <h1 className="auto-font mb-1" style={{ fontSize: '1.3vw' }}>{user.username}</h1>
+
                         </div>
 
-                        {/* Right Column with Form Section in a Card */}
-                        <div className="col-md-9">
-                            <div className="card shadow p-4 mb-4 me-4" style={{ backgroundColor: 'rgba(66, 66, 66, 0.7)'}}>
-                                <form onSubmit={handleSubmit} id="create-profile-form">
-                                    {/* Full Name Input */}
-                                    <div className="row mb-2">
-`                                        {/* First Name Input */}
-                                        <div
-                                            className="col-md-5 pe-1"
-                                            style={{
-                                                padding: '0.25rem 0.5rem',
-                                                fontSize: '0.875rem',
-                                                height: 'auto',
-                                                width: '48%'
-                                            }}>
-                                            <input
-                                                value={profile.first_name || ''}
-                                                onChange={(e) =>
-                                                    setProfile({
-                                                        ...profile,
-                                                        first_name: e.target.value,
-                                                    })
-                                                }
-                                                id="first_name"
-                                                type="text"
-                                                placeholder="First Name"
-                                                className="form-control"
-                                            />
-                                        </div>
-                                        {/* Last Name Input */}
-                                        <div
-                                            className="col-md-5 ps-1"
-                                            style={{
-                                                padding: '0.25rem 0.5rem',
-                                                fontSize: '0.875rem',
-                                                height: 'auto',
-                                                width: '50%'
-                                            }}>
-                                            <input
-                                                value={profile.last_name || ''}
-                                                onChange={(e) =>
-                                                    setProfile({
-                                                        ...profile,
-                                                        last_name: e.target.value,
-                                                    })
-                                                }
-                                                id="last_name"
-                                                type="text"
-                                                placeholder="Last Name"
-                                                className="form-control"
-                                            />
-                                        </div>
-                                    </div>
-                                    {/* Keeping In Case Of Wanting To Revert Back */}
-                                    {/* Combined First Name and Last Name Input */}
-                                    {/* <div className="form-floating mb-3">
+                        {/* Form Inputs Section - Right Column */}
+                        <div className="col-md-9 pe-4">
+                            <div
+                                className="card shadow p-4 mb-4"
+                                style={{ backgroundColor: 'rgba(66, 66, 66, 0.7)' }}
+                            >
+                                {/* Full Name Inputs */}
+                                <div className="row mb-2">
+                                    {/* First Name Input */}
+                                    <div className="col-md-6 pe-1">
                                         <input
-                                            value={`${profile.first_name || ''} ${profile.last_name || ''}`}
-                                            onChange={(e) => {
-                                                const [first_name, ...last_name] = e.target.value.split(' ');
+                                            value={profile.first_name || ''}
+                                            onChange={(e) =>
                                                 setProfile({
                                                     ...profile,
-                                                    first_name: first_name || '',
-                                                    last_name: last_name.join(' ') || ''
-                                                });
-                                            }}
+                                                    first_name: e.target.value,
+                                                })
+                                            }
+                                            id="first_name"
                                             type="text"
-                                            placeholder="Full Name"
-                                            id="full_name"
-                                            className="form-control"
-                                            required
-                                            />
-                                        <label htmlFor="full_name">Full Name</label>
-                                    </div> */}
-                                    <div className="mb-3">
-                                        <input
-                                            value={profile.email}
-                                            onChange={handleChange}
-                                            name="email"
-                                            type="email"
-                                            placeholder="Email"
-                                            className="form-control"
-                                            />
-                                    </div>
-
-                                    {/* City & State Line */}
-                                    <div className="row mb-3">
-                                        {/* City Input */}
-                                        <div className="col-md-9 pe-1">
-                                            <div>
-                                                <input
-                                                    value={profile.city || ''}
-                                                    onChange={(e) => setProfile({ ...profile, city: e.target.value || '' })}
-                                                    type="text"
-                                                    placeholder="City"
-                                                    id="city"
-                                                    className="form-control"
-                                                />
-                                            </div>
-                                        </div>
-                                        {/* State Dropdown */}
-                                        <div className="col-md-3 ps-1">
-                                            <div>
-                                                <select
-                                                    value={profile.state || ''}
-                                                    onChange={(e) => setProfile({ ...profile, state: e.target.value || '' })}
-                                                    className="form-select"
-                                                    id="state"
-                                                >
-                                                    <option value="">State</option>
-                                                    {data.map((item) => (
-                                                        <option key={item.abbreviation} value={item.abbreviation}>
-                                                            {item.abbreviation}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* About Me Input */}
-                                    <div className="mb-3">
-                                        <textarea
-                                            value={profile.about_me || ''}
-                                            onChange={(e) => setProfile({ ...profile, about_me: e.target.value || '' })}
-                                            placeholder="About Me"
-                                            id="about"
-                                            className="form-control"
-                                            rows="4"
-                                        />
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            value={profile.birthdate}
-                                            onChange={handleChange}
-                                            name="birthdate"
-                                            type="date"
+                                            placeholder="First Name"
                                             className="form-control"
                                         />
-                                        <label htmlFor="birthdate">Birthdate</label>
                                     </div>
-                                    {/* <div className="tag-selection">
-                                        <h3>Select Preferences</h3>
-                                        {availableTags.map((tag, index) => (
-                                        <button
-                                            key={index}
-                                            className={`btn ${selectedTags.includes(tag) ? 'btn-primary' : 'btn-secondary'} m-1`}
-                                            onClick={() => handleTagToggle(tag)}
+                                    {/* Last Name Input */}
+                                    <div className="col-md-6 ps-1">
+                                        <input
+                                            value={profile.last_name || ''}
+                                            onChange={(e) =>
+                                                setProfile({
+                                                    ...profile,
+                                                    last_name: e.target.value,
+                                                })
+                                            }
+                                            id="last_name"
+                                            type="text"
+                                            placeholder="Last Name"
+                                            className="form-control"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Email Input */}
+                                <div className="mb-2">
+                                    <input
+                                        value={profile.email}
+                                        onChange={handleChange}
+                                        name="email"
+                                        type="email"
+                                        placeholder="Email"
+                                        className="form-control"
+                                    />
+                                </div>
+
+                                {/* City & State Line */}
+                                <div className="row mb-2">
+                                    <div className="col-md-9 pe-1">
+                                        <input
+                                            value={profile.city || ''}
+                                            onChange={(e) => setProfile({ ...profile, city: e.target.value || '' })}
+                                            type="text"
+                                            placeholder="City"
+                                            id="city"
+                                            className="form-control"
+                                        />
+                                    </div>
+                                    <div className="col-md-3 ps-1">
+                                        <select
+                                            value={profile.state || ''}
+                                            onChange={(e) => setProfile({ ...profile, state: e.target.value || '' })}
+                                            className="form-select"
+                                            id="state"
                                         >
-                                            {tag}
-                                        </button>
-                                        ))}
-                                    </div> */}
-
-                                    {/* Tag Selection Section
-                                    <TagSelector selectedTags={profile.tags} setSelectedTags={handleTagsChange} /> */}
-
-                                    <div className="mb-3">
-                                        <input
-                                            value={profile.tags}
-                                            onChange={handleChange}
-                                            name="tags"
-                                            type="text"
-                                            placeholder="Tags"
-                                            className="form-control"
-                                        />
+                                            <option value="">State</option>
+                                            {data.map((item) => (
+                                                <option key={item.abbreviation} value={item.abbreviation}>
+                                                    {item.abbreviation}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
-                                    {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-                                    <button className="btn mb-2" type="submit" style={{ backgroundColor: 'rgba(47, 47, 47, 0.6)', color: 'white' }}>
-                                        Save
-                                    </button>
-                                </form>
+                                </div>
+
+                                {/* About Me Input */}
+                                <div className="mb-2">
+                                    <textarea
+                                        value={profile.about_me || ''}
+                                        onChange={(e) => setProfile({ ...profile, about_me: e.target.value || '' })}
+                                        placeholder="About Me"
+                                        id="about"
+                                        className="form-control"
+                                        rows="4"
+                                    />
+                                </div>
+
+                                {/* Birthdate Input */}
+                                <div className="form-floating mb-2">
+                                    <input
+                                        value={profile.birthdate}
+                                        onChange={handleChange}
+                                        name="birthdate"
+                                        type="date"
+                                        className="form-control"
+                                    />
+                                    <label htmlFor="birthdate">Birthdate</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    {/* Work in progress for tags */}
+                    {/* Preferences Sections*/}
+                    {/* <h1 className="display-6 mb-4" style={{ color: '#f8f9fa' }}>Preferences</h1>
+                    <div className="row m-1">
+                        <div className="col-md-6 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                {renderTagSection('Frequency', tagCategories.frequencyOfPlay, 'frequencyOfPlay')}
+                            </div>
+                        </div>
+                        <div className="col-md-6 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                {renderTagSection('Preferred Group Size', tagCategories.groupSize, 'groupSize')}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row m-1">
+                        <div className="col-md-6 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                {renderTagSection('Play Style', tagCategories.playStyle, 'playStyle')}
+                            </div>
+                        </div>
+                        <div className="col-md-6 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                {renderTagSection('Game Genres', tagCategories.gameGenres, 'gameGenres')}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row m-1">
+                        <div className="col-md-12 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                {renderTagSection('Games Played', tagCategories.playedGames, 'playedGames')}
+                            </div>
+                        </div>
+                    </div> */}
+
+                    {/* Save Button & Errors */}
+                    <div className="row justify-content-center">
+                        <div className="col-md-3 text-center">
+                            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+                            <button
+                                className="btn mb-4"
+                                type="submit"
+                                style={{ backgroundColor: 'rgba(47, 47, 47, 0.6)', color: 'white' }}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </>
+        </div>
+    </>
 );
 }
 
