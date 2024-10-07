@@ -145,7 +145,7 @@ function MyMeetups() {
                                 </Link>
                             ))
                     ) : (
-                        <p>No meetups found.</p>
+                        <p>You have no meetups.</p>
                     )}
                 </div>
 

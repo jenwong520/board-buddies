@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Nav from '../Nav';
+import Nav from '../Nav'
 
 function GameList() {
-    const [games, setGames] = useState([]);
+    const [games, setGames] = useState([])
 
     useEffect(() => {
         fetch('http://localhost:8000/api/game/')
             .then((response) => response.json())
             .then((data) => setGames(data))
-            .catch((error) => console.error('Error fetching games:', error));
-    }, []);
+            .catch((error) => console.error('Error fetching games:', error))
+    }, [])
 
     return (
         <>
@@ -62,4 +62,4 @@ function GameList() {
     )
 }
 
-export default GameList;
+export default GameList
