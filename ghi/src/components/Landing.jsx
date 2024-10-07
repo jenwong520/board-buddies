@@ -7,7 +7,12 @@ import mainLogo from "../img/Board-buddies-logo.png"
         <>
             <nav className="navbar navbar-expand-sm fixed-top">
                 <div className="container-fluid">
-                    <NavLink className="navbar-brand text-light">Board Buddies</NavLink>
+                    <NavLink className="navbar-brand" to="/">
+                        <img
+                            src={mainLogo}
+                            alt="Board Buddies Logo"
+                        />
+                    </NavLink>
                     <ul className="navbar-nav mb-2 mb-lg-2 flex-wrap">
                         <li className="nav-item">
                             <a className="nav-link text-light" href="#about">About</a>
@@ -37,7 +42,7 @@ import mainLogo from "../img/Board-buddies-logo.png"
             </nav>
             <main>
                 <div className="background">
-                    <img src={mainLogo} alt="Logo" className="mse-1" />
+                    <img src={mainLogo} alt="Logo" className="m-1" />
                     <div className="container-fluid" id="about">
                         <div className="card mb-3" style={{ backgroundColor: 'rgba(30, 30, 30, 0.9)', color: 'white' }}>
                             <div className="row g-0">
@@ -60,7 +65,7 @@ import mainLogo from "../img/Board-buddies-logo.png"
                             </div>
                         </div>
                     </div>
-                    <div className="container-fluid" id="how">
+                    <div className="container-fluid " id="how">
                         <div className="card mb-5" style={{ backgroundColor: 'rgba(30, 30, 30, 0.9)', color: 'white' }}>
                             <div className="row g-0">
                                 <div className="col-md-8">

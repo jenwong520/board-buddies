@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { convertSpaces } from "../../utils"
+import { API_KEY } from "../../assets/ApiKeys.js"
 
 function LocationDetail() {
     const { id } = useParams()
@@ -31,7 +31,7 @@ function LocationDetail() {
     const city = String(locations.city)
     const convertedName = name.split(' ').join('+')
     const convertedCity = city.split(' ').join('+')
-    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyCdG1XCUBYkXysiPi1E8cc6UqCR8OvRW5M&q=${convertedName},${convertedCity}+${locations.state}`
+    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${convertedName},${convertedCity}+${locations.state}`
 
     return (
         <>

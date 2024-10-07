@@ -95,6 +95,22 @@ export default function ProfilePage() {
                     {/* Preferences Section */}
                     <div className="preferences mt-5">
                         <h3>Preferences</h3>
+                        {/* {player.tags && player.tags.length > 0 ? (
+                            player.tags.map((tag, index) => (
+                            <button
+                                key={index}
+                                className="btn button-primary m-1"
+                                style={{
+                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                color: 'white'
+                                }}
+                            >
+                                {tag}
+                            </button>
+                            ))
+                        ) : (
+                            <p>No preferences selected</p>
+                        )} */}
                         <button
                             className="btn button-primary m-1"
                             style={{

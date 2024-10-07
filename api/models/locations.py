@@ -12,15 +12,6 @@ class Error(BaseModel):
     message: str
 
 
-class LatLon(BaseModel):
-    """
-    Gets the latitude and longitude of a location bassed of the Google maps api
-    """
-
-    lat: float
-    lon: float
-
-
 class LocationIn(BaseModel):
     """
     Represents the paramaters required to create a new location
@@ -35,33 +26,12 @@ class LocationIn(BaseModel):
 
 class LocationOut(BaseModel):
     """
-    Represents the paramaters required to create a new location
+    Represents the paramaters returned with the location api
     """
 
     id: int
     name: str
     address: str
-    city: str
-    state: str
-    store_type: str
-
-
-class LocationList(BaseModel):
-    """
-    Gets location name and id
-    """
-
-    id: int
-    name: str
-
-
-class LocationDetails(BaseModel):
-    """
-    Gets all location details including the id
-    """
-
-    id: int
-    name: str
     city: str
     state: str
     store_type: str

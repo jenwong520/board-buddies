@@ -17,14 +17,14 @@
 
 
 .background {
-    background-image: url("https://cdn.thewirecutter.com/wp-content/media/2021/07/boardgames-2048px-2233.jpg");
+    background-image: url(img/landing_backgrounds/Table-Gaming-21.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
     background-color: #282c34;
     display: auto;
-    height: 200vh;
+    height: 225vh;
     width: 100%;
 }
 

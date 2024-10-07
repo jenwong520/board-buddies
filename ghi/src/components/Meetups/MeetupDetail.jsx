@@ -6,6 +6,8 @@ import { PiNotePencilThin } from "react-icons/pi";
 import { PiPencilSimpleLight } from "react-icons/pi";
 import { PiPencilSimpleThin } from "react-icons/pi";
 import { BsPencil } from "react-icons/bs";
+import baseImg from "../../../public/default/board-buddies-icon-default.png"
+import { API_KEY } from '../../assets/ApiKeys';
 
 
 function MeetupDetail() {
@@ -113,7 +115,7 @@ function MeetupDetail() {
     const city = String(meetup.location_city)
     const convertedName = name.split(' ').join('+')
     const convertedCity = city.split(' ').join('+')
-    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyCdG1XCUBYkXysiPi1E8cc6UqCR8OvRW5M&q=${convertedName},${convertedCity}+${meetup.state}`
+    const mapsUrl = `https://www.google.com/maps/embed/v1/place?key=${API_KEY}&q=${convertedName},${convertedCity}+${meetup.state}`
 
     const handleOrganizerJoin = () => {
         fetch(`http://localhost:8000/api/meetup/${id}/join`, {

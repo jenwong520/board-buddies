@@ -3,7 +3,7 @@ Pydantic Models for Users.
 """
 import re
 from typing import Optional
-from pydantic import BaseModel, Field, constr, validator
+from pydantic import BaseModel, Field, constr, field_validator
 from datetime import datetime
 
 
@@ -24,7 +24,7 @@ class UserRequest(BaseModel):
     date_joined: Optional[datetime] = None
 
 
-@validator('username')
+@field_validator('username')
 def validate_username(cls, value):
     if not re.match("^[a-zA-Z0-9_-]+$", value):
         raise ValueError(
@@ -33,7 +33,7 @@ def validate_username(cls, value):
     return value
 
 
-@validator('password')
+@field_validator('password')
 def validate_password(cls, value):
     if not re.search(r"[A-Z]", value):
         raise ValueError(

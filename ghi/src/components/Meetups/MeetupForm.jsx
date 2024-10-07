@@ -186,7 +186,7 @@ function CreateMeetup() {
                                 <option value="">Select Location</option>
                                 {location.map((location) => (
                                     <option key={location.id} value={location.id}>
-                                        {location.name}
+                                        {location.name} - {location.city}, {location.state}
                                     </option>
                                 ))}
                             </select>
