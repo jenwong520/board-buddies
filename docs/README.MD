@@ -24,17 +24,16 @@ Board Buddies is the premiere matchmaking site for board gamers. It allows new u
 - Integration with board game databases for automated meetup suggestions.
 
 ## Getting Started
+In your terminal:
 1. Clone the repository down to your local machine
-2. cd into the new project directory
-3. Run docker compose build
-4. Run docker compose up
+2. CD into the new project directory
+4. Run ``docker volume create database_volume``
+5. Run ``docker compose build``
+6. Run ``docker compose up``
 
 ## Design
-1. [API Design](api-design.md)
+1. [API Design](docs/api-design.md)
 
-2. Data Model
-(List the main models and their attributes. Include details on relationships between models, such as user, meetup, and participant models.)
+2. [Data Model](docs/data-models.md)
 
-3. GHI (Graphical User Interface)
-(Describe the user interface. What are the main components and pages? Mention any libraries or frameworks used for UI/UX design.)
-
+3. [GHI (Graphical User Interface)](docs/ghi.md)

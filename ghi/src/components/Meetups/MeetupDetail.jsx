@@ -226,10 +226,10 @@ function MeetupDetail() {
 
                     <div>
                         {!isParticipant && user && meetup.organizer_id === user.user_id && (
-                            <button className='btn btn-info' onClick={handleOrganizerJoin}>Join as Participant</button>
+                            <button className='btn btn-info' onClick={handleOrganizerJoin}>Join as Player</button>
                         )}
                         {isParticipant && user && meetup.organizer_id === user.user_id && (
-                            <button className='btn btn-danger' onClick={handleOrganizerLeave}>Leave as Participant</button>
+                            <button className='btn btn-danger' onClick={handleOrganizerLeave}>Leave as Player</button>
                         )}
                         {user && meetup.organizer_id !== user.user_id && (
                             <>
