@@ -35,18 +35,24 @@ function LocationDetail() {
 
     return (
         <>
-            <div>
-                <h1>{locations.name}</h1>
-                <h2>{locations.address}, {locations.city}, {locations.state}</h2>
-                <h2>{locations.store_type}</h2>
-                <iframe
-                width="450"
-                height="450"
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                src={mapsUrl}
-                ></iframe>
+            <div className="container row">
+                <header className="text-white">
+                    <h1>{locations.name}</h1>
+                    <h2>
+                        {locations.address}, {locations.city}, {locations.state}
+                    </h2>
+                    <h2>Venue type: {locations.store_type}</h2>
+                </header>
+                <div className="details-container">
+                    <iframe
+                        width="450"
+                        height="450"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={mapsUrl}
+                    ></iframe>
+                </div>
             </div>
         </>
     )

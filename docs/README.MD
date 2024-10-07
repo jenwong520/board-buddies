@@ -38,5 +38,3 @@ Board Buddies is the premiere matchmaking site for board gamers. It allows new u
 3. GHI (Graphical User Interface)
 (Describe the user interface. What are the main components and pages? Mention any libraries or frameworks used for UI/UX design.)
 
-4. Integrations
-(Detail any third-party APIs, services, or libraries integrated into the application. For example, if you use external services for maps, payments, notifications, etc.)
