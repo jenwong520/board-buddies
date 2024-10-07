@@ -10,18 +10,19 @@ Description: Handles user registration during signin, and JWT-based authenticati
 Request:
 ```
 {
-  "username": "UltimateBoardGamer",
-  "password": "password"
+  "username": "string",
+  "password": "string"
 }
 ```
+
 Response:
 ```
 {
-  "user_id": "0537d3c8-2cb9-47a4-8106-ffd7d78f51e2",
-  "username": "UltimateBoardGamer",
+  "user_id": "b2e649eb-9097-49cb-ac7e-a832c1559c33",
+  "username": "string",
   "is_developer": null,
   "is_player": null,
-  "date_joined": "2024-10-07T13:31:20.859028"
+  "date_joined": "2024-10-08T09:58:30.913595"
 }
 ```
 
@@ -29,17 +30,18 @@ Response:
 Description: Handles player registration after signup.
 - GET ``/api/players/``: Returns list of all players.
 - POST ``/api/players/``: Creates a new player.
-- GET ``/api/player/{player_id}``: Returns specific player details based on uuid.
+- GET ``/api/players/{player_id}``: Returns specific player details based on uuid.
 - POST ``/api/players/{player_id}``: Update a player's information.
-- DELETE ``/api/player/{player_id}``: Delete a player by uuid.
+- DELETE ``/api/players/{player_id}``: Delete a player by uuid.
+
 Request:
 ```
 {
-  "email": "UltimateBoardGamer@example.com",
-  "age": 25,
-  "city": "Denver",
-  "state": "C0",
-  "tags": "everything",
+  "email": "user@example.com",
+  "age": 0,
+  "city": "string",
+  "state": "st",
+  "tags": "string",
   "is_verified": true,
   "is_gamehost": true,
   "gamehost_id": 0,
@@ -51,35 +53,35 @@ Request:
   "lat": 0,
   "lon": 0,
   "location_radius": 0,
-  "profile_picture": "/player-icons/board-buddies-icon-raccoon"
+  "profile_picture": "string"
 }
 ```
 
 Response:
 ```
 {
-    "user_id": "0537d3c8-2cb9-47a4-8106-ffd7d78f51e2",
-    "profile_picture": "/player-icons/board-buddies-icon-raccoon",
-    "email": "UltimateBoardGamer@example.com",
-    "first_name": null,
-    "last_name": null,
-    "city": "Denver",
-    "state": "C0",
-    "about_me": null,
-    "birthdate": null,
-    "is_verified": true,
-    "is_gamehost": true,
-    "gamehost_id": 0,
-    "is_playtester": true,
-    "playtester_id": 0,
-    "is_developer": null,
-    "developer_id": null,
-    "is_player": null,
-    "player_id": null,
-    "tags": "everything",
-    "lat": 0,
-    "lon": 0,
-    "location_radius": 0
+  "user_id": "b2e649eb-9097-49cb-ac7e-a832c1559c33",
+  "profile_picture": "string",
+  "email": "user@example.com",
+  "first_name": null,
+  "last_name": null,
+  "city": "string",
+  "state": "st",
+  "about_me": null,
+  "birthdate": null,
+  "is_verified": true,
+  "is_gamehost": true,
+  "gamehost_id": 0,
+  "is_playtester": true,
+  "playtester_id": 0,
+  "is_developer": true,
+  "developer_id": 0,
+  "is_player": true,
+  "player_id": null,
+  "tags": "string",
+  "lat": 0,
+  "lon": 0,
+  "location_radius": 0
 }
 ```
 
@@ -90,6 +92,7 @@ Description: Handles game data.
 - GET ``/api/game/{game_id}``: Returns specific game details.
 - POST ``/api/game/{game_id}``: Update game details.
 - DELETE ``/api/game/{game_id}``: Delete a game by id.
+
 Request:
 ```
 {
@@ -128,6 +131,7 @@ Description: Handles location data.
 - GET ``/api/location/{location_id}``: Returns specific location details.
 - POST ``/api/location/{location_id}``: Update location details.
 - DELETE ``/api/location/{location_id}``: Delete a location by id.
+
 Request:
 ```
 {
@@ -138,10 +142,11 @@ Request:
   "store_type": "string"
 }
 ```
+
 Response:
 ```
 {
-  "id": 0,
+  "id": 1,
   "name": "string",
   "address": "string",
   "city": "string",
@@ -164,8 +169,8 @@ Request:
 ```
 {
   "meetup_name": "string",
-  "game_id": 0,
-  "location_id": 0,
+  "game_id": 1,
+  "location_id": 1,
   "start_time": "2024-10-07T02:27:11.761Z",
   "end_time": "2024-10-07T02:27:11.761Z",
   "description": "string",
@@ -174,23 +179,28 @@ Request:
   "status": "scheduled"
 }
 ```
+
 Response:
 ```
+
+Response body
 {
-  "id": 9,
+  "id": 1,
   "meetup_name": "string",
-  "organizer_id": "0537d3c8-2cb9-47a4-8106-ffd7d78f51e2",
-  "organizer_username": "/player-icons/board-buddies-icon-raccoon",
-  "organizer_picture": "UltimateBoardGamer",
+  "organizer_id": "b2e649eb-9097-49cb-ac7e-a832c1559c33",
+  "organizer_username": "string",
+  "organizer_picture": "string",
+  "game_id": 1,
   "game_name": "Catan",
   "game_image": "https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg",
+  "location_id": 1,
   "location_name": "Turn Zero Games",
   "location_address": "3959 Wilshire Blvd ste a-9",
   "location_city": "Los Angeles",
   "location_state": "CA",
   "location_store_type": "Game Store",
-  "start_time": "2024-10-07T02:27:11.761000",
-  "end_time": "2024-10-07T02:27:11.761000",
+  "start_time": "2024-10-07T22:02:00.603000",
+  "end_time": "2024-10-07T22:02:00.603000",
   "description": "string",
   "min_players": 0,
   "max_players": 0,
