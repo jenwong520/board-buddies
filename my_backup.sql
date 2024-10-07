@@ -275,7 +275,8 @@ CREATE TABLE public.meetups (
     organizer_id character varying NOT NULL,
     game_id integer NOT NULL,
     location_id integer NOT NULL,
-    meetup_date timestamp without time zone NOT NULL,
+    start_time timestamp without time zone NOT NULL,
+    end_time timestamp without time zone NOT NULL,
     description text,
     min_players smallint NOT NULL,
     max_players smallint NOT NULL,
@@ -325,20 +326,23 @@ ALTER TABLE public.migrations OWNER TO "user";
 
 CREATE TABLE public.players (
     player_id character varying(100) NOT NULL,
+    profile_picture character varying(250),
     email character varying(255),
-    age smallint,
+    first_name character varying(100),
+    last_name character varying(100),
     city character varying(100),
     state character varying(2),
-    tags character varying(50),
+    about_me character varying(500),
+    birthdate date,
     is_verified boolean DEFAULT false,
     is_gamehost boolean DEFAULT false,
     gamehost_id integer,
     is_playtester boolean DEFAULT false,
     playtester_id integer,
+    tags character varying(50),
     lat double precision,
     lon double precision,
-    location_radius smallint,
-    profile_picture character varying(250)
+    location_radius smallint
 );
 
 
@@ -353,7 +357,8 @@ CREATE TABLE public.users (
     username character varying(25) NOT NULL,
     password character varying(100) NOT NULL,
     is_developer boolean DEFAULT false,
-    is_player boolean DEFAULT false
+    is_player boolean DEFAULT false,
+    date_joined timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -388,6 +393,13 @@ COPY public.games (id, name, game_image, min_players, max_players, game_duration
 1	Catan	https://www.orderofgamers.com/wordpress/wp-content/uploads/2023/08/catan.jpg	3	4	90	10	0	strategy	In CATAN (formerly The Settlers of Catan), players try to be the dominant force on the island of Catan by building settlements, cities, and roads. On each turn dice are rolled to determine what resources the island produces. Players build by spending resources (sheep, wheat, wood, brick and ore) that are depicted by these resource cards; each land type, with the exception of the unproductive desert, produces a specific resource: hills produce brick, forests produce wood, mountains produce ore, fields produce wheat, and pastures produce sheep.
 2	Codenames	https://czechgames.com/for-press/codenames/images/cn-family/codenames.jpg	2	8	15	14	0	party	The two rival spymasters know the secret identities of 25 agents. Their teammates know the agents only by their CODENAMES.The teams compete to see who can make contact with all of their agents first. Spymasters give one-word clues that can point to multiple words on the board. Their teammates try to guess words of the right color while avoiding those that belong to the opposing team. And everyone wants to avoid the assassin. Codenames: win or lose, it’s fun to figure out the clues.
 3	Magic: The Gathering	https://1000logos.net/wp-content/uploads/2022/10/Magic-The-Gathering-Logo-1993.png	2	0	20	10	0	card	In the Magic game, you play the role of a planeswalker—a powerful wizard who fights other planeswalkers for glory, knowledge, and conquest. Your deck of cards represents all the weapons in your arsenal. It contains the spells you know and the creatures you can summon to fight for you.
+9	Mansions of Madness	https://www.orderofgamers.com/wordpress/wp-content/uploads/2013/04/mansionsofmadness.jpg	1	5	180	14	0	family	Mansions of Madness: Second Edition is a fully co-operative, app-driven board game of horror and mystery for one to five players that takes place in the same universe as Eldritch Horror and Elder Sign. Let the immersive app guide you through the veiled streets of Innsmouth and the haunted corridors of Arkham's cursed mansions as you search for answers and respite. Eight brave investigators stand ready to confront four scenarios of fear and mystery, collecting weapons, tools, and information, solving complex puzzles, and fighting monsters, insanity, and death. Open the door and step inside these hair-raising Mansions of Madness: Second Edition. It will take more than just survival to conquer the evils terrorizing this town.
+7	Joking Hazard	https://playingcards.io/img/landing/joking-hazard.png	3	10	90	18	0	string	Each round, players put down cards to complete a 3-panel comic strip. The round’s judge chooses their favorite setup or punchline card to the comic, and the player that put that card down gets a point. The first player to 3 points wins the game.
+4	Uno	https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_656/b_white/f_auto/q_auto/ncom/software/switch/70010000034088/ac97854c142c719f8ae843106d43511db61822eb9bdb78e2c1a98ea0ae3b6c08	2	10	90	7	0	string	Uno is the highly popular card game played by millions around the globe. This game is played by matching and then discarding the cards in one’s hand till none are left. Since its inception, there are now many versions of Uno that one can play. Here are the rules of the original or classic Uno.
+5	Secret Hitler	https://cool-io.games/thumb/117.gif	5	10	45	17	0	string	In Secret Hitler, players assume the roles of liberals and fascists in the Reichstag of the Weimar Republic, with one player becoming Hitler. To win the game, both parties are set to competitively enact liberal and fascist policies respectively, or complete a secondary objective directly related to the Hitler role.
+6	Clue	https://www.sfplayhouse.org/sfph/wp-content/uploads/2022/03/clue-header.png	3	6	45	8	0	string	Players roll the die/dice and move along the board's corridor spaces, or into the rooms accordingly. The objective of the game is to deduce the details of the murder, i.e. the cards in the envelope. There are six characters, six murder weapons, and nine rooms, leaving the players with 324 possibilities.
+10	Wingspan	https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1054490/header.jpg?t=1726659077	1	5	70	10	0	strategy	Wingspan is a competitive, medium-weight, card-driven, engine-building board game from Stonemaier Games. It is designed by Elizabeth Hargrave and features over 170 birds illustrated by Beth Sobel, Natalia Rojas, and Ana Maria Martinez. You are bird enthusiasts—researchers, bird watchers, ornithologists, and collectors—seeking to discover and attract the best birds to your network of wildlife preserves. Each bird extends a chain of powerful combinations in one of your habitats (actions). These habitats focus on several key aspects of growth: Gain food tokens via custom dice in a birdfeeder dice tower, Lay eggs using egg miniatures in a variety of colors, Draw from hundreds of unique bird cards and play them, The winner is the player with the most points after 4 rounds.
+8	Ticket to Ride	https://moonshotgamestore.com/cdn/shop/collections/Ticket_to_Ride_Shopify_Collection_Image.png?v=1674502152&width=1000	2	5	60	8	0	family	Ticket to Ride is one of the most popular modern board games of this century. Since its release in 2004, Alan R. Moon’s beloved train game of cross-country competition has sold millions of copies, inspired numerous expansions and spin-offs set in different regions across the globe, and become a firm favourite for countless players. Whether you’re setting off on your first journey or are a regular traveller looking to refresh your familiarity with its rules, this beginner’s guide is the best place to learn how to play Ticket to Ride.
 \.
 
 
@@ -416,7 +428,6 @@ COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
 --
 
 COPY public.meetup_participants (participant_id, meetup_id, joined_at) FROM stdin;
-f52ef2cb-b07c-455e-80c1-a720deef34d0	22	2024-10-02 17:50:17.451989
 \.
 
 
@@ -424,9 +435,7 @@ f52ef2cb-b07c-455e-80c1-a720deef34d0	22	2024-10-02 17:50:17.451989
 -- Data for Name: meetups; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.meetups (id, meetup_name, organizer_id, game_id, location_id, meetup_date, description, min_players, max_players, status) FROM stdin;
-22	Thing 3	f52ef2cb-b07c-455e-80c1-a720deef34d0	1	5	2024-10-07 00:18:00	TEST	2	4	scheduled
-23	stuff	f52ef2cb-b07c-455e-80c1-a720deef34d0	3	4	2024-10-02 00:00:00	TEST MEETUPS	2	4	scheduled
+COPY public.meetups (id, meetup_name, organizer_id, game_id, location_id, start_time, end_time, description, min_players, max_players, status) FROM stdin;
 \.
 
 
@@ -435,12 +444,12 @@ COPY public.meetups (id, meetup_name, organizer_id, game_id, location_id, meetup
 --
 
 COPY public.migrations (name, digest) FROM stdin;
-001_create_users	\\x99539f65f0c40ee8652a011b09dddf706e1311825ef10df3402d180efd632800
-004_create_location	\\xef96ab97f0f1d79e4c5846471afcb3871b83fca95e89c3067e8566efccda635c
-005_create_game	\\x858e11ddb548a17c1105036b3e4ad8a3cc29a66dc26b9416c24d70a1b6720997
-006_create_players	\\x21a4f307f56bf8d7a45b260679d26a4a513754818f957e7fe5b3cfb4ea84bd6a
-007_create_meetups	\\x08b4533e6c9c67729b46ece4b36aaa1c9dc335b1f8e15edffb1bfbd66e3d6a94
-008_create_participants	\\x354dc84057489387ee5282c99c83b85b3a7a5f316c22fe1552104f29fda479b8
+001_create_users	\\xb3031cda9de1918490602d9335874de3a0e5ad7b576ee4063e52e43386d51053
+004_create_location	\\x25a4b242bf3750c040815735b1cbec9bf394f2e070cb8fa933562c7a4a1edf34
+005_create_game	\\x8422265fb9430442a58c8ee9751c003ae608bfb0eb930f0bc1d0a0ba3fbb0c81
+006_create_players	\\x3d7771441a01b1828ef2eed97696d1b17ed45f418dec09c4c39fdf3ff1f45ef4
+007_create_meetups	\\x25d12744775059115e8f0318847f8ff06732278a9d94361b7bdfaffc1e572737
+008_create_participants	\\x2da932859b351ef1dbc99447522620d46bbd3edf2b40da4a8a2f51279dcce235
 \.
 
 
@@ -448,8 +457,8 @@ COPY public.migrations (name, digest) FROM stdin;
 -- Data for Name: players; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.players (player_id, email, age, city, state, tags, is_verified, is_gamehost, gamehost_id, is_playtester, playtester_id, lat, lon, location_radius, profile_picture) FROM stdin;
-f52ef2cb-b07c-455e-80c1-a720deef34d0	djengo_wins@example.com	\N	Tucson	AZ	strategy	t	t	0	t	0	0	0	0	/player-icons/board-buddies-icon-shiba
+COPY public.players (player_id, profile_picture, email, first_name, last_name, city, state, about_me, birthdate, is_verified, is_gamehost, gamehost_id, is_playtester, playtester_id, tags, lat, lon, location_radius) FROM stdin;
+cb8ea960-cec1-45fd-879f-02db62831fdb	string	user@example.com	\N	\N	string	st	\N	\N	t	t	0	t	0	string	0	0	0
 \.
 
 
@@ -457,12 +466,8 @@ f52ef2cb-b07c-455e-80c1-a720deef34d0	djengo_wins@example.com	\N	Tucson	AZ	strate
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: user
 --
 
-COPY public.users (user_id, username, password, is_developer, is_player) FROM stdin;
-f52ef2cb-b07c-455e-80c1-a720deef34d0	Djengo_Wins	$2b$12$qqcNtTMxcZAre6xBNt8yh.PmfW/H4g1VfN5bNEK7swnyQe2gRGEhe	f	f
-6b4b1e95-1bc7-408a-8e5c-b277e33a3afb	_GhostOfCRSFToken_	$2b$12$x81IGfiUvP9m0AXN2hQPBuT9dIVk/1HDBryAnVdgQ.Rs4yW/qPPtq	f	f
-e153967e-7bb1-42d1-8e6b-442470fc9a04	BrainNotFound_404	$2b$12$3ER6DVMXpK.Lgfx8foAgWe.SUpfcN1QH4sKwoTAWgV6e4rnPgX0KS	f	f
-3f17c086-b382-41f4-a9b7-9224678d8390	Receipts&Recipes	$2b$12$fpbzxLLznP.rK4KR77HsTOz2T5LUF00zKfWoR9zWqrgt0UMxLCC9e	f	f
-2f9e7d96-e322-4d58-a8dc-64ac3a3c612b	Death-To-Docker	$2b$12$oJ6HitP1ojR9k5haJfQIZeip0WasstBPZzi.i8zB15hLYrV5EyBy.	f	f
+COPY public.users (user_id, username, password, is_developer, is_player, date_joined) FROM stdin;
+cb8ea960-cec1-45fd-879f-02db62831fdb	jen	$2b$12$wB5DfW9LuahbrJzaiJ48pepz2IqoLUj1IzekOkjUSp1UPnIgkBDQy	\N	\N	2024-10-08 10:36:57.240899
 \.
 
 
@@ -470,7 +475,7 @@ e153967e-7bb1-42d1-8e6b-442470fc9a04	BrainNotFound_404	$2b$12$3ER6DVMXpK.Lgfx8fo
 -- Name: games_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('public.games_id_seq', 3, true);
+SELECT pg_catalog.setval('public.games_id_seq', 10, true);
 
 
 --
