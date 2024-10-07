@@ -1,23 +1,23 @@
 
 .App {
     text-align: center;
-    background-color: #282c34; /* Fallback color */
+    background-color: #282c34;
     background-image: url(img/backgrounds/Torch-Wall-16.jpg);
-    background-size: cover; /* Ensure the background covers the entire area */
-    background-repeat: no-repeat; /* Prevent repeating of the image */
-    background-position: center; /* Center the background image */
-    min-height: 200vh; /* Minimum height is 100% of the viewport height */
-    padding: 100px; /* Add padding to see more background */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 200vh;
+    padding: 100px;
     color: rgb(0, 0, 0);
     display: flex;
-    flex-direction: column; /* Change to column if you want items stacked */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
 
 .background {
-    background-image: url(img/landing_backgrounds/Table-Gaming-21.jpg);
+    background-image: url(img/landing_backgrounds/Table-Gaming-4.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -229,6 +229,6 @@
 
 @media (max-width: 768px) {
     .App {
-        background-size: contain; /* Change for smaller screens */
+        background-size: contain;
     }
 }

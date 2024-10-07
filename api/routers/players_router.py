@@ -63,17 +63,15 @@ async def update_player(
     user: Optional[JWTUserData] = Depends(try_get_jwt_user_data)
 ):
     """
-    Update a player's information
+    Update a player's information, including tags
     """
     if not user:
         return {"message": "Authentication required"}
 
     result = repo.update(player_id, player, user.user_id)
 
-    # if result in None:
-    #     return {"message": "Player not found"}
-
-    # was breaking something significantly for some reason
+    if isinstance(result, Error):
+        return {"message": "Player not found"}
 
     return result
 
@@ -90,3 +88,14 @@ async def delete_player(
     if not user:
         return {"message": "Authentication required"}
     return repo.delete(user.user_id)
+
+
+# Work In Progress Code For Tags
+# @router.put("/players/{player_id}/tags", response_model=dict)
+# def update_player_tags(
+#     player_id: int,
+#     tags_update: PlayerTagsUpdate,
+#     repository: PlayerRepository = Depends()
+# ):
+#     repository.update_player_tags(player_id, tags_update.tags)
+#     return {"message": "Tags updated successfully"}

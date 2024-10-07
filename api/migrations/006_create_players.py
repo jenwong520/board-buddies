@@ -17,11 +17,7 @@ steps = [
             is_gamehost BOOLEAN DEFAULT FALSE,
             gamehost_id INTEGER,
             is_playtester BOOLEAN DEFAULT FALSE,
-            playtester_id INTEGER,
-            tags VARCHAR(50),
-            lat FLOAT,
-            lon FLOAT,
-            location_radius SMALLINT
+            playtester_id INTEGER
         );
         """,
         # "Down" SQL statement

@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../components/AuthProvider";
+// import { tagCategories } from '../../assets/tagsData.js'     // Work in progress for tags
+import { FaPlus } from 'react-icons/fa';
 import Chart from 'react-google-charts';
 import Nav from "../Nav";
 import profileIcon from "/default/default-icon.png"
@@ -40,6 +42,25 @@ export default function ProfilePage() {
         return <p>Loading...</p>;
     }
 
+    // Mock data for Charts
+    const gamePreferenceData = [
+        ['Type', 'Percentage'],
+        ['Dice Rolling', 25],
+        ['Adventure', 20],
+        ['Strategy', 15],
+        ['Cards', 15],
+        ['Party', 10],
+        ['Speed', 10],
+    ];
+
+    const playStyleData = [
+        ['Type', 'Percentage'],
+        ['Speedy', 15],
+        ['Time Taker', 10],
+        ['Competitive', 20],
+        ['Relaxed', 5],
+    ];
+
 
     return (
         <>
@@ -69,18 +90,18 @@ export default function ProfilePage() {
                             <div className="col-md-9 ms-6 ps-4 d-flex">
                                 <div className="card flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.6)', color: 'white' }}>
                                     <div className="card-body">
-                                        <div className="row">
+                                        <div className="row align-items-center">
                                             {/* Left Column of Right Column */}
                                             <div className="col-md-6 d-flex flex-column align-items-start">
                                                 <h2 className="card-title h4 mt-2 mb-2">{`${player.first_name || 'First Name'} ${player.last_name || 'Last Name'}`}</h2>
                                                 <p className="card-text h6">{`${player.city || 'City'}, ${player.state || 'State'}`}</p>
-                                                <p className="card-text small mt-3">{`${player.about_me || 'About Me: Add your description here. Hardcoded'}`}</p>
+                                                <p className="card-text small mt-3" style={{ textAlign: 'left' }}>{`${player.about_me || 'About Me: Add your description here. Hardcoded'}`}</p>
                                                 <p className="card-text small">Birthdate: {player.birthdate || 'January 1st, 2000'}</p>
-                                                <p className="card-text small">Member Since: {user.date_joined || ' HC January 1st, 2000'}</p>
+                                                <p className="card-text small">Member Since: {user.date_joined || ' HC October 1st, 2024'}</p>
 
                                             </div>
                                             {/* Right Column of Right Column */}
-                                            <div className="col-md-6 d-flex flex-column mt-3 pe-4 pt-4">
+                                            <div className="col-md-6 d-flex flex-column pt-">
                                                     <span className="badge mb-2" style={{ backgroundColor: '#0575f5', color: 'white' }}>☑️ Verified Player</span>
                                                     <span className="badge mb-2" style={{ backgroundColor: '#14852a', color: 'white' }}>👍 Approved Play Tester</span>
                                                     <span className="badge mb-2" style={{ backgroundColor: '#f07635', color: 'white' }}>🤝 Trusted Game Host</span>
@@ -92,90 +113,350 @@ export default function ProfilePage() {
                             </div>
                 </div>
 
-                    {/* Preferences Section */}
-                    <div className="preferences mt-5">
-                        <h3>Preferences</h3>
-                        {/* {player.tags && player.tags.length > 0 ? (
-                            player.tags.map((tag, index) => (
-                            <button
-                                key={index}
-                                className="btn button-primary m-1"
-                                style={{
-                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
-                                color: 'white'
-                                }}
-                            >
-                                {tag}
-                            </button>
-                            ))
-                        ) : (
-                            <p>No preferences selected</p>
-                        )} */}
-                        <button
-                            className="btn button-primary m-1"
-                            style={{
-                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
-                                color: 'white'
-                            }}>
-                            {player.playFrequency || 'Frequency'} HC Monthly
-                        </button>
-                        <button
-                            className="btn button-primary m-1"
-                            style={{
-                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
-                                color: 'white'
-                            }}>
-                            {player.groupSize || 'Group Size'} HC Larger Groups
-                        </button>
-                        <div>
-                            <button
-                                className="btn button-primary m-1"
-                                style={{
-                                    backgroundColor: 'rgba(30, 30, 30, 0.7)',
-                                    color: 'white'
-                                }}>
-                                {player.tags || 'Tags'}
-                            </button>
+                    {/* Preferences Sections */}
+                    <h1 className="display-6 mb- mt-3" style={{ color: '#f8f9fa' }}>Preferences</h1>
+                    <div className="row m-1">
+                        <div className="col-md-6 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                <h5 className="card-header" style={{ color: '#f8f9fa' }}>Frequency</h5>
+                                <div className="card-body">
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Hardcoded
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Biweekly
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Monthly
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                <h5 className="card-header" style={{ color: '#f8f9fa' }}>Group Size</h5>
+                                <div className="card-body">
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Hardcoded
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            2-4 Players
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Smaller Groups
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row m-1">
+                        <div className="col-md-12 d-flex">
+                            <div className="card shadow mb-3 flex-fill" style={{ backgroundColor: 'rgba(66, 66, 66, 0.5)' }}>
+                                <h5 className="card-header" style={{ color: '#f8f9fa' }}>Games I Play</h5>
+                                <div className="card-body">
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Hardcoded
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Catan
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Wingspan
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Codenames
+                                    </button>
+                                                                        <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Ticket To Ride
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Monopoly
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Risk
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Clue
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Chess
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Everdell
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Root
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Boggle
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Magic The Gathering
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Dungeons & Dragons
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Azul
+                                    </button>
+                                                                        <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Pandemic
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            King of Tokyo
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            7 Wonders
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Scythe
+                                    </button>
+                                    <button
+                                            className="btn button-primary m-1"
+                                            style={{
+                                                backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                                color: 'white'
+                                            }}>
+                                            <FaPlus className="me-1 mb-1" />
+                                            Coup
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     {/* Pie Charts */}
-                    <div className="charts">
+                    <div className="charts mt-1">
                         <div className="row justify-content-center">
                             {/* Gaming Preference Stats */}
                             <div className="game-preference-chart col-md-6 p-1 d-flex flex-column align-items-center text-start">
-                                <h3>Game Preference Stats</h3>
+                                <h4>Game Genres</h4>
                                 <Chart
                                     width={'100%'}
                                     height={'300px'}
                                     chartType="PieChart"
                                     loader={<div>Loading Chart</div>}
-                                    data={[
-                                        ['Type', 'Percentage'],
-                                        // ['Cooperative', profile.gamePreferences.cooperative],
-                                        // ['Speed', profile.gamePreferences.speed],
-                                        // ['Strategy', profile.gamePreferences.strategy],
-                                        // ['Cards', profile.gamePreferences.cards],
-                                    ]}
-                                    options={{ is3D: true }}
+                                    data={gamePreferenceData}
+                                    options={{
+                                        is3D: true,
+                                        backgroundColor: 'transparent',
+                                        titleTextStyle: {
+                                        color: '#FFFFFF',
+                                        fontSize: 18,
+                                        bold: true,
+                                        },
+                                        pieSliceText: 'label',
+                                        pieSliceTextStyle: {
+                                        color: 'white',
+                                        label: 'none',
+                                        },
+                                        legend: 'none',
+                                        slices: {
+                                        0: { color: '#426574' },
+                                        1: { color: '#4c7582' },
+                                        2: { color: '#507a88' },
+                                        3: { color: '#55808f' },
+                                        4: { color: '#5b8898' },
+                                        5: { color: '#6391a1' },
+                                        },
+                                        tooltip: {
+                                        text: 'percentage',
+                                        showColorCode: true,
+                                        },
+                                        chartArea: {
+                                        width: '90%',
+                                        height: '80%',
+                                        },
+                                    }}
                                 />
                             </div>
                             {/* Gaming Style */}
                             <div className="chart-container col-md-6 p-1 d-flex flex-column align-items-center text-start">
-                                <h3>Gaming Style</h3>
+                                <h4>Play Style</h4>
                                 <Chart
                                     width={'100%'}
                                     height={'300px'}
                                     chartType="PieChart"
                                     loader={<div>Loading Chart</div>}
-                                    data={[
-                                        ['Type', 'Percentage'],
-                                        // ['Speedy', profile.gamingStyle.speedy],
-                                        // ['Competitive', profile.gamingStyle.competitive],
-                                        // ['Relaxed', profile.gamingStyle.relaxed],
-                                        // ['Cooperative', profile.gamingStyle.cooperative],
-                                    ]}
-                                    options={{ is3D: true }}
+                                    data={playStyleData}
+                                    options={{
+                                        is3D: true,
+                                        backgroundColor: 'transparent',
+                                        titleTextStyle: {
+                                        color: '#FFFFFF',
+                                        fontSize: 18,
+                                        bold: true,
+                                        },
+                                        pieSliceText: 'label',
+                                        pieSliceTextStyle: {
+                                        color: 'white',
+                                        },
+                                        legend: 'none',
+                                        slices: {
+                                        0: { color: '#426574' },
+                                        1: { color: '#4c7582' },
+                                        2: { color: '#5b8898' },
+                                        3: { color: '#6391a1' },
+                                        },
+                                        tooltip: {
+                                        text: 'percentage',
+                                        showColorCode: true,
+                                        },
+                                        chartArea: {
+                                        width: '90%',
+                                        height: '80%',
+                                        },
+                                    }}
                                 />
                             </div>
 
@@ -185,14 +466,20 @@ export default function ProfilePage() {
                     {/* Cards Section */}
                         <div className="row justify-content-center">
                             {/* Games Played */}
-                            <div className="games-played card col-md-5 me-3 p-3 d-flex flex-column align-items-center text-start" style={{ backgroundColor: 'rgba(66, 66, 66, 0.6)', color: 'white' }}>
-                                <h3>Games I Play</h3>
+                            <div
+                                className="games-played card col-md-5 me-3 p-3 d-flex flex-column align-items-center text-start"
+                                style={{
+                                    backgroundColor: 'rgba(66, 66, 66, 0.6)',
+                                    color: 'white'
+                                }}>
+                                <h3>Most Loved Games</h3>
                                 <ul>
                                     <li>Hardcoded List</li>
+                                    <li>Wingspan</li>
                                     <li>Settlers of Catan</li>
+                                    <li>Codenames</li>
                                     <li>Boggle</li>
                                     <li>Apples to Apples</li>
-                                    <li>Wingspan</li>
                                     <li>Monopoly</li>
                                 </ul>
                             </div>
@@ -203,6 +490,7 @@ export default function ProfilePage() {
                                             <Link to="/under-construction" className="text-decoration-none mb-1">About Us</Link>
                                             <Link to="/under-construction" className="text-decoration-none mb-1">Contact</Link>
                                             <Link to="/under-construction" className="text-decoration-none mb-1">Settings</Link>
+                                            <Link to="/under-construction" className="text-decoration-none mb-1">Terms Of Service</Link>
                                             <Link to="/under-construction" className="text-decoration-none mb-1">Preferences Quiz</Link>
                                             <Link to="/under-construction" className="text-decoration-none mb-1">Becoming a Playtester</Link>
                                             <Link to="/under-construction" className="text-decoration-none mb-1">Becoming a Game Host</Link>
