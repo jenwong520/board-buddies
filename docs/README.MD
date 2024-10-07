@@ -29,6 +29,7 @@ Board Buddies is the premiere matchmaking site for board gamers. It allows new u
 - Landing page features available meetups in user's area.
 - Enhance search functionality with filters (e.g., game type, location).
 - Integration with board game databases for automated meetup suggestions.
+- International expansion.
 
 ## Getting Started
 In your terminal:
