@@ -98,7 +98,6 @@
 }
 
 .details-container {
-    /* background-color: #fff; */
     padding: 20px 30px;
     max-width: 800px;
     margin: 40px auto;
@@ -189,7 +188,6 @@
     width: 100%;
     opacity: 0;
     background-color: #000000da;
-    /* clip-path: polygon(5% 0, 100% 0, 100% 100%, 0% 100%); */
     transition: opacity .2s ease-out 100ms;
 }
 

@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from "react";
 import States from "../../assets/states"
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const CreateLocation = () => {
     const [getState, setGetState] = useState([])
