@@ -2,7 +2,7 @@ from main import app
 from fastapi import Response
 from fastapi.testclient import TestClient
 from queries.location_queries import LocationQueries
-from models.locations import LocationIn, LocationOut, LocationList
+from models.locations import LocationIn, LocationOut
 from typing import List, Optional
 
 
@@ -47,11 +47,15 @@ def test_get_location_by_id():
 
 class TestGetLocationList:
 
-    def get_all(self) -> List[LocationList]:
+    def get_all(self) -> List[LocationOut]:
         return [
-            LocationList(
+            LocationOut(
                 id="1",
-                name="Mythic Games"
+                name="Mythic Games",
+                address="561 Tyler St",
+                city="Monterey",
+                state="CA",
+                storetype="Game Store"
             )
         ]
 
