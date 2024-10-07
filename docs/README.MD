@@ -5,7 +5,9 @@ Board Buddies is the premiere matchmaking site for board gamers. It allows new u
 
 ## Features
 - User registration for 'players.'
+- Dashboard with links to accessible pages.
 - Search for board game meetups.
+- Filtered list of meetups for organizers and participants.
 - Create and manage board game meetups.
 - Join existing meetups organized by others.
 - User roles management ('players' and 'organizers') for a tailored experience.
@@ -15,11 +17,16 @@ Board Buddies is the premiere matchmaking site for board gamers. It allows new u
 - Backend: FastAPI
 - Database: PostgreSQL
 - Authentication: JWT-based authentication
-- Integrations: Location data from GoogleMapsAPI
+- Integrations: GoogleMapsAPI
 
 ## Future Roadmap
-- Add new user roles, such as 'game developers.'
+- Add 'complete' meetup button and archive to 'Past Meetups'.
+- Add new user roles, such as 'game developers' and 'playtesters'.
 - Implement ratings and reviews for meetups.
+- Ability to match players to games via tags.
+- Ability to match player to player (as 'game buddies').
+- Implement a buddy list and chat feature
+- Landing page features available meetups in user's area.
 - Enhance search functionality with filters (e.g., game type, location).
 - Integration with board game databases for automated meetup suggestions.
 
