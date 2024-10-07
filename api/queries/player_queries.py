@@ -167,7 +167,7 @@ class PlayerQueries:
                 f"Error fetching player details: {e}"
             )
             raise UserDatabaseException("Could not retrieve player details")
-        
+
     def update(
             self,
             player_id: str,
@@ -222,7 +222,12 @@ class PlayerQueries:
                         )
 
                     # // Work in progress for tags
-                    # self.update_player_tags(conn, cur, player_id, player.tags)
+                    # self.update_player_tags(
+                    #     conn,
+                    #     cur,
+                    #     player_id,
+                    #     player.tags
+                    # )
 
                     return self.player_in_to_out(player, user_id)
         except psycopg.Error as e:
