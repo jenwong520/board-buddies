@@ -114,7 +114,7 @@ if (!player) {
                             </NavLink>
                         </div>
                         <div className="nav-item">
-                            <NavLink to="/under-construction">
+                            <NavLink to="/mymeetups">
                                 <button className="btn btn-outline-light col-6 mt-2" type="button">My Meetups</button>
                             </NavLink>
                         </div>
