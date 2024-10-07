@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import mainLogo from "../img/Board-buddies-logo.png";
-import { AuthContext } from "../components/AuthProvider";
-import { useEffect, useContext } from "react";
+import { useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import useAuthService from '../hooks/useAuthService'
 
 
 function Nav() {
-    const { signout, user } = useContext(AuthContext);
+    const { signout, user } = useAuthService();
     const navigate = useNavigate();
     const goBack = (e) => {
         e.preventDefault();
@@ -24,7 +24,7 @@ function Nav() {
         navigate("/");
     }
 
-    
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg navbar-dark fixed-top" style={{ backgroundColor: 'rgba(30, 30, 30, 0.5)', color: 'white' }}>
