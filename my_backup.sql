@@ -457,6 +457,18 @@ COPY public.games (id, name, game_image, min_players, max_players, game_duration
 --
 
 COPY public.locations (id, name, address, city, state, store_type) FROM stdin;
+1	Turn Zero Games	3959 Wilshire Blvd ste a-9	Los Angeles	CA	Game Store
+2	Paper Hero's Games	14109 Burbank Blvd	Van Nuys	CA	Game Store
+3	Geeky Teas and Games	900 W Alameda Ave	Burbank	CA	Nerd Bar
+4	Guildhall	3516 W Victory Blvd	Burbank	CA	Nerd_Bar
+5	Fire and Dice	19801 Vanowen St	Winnetka	CA	Game Store
+6	Mythic Games	561 Tyler St	Monterey	CA	Game Store
+7	Tucson Games And Gadgets	5870 E Broadway Blvd #409	Tucson	AZ	Game Store
+8	Polyhedron Gamestore	5825 N Oracle Rd	Tucson	AZ	Game Store
+9	Isle of Games	7835 E Broadway Blvd	Tucson	AZ	Game Store
+10	Games Ahoy	982 E Eisenhower Blvd	Loveland	CO	Game Store
+11	Total Escape Games	6831 W 120th Ave ste C	Broomfield	CO	Game Store
+12	Akihabara Arcade and Bar	8901 N Harlan St	Westminster	CO	Nerd_Bar
 \.
 
 
