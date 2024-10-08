@@ -137,7 +137,10 @@ function CreateMeetup() {
     return(
     <>
         <Nav />
-        <div className=" container row shadow bg-white rounded">
+        <div
+            className=" container row shadow"
+            style={{ backgroundColor: 'rgba(47, 47, 47, 0.8)', color: 'white'}}
+        >
             <div className="col- ">
                 <div className="mt-3">
                     <h1>Create a Meetup</h1>

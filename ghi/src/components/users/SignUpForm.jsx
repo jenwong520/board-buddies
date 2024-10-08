@@ -5,8 +5,8 @@ import useAuthService from '../../hooks/useAuthService';
 import mainLogo from "../../img/Board-buddies-logo.png";
 
 export default function SignUpForm() {
-    // const [isPlayer, setIsPlayer] = useState(false);                     // For future features
-    // const [isGameDeveloper, setIsGameDeveloper] = useState(false);       // For future features
+    const [isPlayer, setIsPlayer] = useState(false);                     // For future features
+    const [isGameDeveloper, setIsGameDeveloper] = useState(false);       // For future features
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
