@@ -5,7 +5,7 @@ import { API_KEY } from "../../assets/ApiKeys.js"
 function LocationDetail() {
     const { id } = useParams()
     const [locations, setLocations] = useState([])
-
+    // secret message
     useEffect(() => {
         const fetchLocationDetails = async () =>{
             try {
