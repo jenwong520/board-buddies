@@ -1,3 +1,7 @@
+"""
+Game Router
+"""
+
 from fastapi import APIRouter, Depends, Response
 from typing import Union, List, Optional
 from models.games import (

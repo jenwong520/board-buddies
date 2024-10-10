@@ -1,3 +1,7 @@
+"""
+Database Queries for Games
+"""
+
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
@@ -7,12 +11,16 @@ from models.games import (
     Error,
 )
 from typing import Optional, List, Union
+from queries.game_tag_queries import GameTagQueries
 
 
 pool = ConnectionPool(conninfo=os.environ["DATABASE_URL"])
 
 
 class GameRepository:
+    def __init__(self):
+        self.tag_queries = GameTagQueries()
+
     def get_all(self) -> Union[Error, List[GameOut]]:
         try:
             with pool.connection() as conn:
@@ -27,27 +35,29 @@ class GameRepository:
                         , game_duration
                         , min_age
                         , max_age
-                        , tags
                         , description
                         FROM games
                         ORDER BY name
                         """
                     )
-                    return [
-                        GameOut(
-                            id=record[0],
-                            name=record[1],
-                            game_image=record[2],
-                            min_players=record[3],
-                            max_players=record[4],
-                            game_duration=record[5],
-                            min_age=record[6],
-                            max_age=record[7],
-                            tags=record[8],
-                            description=record[9],
-                        )
-                        for record in db
-                    ]
+                    games = db.fetchall()
+                    result = []
+                    for game_record in games:
+                        game_id = game_record[0]
+                        tags = self.tag_queries.get_tags_for_game(game_id)
+                        result.append(GameOut(
+                            id=game_record[0],
+                            name=game_record[1],
+                            game_image=game_record[2],
+                            min_players=game_record[3],
+                            max_players=game_record[4],
+                            game_duration=game_record[5],
+                            min_age=game_record[6],
+                            max_age=game_record[7],
+                            description=game_record[8],
+                            tags=tags
+                        ))
+                    return result
         except Exception as e:
             print(e)
             return {"message": "Could not get all games"}
@@ -66,11 +76,10 @@ class GameRepository:
                             game_duration,
                             min_age,
                             max_age,
-                            tags,
                             description
                             )
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
@@ -81,11 +90,12 @@ class GameRepository:
                             game.game_duration,
                             game.min_age,
                             game.max_age,
-                            game.tags,
                             game.description
                             ]
                     )
-                    id = result.fetchone()[0]
+                    game_id = result.fetchone()[0]
+                    self.tag_queries.add_tags_to_game(game_id, game.tag_ids)
+
                     return self.game_in_to_out(id, game)
         except Exception:
             return {"message": "error!"}
@@ -94,7 +104,7 @@ class GameRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT id
                         , name
@@ -104,17 +114,29 @@ class GameRepository:
                         , game_duration
                         , min_age
                         , max_age
-                        , tags
                         , description
                         FROM games
                         WHERE id = %s
                         """,
                         [game_id]
                     )
-                    record = result.fetchone()
-                    if record is None:
+                    game_record = db.fetchone()
+                    if game_record is None:
                         return None
-                    return self.record_to_game_out(record)
+                    tags = self.tag_queries.get_tags_for_game(game_id)
+
+                    return GameOut(
+                        id=game_record[0],
+                        name=game_record[1],
+                        game_image=game_record[2],
+                        min_players=game_record[3],
+                        max_players=game_record[4],
+                        game_duration=game_record[5],
+                        min_age=game_record[6],
+                        max_age=game_record[7],
+                        description=game_record[8],
+                        tags=tags
+                    )
         except Exception as e:
             print(e)
             return {"message": "Could not get game"}
@@ -133,7 +155,6 @@ class GameRepository:
                         , game_duration = %s
                         , min_age = %s
                         , max_age = %s
-                        , tags = %s
                         , description = %s
                         WHERE id = %s
                         """,
@@ -145,7 +166,6 @@ class GameRepository:
                             game.game_duration,
                             game.min_age,
                             game.max_age,
-                            game.tags,
                             game.description,
                             game_id
                         ]
@@ -187,6 +207,5 @@ class GameRepository:
             game_duration=record[5],
             min_age=record[6],
             max_age=record[7],
-            tags=record[8],
-            description=record[9],
+            description=record[8],
         )

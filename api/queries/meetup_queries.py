@@ -1,5 +1,5 @@
 """
-Database Queries for Location
+Database Queries for Meetups
 """
 
 import os

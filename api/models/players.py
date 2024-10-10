@@ -3,7 +3,8 @@ Pydantic Models for Players.
 """
 from datetime import date
 from pydantic import BaseModel, EmailStr, Field, constr
-from typing import Optional
+from typing import Optional, List
+from models.tags import TagOut
 
 
 class Error(BaseModel):
@@ -59,6 +60,12 @@ class PlayerOut(BaseModel):
     is_player: Optional[bool] = None
     player_id: Optional[str] = None
 
+class PlayerTagUpdate(BaseModel):
+    tags: List[int]
+
+class PlayerWithTagsOut(BaseModel):
+    player: PlayerOut
+    tags: List[TagOut]
 
 # Work in progress for tags
 

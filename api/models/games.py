@@ -1,5 +1,9 @@
+"""
+Pydantic Models for Games
+"""
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
+from models.tags import TagOut
 
 
 class Error(BaseModel):
@@ -14,8 +18,8 @@ class GameIn(BaseModel):
     game_duration: int
     min_age: int
     max_age: Optional[int]
-    tags: str
     description: str
+    tag_ids: List[int]
 
 
 class GameOut(BaseModel):
@@ -27,5 +31,5 @@ class GameOut(BaseModel):
     game_duration: int
     min_age: int
     max_age: Optional[int]
-    tags: str
     description: str
+    tags: List[TagOut]

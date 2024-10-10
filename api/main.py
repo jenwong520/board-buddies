@@ -8,7 +8,8 @@ from routers import (
     location_router,
     players_router,
     meetup_router,
-    game_router
+    game_router,
+    tag_router
 )
 
 import os
@@ -28,6 +29,7 @@ app.include_router(location_router.router)
 app.include_router(meetup_router.router)
 app.include_router(game_router.router)
 app.include_router(players_router.router)
+app.include_router(tag_router.router)
 
 
 @app.get("/api/launch-details")

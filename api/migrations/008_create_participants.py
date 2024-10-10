@@ -12,7 +12,7 @@ steps = [
         """,
         ## Drop the table
         """
-        DROP TABLE meetups;
+        DROP TABLE meetup_participants;
         """
     ],
 ]
