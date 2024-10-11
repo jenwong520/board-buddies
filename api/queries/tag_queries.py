@@ -85,7 +85,6 @@ class TagQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    # Execute the SQL query to delete the tag by its ID
                     cur.execute(
                         """
                         DELETE FROM tags
@@ -93,12 +92,9 @@ class TagQueries:
                         """,
                         [tag_id]
                     )
-                    # Check if a row was actually deleted
                     if cur.rowcount == 0:
-                        # If no rows were affected, it means the tag wasn't found
                         return False
                     return True
         except Exception as e:
-            # Handle any exceptions (e.g., database errors)
             print(f"Error deleting tag: {e}")
             return False

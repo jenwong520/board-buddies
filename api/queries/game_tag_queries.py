@@ -5,11 +5,8 @@ Database Queries for Game Tags
 import os
 import psycopg
 from psycopg_pool import ConnectionPool
-from typing import Optional, List, Union
-from models.tags import (
-    TagIn,
-    TagOut,
-)
+from typing import List
+from models.tags import TagOut
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
@@ -22,10 +19,9 @@ class GameTagQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    # Delete existing tags for the game
+                    
                     cur.execute("DELETE FROM game_tags WHERE game_id = %s;", [game_id])
-                   
-                    # Add the new tags for the game
+
                     for tag_id in tags:
                         cur.execute(
                             """

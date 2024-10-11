@@ -66,7 +66,6 @@ class GameRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    # Insert the game first, and get the game_id
                     db.execute(
                         """
                         INSERT INTO games (
@@ -98,12 +97,10 @@ class GameRepository:
 
                     conn.commit()
 
-                    # Now that the game is inserted, add tags
                     self.tag_queries.add_tags_to_game(game_id, game.tag_ids)
 
                     tags = self.tag_queries.get_tags_for_game(game_id)
 
-                    # Return the created game
                     return GameOut(
                         id=game_id,
                         name=game.name,
@@ -114,7 +111,7 @@ class GameRepository:
                         min_age=game.min_age,
                         max_age=game.max_age,
                         description=game.description,
-                        tags=tags  # Ensure tags are returned here
+                        tags=tags
                     )
         except Exception as e:
             print(f"Could not add tags to game: {e}")
@@ -165,7 +162,6 @@ class GameRepository:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    # Update the game fields
 
                     db.execute(
                         """
@@ -196,9 +192,7 @@ class GameRepository:
                     if db.rowcount == 0:
                         return None
 
-                    # Update the tags for the game
                     self.tag_queries.add_tags_to_game(game_id, game.tag_ids)
-                    # Return the updated game
                     return self.game_in_to_out(game_id, game)
 
         except psycopg.Error as e:
@@ -206,12 +200,22 @@ class GameRepository:
             return Error(message=f"Could not update: {e}")
 
 
-    def game_in_to_out(self, id: int, game: GameIn):
+    def game_in_to_out(self, game_id: int, game: GameIn) -> GameOut:
         old_data = game.dict()
-        print("OLD", old_data)
-        tag_out = old_data["tag_ids"]
-        print("TAG OUT", tag_out)
-        return GameOut(id=id, **old_data)
+        tags = self.tag_queries.get_tags_for_game(game_id)
+
+        return GameOut(
+            id=game_id,
+            name=old_data["name"],
+            game_image=old_data["game_image"],
+            min_players=old_data["min_players"],
+            max_players=old_data["max_players"],
+            game_duration=old_data["game_duration"],
+            min_age=old_data["min_age"],
+            max_age=old_data.get("max_age"),
+            description=old_data["description"],
+            tags=tags
+        )
 
     def record_to_game_out(self, record):
         return GameOut(
