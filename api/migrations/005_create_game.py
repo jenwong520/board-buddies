@@ -11,7 +11,6 @@ steps = [
             game_duration SMALLINT NOT NULL,
             min_age SMALLINT NOT NULL,
             max_age SMALLINT,
-            tags VARCHAR(1000) NOT NULL,
             description TEXT
         );
         """,

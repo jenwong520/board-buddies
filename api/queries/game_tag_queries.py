@@ -22,7 +22,10 @@ class GameTagQueries:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
+                    # Delete existing tags for the game
                     cur.execute("DELETE FROM game_tags WHERE game_id = %s;", [game_id])
+                   
+                    # Add the new tags for the game
                     for tag_id in tags:
                         cur.execute(
                             """
@@ -32,7 +35,23 @@ class GameTagQueries:
                             """, [game_id, tag_id]
                         )
         except Exception as e:
-            raise Exception(f"Error adding tags to game: {e}")
+            print(f"Error adding tags to game: {e}")
+            raise Exception("Could not add tags to game")
+
+    def remove_tags_from_game(self, game_id: int, tags: List[int]):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as cur:
+                    for tag_id in tags:
+                        cur.execute(
+                            """
+                            DELETE FROM game_tags
+                            WHERE game_id = %s AND tag_id = %s;
+                            """, [game_id, tag_id]
+                        )
+        except Exception as e:
+            print(f"Error removing tags from game: {e}")
+            raise Exception("Could not remove tags from game")
 
     def get_tags_for_game(self, game_id: int) -> List[TagOut]:
         try:
@@ -40,7 +59,8 @@ class GameTagQueries:
                 with conn.cursor() as cur:
                     cur.execute(
                         """
-                        SELECT t.id, t.name FROM tags t
+                        SELECT t.id, t.name
+                        FROM tags t
                         JOIN game_tags gt ON t.id = gt.tag_id
                         WHERE gt.game_id = %s;
                         """, [game_id]

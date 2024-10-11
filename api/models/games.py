@@ -32,4 +32,4 @@ class GameOut(BaseModel):
     min_age: int
     max_age: Optional[int]
     description: str
-    tags: List[TagOut]
+    tag_ids: List[TagOut]

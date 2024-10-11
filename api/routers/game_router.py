@@ -2,7 +2,7 @@
 Game Router
 """
 
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, HTTPException
 from typing import Union, List, Optional
 from models.games import (
     GameIn,
@@ -39,20 +39,17 @@ async def get_one_game(
         response.status_code = 404
     return game
 
-
 @router.put("/{game_id}", response_model=Union[GameOut, Error])
 async def update_game(
     game_id: int,
-    response: Response,
-    game: GameIn,
-    repo: GameRepository = Depends(),
+    game: GameIn,  # This ensures the incoming game data has the right structure
+    repo: GameRepository = Depends()
 ) -> Union[Error, GameOut]:
+    # Call the repository to update the game
     updated_game = repo.update(game_id, game)
     if updated_game is None:
-        response.status_code = 404
-        return {"message": "Game not found"}
+        raise HTTPException(status_code=404, detail="Game not found")
     return updated_game
-
 
 @router.delete("/{game_id}", response_model=bool)
 async def delete_game(
