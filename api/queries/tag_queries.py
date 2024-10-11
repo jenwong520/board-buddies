@@ -57,8 +57,7 @@ class TagQueries:
                     return [TagOut(
                         id=row[0],
                         name=row[1]
-                    )
-                    for row in cur.fetchall()]
+                    ) for row in cur.fetchall()]
         except Exception as e:
             raise Exception(f"Could not get tags: {e}")
 

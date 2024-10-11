@@ -3,7 +3,6 @@ Database Queries for Game Tags
 """
 
 import os
-import psycopg
 from psycopg_pool import ConnectionPool
 from typing import List
 from models.tags import TagOut
@@ -14,13 +13,16 @@ if not DATABASE_URL:
 
 pool = ConnectionPool(DATABASE_URL)
 
+
 class GameTagQueries:
     def add_tags_to_game(self, game_id: int, tags: List[int]):
         try:
             with pool.connection() as conn:
                 with conn.cursor() as cur:
-                    
-                    cur.execute("DELETE FROM game_tags WHERE game_id = %s;", [game_id])
+                    cur.execute(
+                        "DELETE FROM game_tags WHERE game_id = %s;",
+                        [game_id]
+                    )
 
                     for tag_id in tags:
                         cur.execute(
@@ -61,6 +63,10 @@ class GameTagQueries:
                         WHERE gt.game_id = %s;
                         """, [game_id]
                     )
-                    return [TagOut(id=row[0], name=row[1]) for row in cur.fetchall()]
+                    return [
+                        TagOut(
+                            id=row[0],
+                            name=row[1]
+                        ) for row in cur.fetchall()]
         except Exception as e:
             raise Exception(f"Could not get tags for game: {e}")

@@ -199,7 +199,6 @@ class GameRepository:
             print(e)
             return Error(message=f"Could not update: {e}")
 
-
     def game_in_to_out(self, game_id: int, game: GameIn) -> GameOut:
         old_data = game.dict()
         tags = self.tag_queries.get_tags_for_game(game_id)
