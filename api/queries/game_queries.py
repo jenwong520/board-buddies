@@ -203,6 +203,7 @@ class GameRepository:
     def game_in_to_out(self, game_id: int, game: GameIn) -> GameOut:
         old_data = game.dict()
         tags = self.tag_queries.get_tags_for_game(game_id)
+        print("TAG", tags)
 
         return GameOut(
             id=game_id,

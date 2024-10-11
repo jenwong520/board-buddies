@@ -57,8 +57,21 @@ function GameDetail() {
                             : `${game.min_age} - ${game.max_age}`}
                     </p>
                     <p>
-                        <strong>Tags:</strong> {game.tags}
+                        <strong>Tags:</strong>{' '}
+                        {game.tags.map((tag) => (
+                            <button
+                                className="btn button-primary m-1"
+                                style={{
+                                    backgroundColor: 'rgba(30, 30, 30, 0.7)',
+                                    color: 'white',
+                                }}
+                                key={tag.id}
+                            >
+                                {tag.name}{' '}
+                            </button>
+                        ))}
                     </p>
+
                     <p>
                         <strong>Description:</strong> {game.description}
                     </p>

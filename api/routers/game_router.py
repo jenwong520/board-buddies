@@ -42,10 +42,20 @@ async def get_one_game(
 @router.put("/{game_id}", response_model=Union[GameOut, Error])
 async def update_game(
     game_id: int,
-    game: GameIn,  # This ensures the incoming game data has the right structure
+    game: GameIn,
+    repo: GameRepository = Depends()
+):
+    updated_game = repo.update(game_id, game)
+    if isinstance(updated_game, Error):
+        raise HTTPException(status_code=404, detail="Game not found")
+    return updated_game
+
+@router.put("/{game_id}", response_model=Union[GameOut, Error])
+async def update_game(
+    game_id: int,
+    game: GameIn,
     repo: GameRepository = Depends()
 ) -> Union[Error, GameOut]:
-    # Call the repository to update the game
     updated_game = repo.update(game_id, game)
     if updated_game is None:
         raise HTTPException(status_code=404, detail="Game not found")
